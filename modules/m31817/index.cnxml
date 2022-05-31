@@ -1,0 +1,72 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Preview of Comm System Components</title>
+  <metadata>
+  <md:content-id>m31817</md:content-id><md:title>Preview of Comm System Components</md:title>
+  <md:abstract>This module gives a brief description of important communication system components: the modulator, the coder/mapper, and the pulse shaper.</md:abstract>
+  <md:uuid>29f75575-ac37-4de5-8a6b-48cd9bd128b0</md:uuid>
+</metadata>
+<featured-links>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit below.
+       Changes to the links section in the source will not be saved. -->
+    <link-group type="supplemental">
+      <link url="related matlab files.zip" strength="3">Related M-Files</link>
+    </link-group>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit above.
+       Changes to the links section in the source will not be saved. -->
+</featured-links>
+<content>
+   <para id="id112996">The Modulator:
+      <list id="id112999" display="block" list-type="bulleted"><item id="uid1">Translates “baseband” analog message to “passband”:
+<figure id="uid2"><media id="uid2_media" alt="This figure contains two graphs. The first plots f on the horizontal axis and displays a rectangle of height 1 with its base on the horizontal axis and base length from horizontal value -1/2T to 1/2T. There is an arrow to the right of this graph pointing at the second graph, which plots f on the horizontal axis and displays two rectangles. The bases of the rectangles are on the horizontal axis. The midpoint of the base of the left rectangle is at -f_c, and the midpoint of the base of the right rectangle is at f_c. The height of these rectangles is measured as 1/2. There is an arrow pointing both left and right above the arrow to the right, labeled 1/T."><image mime-type="image/png" src="../../media/fig3.png" id="uid2_onlineimage" width="834"><!-- NOTE: attribute width changes image size online (pixels). original width is 834. --></image><image for="pdf" mime-type="application/postscript" src="../../media/fig3.eps" id="uid2_printimage" print-width="3.2in"><!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)--></image></media></figure>
+where <emphasis effect="italics">f<sub>c</sub></emphasis> is the “carrier frequency.”
+</item>
+        <item id="uid3">There are two principal motivations for doing this:
+<list id="id113054" display="block" list-type="enumerated"><item id="uid4">Often we want to communicate several messages simultaneously
+(e.g., TV, radio, voice). It's difficult or impossible to do
+this if they overlap in frequency!
+</item><item id="uid5">Wireless EM transmission/reception is much easier at
+higher frequencies, since need antenna length
+<m:math overflow="scroll"><m:mrow><m:mo>&gt;</m:mo><m:mfrac><m:mi>λ</m:mi><m:mn>10</m:mn></m:mfrac></m:mrow></m:math>.
+(<m:math overflow="scroll"><m:mrow><m:mi>λ</m:mi><m:mo>=</m:mo><m:mfrac><m:mi>c</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub></m:mfrac></m:mrow></m:math> is wavelength and
+<emphasis effect="italics">c</emphasis>=3e8 m/s speed of light.)
+<table id="id113130" summary="This is a table with a row of different systems, then the appropriate calculations in two columns to the right.">
+<tgroup cols="3"><tbody><row><entry>system</entry><entry>transmission band</entry><entry><m:math overflow="scroll"><m:mrow><m:mi>λ</m:mi><m:mo>/</m:mo><m:mn>10</m:mn></m:mrow></m:math></entry></row><row><entry>VHF (TV)</entry><entry>30–300 MHz</entry><entry>1–0.1 m</entry></row><row><entry>UHF (TV)</entry><entry>0.3–3 GHz</entry><entry>10–1 cm</entry></row><row><entry>cellular</entry><entry>824–960 MHz</entry><entry>3 cm</entry></row><row><entry>WiFi</entry><entry>2.4 GHz</entry><entry>1 cm</entry></row></tbody>
+</tgroup>
+</table> 
+
+Notice that practical antenna length determines where
+different signal types can be transmitted.
+</item></list></item>
+      </list>
+</para>
+      <para id="id113244">The Coder/Mapper:
+      <list id="id113248" display="block" list-type="bulleted"><item id="uid6">Coder transforms sequence of message bits into an error-resiliant
+sequence of coded bits.
+</item>
+        <item id="uid7">Mapper transforms coded bits into discrete “symbols.”
+Ex: If the “symbol alphabet” is <m:math overflow="scroll"><m:mrow><m:mo>{</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>3</m:mn><m:mo>}</m:mo></m:mrow></m:math>
+and the symbol mapping is
+
+
+<table id="id113315" summary="This table compares the mapping of the bits to specific symbols."><tgroup cols="2"><tbody><row><entry>bits</entry><entry>symbol</entry></row><row><entry>00</entry><entry>3</entry></row><row><entry>01</entry><entry>-1</entry></row><row><entry>10</entry><entry>1</entry></row><row><entry>11</entry><entry>-3</entry></row></tbody></tgroup></table> 
+
+then ASCII text would be transmitted via
+
+
+<table id="id113388" summary="This table contains columns comparing letters with ascii codes and the corresponding symbol sequences."><tgroup cols="9"><colspec colnum="1" colname="c1"/><colspec colnum="2" colname="c2"/><colspec colnum="3" colname="c3"/><colspec colnum="4" colname="c4"/><colspec colnum="5" colname="c5"/><colspec colnum="6" colname="c6"/><colspec colnum="7" colname="c7"/><colspec colnum="8" colname="c8"/><colspec colnum="9" colname="c9"/><tbody><row><entry>letter</entry><entry namest="c2" nameend="c5">ASCII code</entry><entry namest="c6" nameend="c9">symbol sequence</entry></row><row><entry>a</entry><entry>01</entry><entry>10</entry><entry>00</entry><entry>01</entry><entry>-1</entry><entry>1</entry><entry>-3</entry><entry>-1</entry></row><row><entry>b</entry><entry>01</entry><entry>10</entry><entry>00</entry><entry>10</entry><entry>-1</entry><entry>1</entry><entry>-3</entry><entry>1</entry></row><row><entry>c</entry><entry>01</entry><entry>10</entry><entry>00</entry><entry>11</entry><entry>-1</entry><entry>1</entry><entry>-3</entry><entry>3</entry></row><row><entry>d</entry><entry>01</entry><entry>10</entry><entry>01</entry><entry>00</entry><entry>-1</entry><entry>1</entry><entry>-1</entry><entry>-3</entry></row><row><entry><m:math overflow="scroll"><m:mo>⋮</m:mo></m:math></entry><entry namest="c2" nameend="c5"><m:math overflow="scroll"><m:mo>⋮</m:mo></m:math></entry><entry namest="c6" nameend="c9"><m:math overflow="scroll"><m:mo>⋮</m:mo></m:math></entry></row></tbody></tgroup></table> 
+</item>
+      </list>
+</para>
+      <para id="id113667">Pulse Shaper:
+      <list id="id113671" display="block" list-type="bulleted">
+        <item id="uid8">Converts symbol sequence into a continuous waveform.
+</item>
+        <item id="uid9">In linear modulation schemes, the time-<emphasis effect="italics">n</emphasis> symbol
+<m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> scales a <m:math overflow="scroll"><m:mrow><m:mi>n</m:mi><m:mi>T</m:mi></m:mrow></m:math>-delayed version of pulse <m:math overflow="scroll"><m:mrow><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>:
+<equation id="id112478"><m:math overflow="scroll" mode="display"><m:mtable displaystyle="true"><m:mtr><m:mtd columnalign="right"><m:mrow><m:mi>m</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mtd><m:mtd><m:mo>=</m:mo></m:mtd><m:mtd columnalign="left"><m:mrow><m:munder><m:mo>∑</m:mo><m:mi>n</m:mi></m:munder><m:mi>a</m:mi><m:mrow><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>n</m:mi><m:mi>T</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="1"/><m:mtext>"baseband message"</m:mtext></m:mrow></m:mtd></m:mtr><m:mtr><m:mtd columnalign="right"><m:mi>T</m:mi></m:mtd><m:mtd><m:mo>=</m:mo></m:mtd><m:mtd columnalign="left"><m:mrow><m:mtext>"symbol period"</m:mtext></m:mrow></m:mtd></m:mtr></m:mtable></m:math></equation>
+Ex: Say symbol sequence is <m:math overflow="scroll"><m:mrow><m:mo>[</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>3</m:mn><m:mo>]</m:mo></m:mrow></m:math>. Then
+<figure id="uid10"><media id="uid10_media" alt="This is a three-part figure of multiple cartesian graphs containing waves. The first is five graphs in a line, aligned with horizontal axes t. In the positive side of the horizontal axis, dashed lines down through the graphs are labeled T, 2T, 3T, 4T, 5T, and 6T. The graphs are labeled from top to bottom, g(t), g(t-T) g(t-2T), g(t-3T), g(t-4T). In the graphs, there is half a small wave, a complete larger wave, and then a second part of a small wave. The peak of the large wave occurs at the horizontal values of 0 in the first, then T, 2T, 3T, and 4T. The second part of this figure plots t on the horizontal axis, and is labeled a[n]g(t - nT) for n = 0, ..., 4. This graph contains five colored curves containing waves of different sizes, each centered at the horizontal axis, and each having different amplitudes. The third part is a graph plotting a horizontal axis t and containing the title y(t) = Σ_n a[n]g(t - nT). This graph contains only one curve, with nonuniform wavelength and varying amplitude, completing three and one half waves."><image mime-type="image/png" src="../../media/fig4.png" id="uid10_onlineimage" width="838"><!-- NOTE: attribute width changes image size online (pixels). original width is 838. --></image><image for="pdf" mime-type="application/postscript" src="../../media/fig4.eps" id="uid10_printimage" print-width="3.2in"><!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)--></image></media></figure></item>
+      </list>
+    </para>
+  </content>
+</document>

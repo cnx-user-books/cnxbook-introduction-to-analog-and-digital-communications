@@ -1,0 +1,110 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Introduction</title>
+  <metadata>
+  <md:content-id>m31807</md:content-id><md:title>Introduction</md:title>
+  <md:abstract>This module presents introductory material on data communication, focusing on a high-level summary/comparison of analog and digital communication.</md:abstract>
+  <md:uuid>bd7ec18b-517a-4eea-927d-fac5ead1747a</md:uuid>
+</metadata>
+<featured-links>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit below.
+       Changes to the links section in the source will not be saved. -->
+    <link-group type="supplemental">
+      <link url="related matlab files.zip" strength="3">Related M-Files</link>
+    </link-group>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit above.
+       Changes to the links section in the source will not be saved. -->
+</featured-links>
+<content>
+    
+      <para id="id121120">Goal: Transmit a message from one location to another.</para>
+      
+      <para id="id121126">When message is a...
+<newline/>
+continuous waveform, use analog comm (e.g., FM radio),<newline/>
+sequence of numbers, use digital comm (e.g., mp3 file),
+        <newline/>
+but keep in mind that the sequence of numbers might represent a sampling of a continuous waveform (as in the case of digital audio).</para>
+      
+      
+      <para id="id121158">Typical communication media:</para>
+      
+      
+      <table id="eip-582" summary="table"><tgroup cols="3"><tbody>
+            <row>
+              <entry>twisted pair wire</entry>
+              <entry>(e.g., telephone<emphasis effect="italics"><sub>A</sub></emphasis>)</entry>
+            </row>
+            <row>
+              <entry>coaxial cable</entry>
+              <entry>(e.g., TV<m:math overflow="scroll"><m:msub><m:mrow/><m:mrow><m:mi>A</m:mi><m:mo>,</m:mo><m:mi>D</m:mi></m:mrow></m:msub></m:math>, data<emphasis effect="italics"><sub>D</sub></emphasis>)</entry>
+            </row>
+            <row>
+              <entry>fiber optic cable</entry>
+              <entry>(e.g., ethernet<emphasis effect="italics"><sub>D</sub></emphasis>)</entry>
+            </row>
+            <row>
+              <entry>EM waves</entry>
+              <entry>(e.g., cellular phones<m:math overflow="scroll"><m:msub><m:mrow/><m:mrow><m:mi>A</m:mi><m:mo>,</m:mo><m:mi>D</m:mi></m:mrow></m:msub></m:math>, WiFi<emphasis effect="italics"><sub>D</sub></emphasis>, TV<m:math overflow="scroll"><m:msub><m:mrow/><m:mrow><m:mi>A</m:mi><m:mo>,</m:mo><m:mi>D</m:mi></m:mrow></m:msub></m:math>)</entry>
+            </row>
+            <row>
+              <entry>water waves</entry>
+              <entry>(e.g., underwater network<m:math overflow="scroll"><m:msub><m:mrow/><m:mrow><m:mi>A</m:mi><m:mo>,</m:mo><m:mi>D</m:mi></m:mrow></m:msub></m:math>)</entry>
+            </row>
+            <row>
+              <entry>power lines<m:math overflow="scroll"><m:msub><m:mrow/><m:mrow><m:mi>A</m:mi><m:mo>,</m:mo><m:mi>D</m:mi></m:mrow></m:msub></m:math></entry>
+<entry/>
+            </row>
+            <row>
+              <entry>compact disc<emphasis effect="italics"><sub>D</sub></emphasis></entry>
+<entry/>        
+    </row>
+            <row>
+              <entry>hard drive<emphasis effect="italics"><sub>D</sub></emphasis></entry>
+<entry/>        
+    </row>
+            <row>
+              <entry>magnetic tape<m:math overflow="scroll"><m:msub><m:mrow/><m:mrow><m:mi>A</m:mi><m:mo>,</m:mo><m:mi>D</m:mi></m:mrow></m:msub></m:math></entry>
+<entry/>        
+    </row>
+          </tbody>
+      
+</tgroup>
+</table><para id="id121426">
+where <m:math overflow="scroll"><m:mrow><m:msub><m:mrow/><m:mi>A</m:mi></m:msub><m:mo>=</m:mo></m:mrow></m:math> analog and <m:math overflow="scroll"><m:mrow><m:msub><m:mrow/><m:mi>D</m:mi></m:msub><m:mo>=</m:mo></m:mrow></m:math> digital.</para>
+      <para id="id121460">Note that, whether the message signal is discrete-time or continuous-time,
+the transmitted signal is continuous-time!</para>
+      <section id="uid1">
+        <title>Analog Communication</title>
+        <figure id="uid2"><media id="uid2_media" alt="This is a flowchart with movement to the right. It begins with an arrow moving to the right, labeled analog message. The arrow points at a box labeled modulator. To the right of the box is another arrow pointing to the right, labeled transmitted message. This arrow points at a box labeled channel. To the right of the channel box is an arrow pointing to the right, labeled received signal. To the right of this arrow is a box labeled de-modulator. Following this is a final arrow, pointing to the right, labeled recovered message.">
+            <image mime-type="image/png" src="../../media/fig1.png" id="uid2_onlineimage" width="500"><!-- NOTE: attribute width changes image size online (pixels). original width is 1056. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig1.eps" id="uid2_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <list id="id121482" display="block" list-type="bulleted">
+          <item id="uid3">Perfect recovery is impossible in the presence of noise!
+</item>
+        </list>
+      </section>
+      <section id="uid4">
+        <title>Digital Communication</title>
+        <figure id="uid5"><media id="uid5_media" alt="This is a long flowchart moving to the right, with labeled arrows pointing at  boxes to their right. The first arrow is labeled binary message, with the label below, ... 010110 .... This is followed by a box labeled coder/mapper. To the right of this is an arrow labeled symbol sequence, ... 3, -1, 1, -3 ... After this is a box labeled pulse shaper. To the right of this is an arrow labeled baseband message, with a small graph showing a wave and a half. This arrow points at a box labeled modulator. To the right of this is an arrow labeled passband message. This arrow points at a box labeled channel. to the right of this is an arrow labeled received passband. This points at a box labeled demodulator. To the right of the box is an arrow labeled received baseband. This points at a box labeled sampler. To the right of the sampler box is an arrow labeled received sequence. This arrow points at a box labeled equalizer. To the right of this box is an arrow labeled equalized sequence, with a numbered sequence below, ... 3.1, -0.9, 1.1, -2.9 ... This arrow points at a box labeled de-mapper/decoder. To the right of this is a final arrow labeled recoevered message ... 010110 ...">
+            <image mime-type="image/png" src="../../media/fig2.png" id="uid5_onlineimage" width="500"><!-- NOTE: attribute width changes image size online (pixels). original width is 1038. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig2.eps" id="uid5_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <list id="id121518" display="block" list-type="bulleted">
+          <item id="uid6">A digital message is converted to an analog message
+coding and pulse-shaping, and then transmitted using
+analog modulation. To recover the message, the received signal
+is demodulated, sampled, and digitally processed.
+</item>
+          <item id="uid7">Perfect recovery is possible even in the presence of noise!
+</item>
+        </list>
+      </section>
+  </content>
+</document>

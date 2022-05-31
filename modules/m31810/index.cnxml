@@ -1,0 +1,2917 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Analog Communication</title>
+  <metadata>
+  <md:content-id>m31810</md:content-id><md:title>Analog Communication</md:title>
+  <md:abstract>This module describes basic analog modulation techniques, including amplitude modulation (AM) with suppressed carrier, AM with a pilot tone or carrier tone, quadrature AM (QAM), vestigial sideband modulation (VSB), and frequency modulation (FM).  Various demodulation techniques are also discussed, including envelope detection and the discriminator.  Application examples include NTSC television and FM radio (both mono and stereo).</md:abstract>
+  <md:uuid>dee6d7f4-c2a7-440b-aa3f-f7d90e87f0c1</md:uuid>
+</metadata>
+<featured-links>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit below.
+       Changes to the links section in the source will not be saved. -->
+    <link-group type="supplemental">
+      <link url="related matlab files.zip" strength="3">Related M-Files</link>
+    </link-group>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit above.
+       Changes to the links section in the source will not be saved. -->
+</featured-links>
+<content>
+      <list id="id290763" display="block" list-type="enumerated">
+        <item id="uid1">Amplitude modulation (AM)
+</item>
+        <item id="uid2">Quadrature amplitude modulation (QAM)
+</item>
+        <item id="uid3">Vestigial sideband modulation (VSB)
+</item>
+        <item id="uid4">Frequency modulation (FM)
+</item>
+      </list>
+      <section id="uid5">
+        <title>AM with “suppressed carrier”</title>
+        <para id="id290820">AM of real-valued message <m:math overflow="scroll"><m:mrow><m:mi>m</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> (e.g., music) is</para>
+        <figure id="uid6"><media id="uid6_media" alt="This figure contains one flowchart and two expressions. The flowchart begins with the variable m(t) with an arrow pointing to the right at a circle labeled x. Below the circle is a circle containing a tilde, labeled cos(2πf_ct). An arrow from the tilde circle points up at the x circle. To the right of the x circle is an arrow pointing to the right at the variable s(t). To the right of this flowchart are two expressions. The first reads s(t) = m(t)cost(2πf_ct). The second reads f_c = carrier freq.">
+            <image mime-type="image/png" src="../../media/fig23.png" id="uid6_onlineimage" width="610"><!-- NOTE: attribute width changes image size online (pixels). original width is 610. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig23.eps" id="uid6_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id290849">Euler's
+<m:math overflow="scroll"><m:mrow><m:mo form="prefix">cos</m:mo><m:mrow><m:mo>(</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mfenced separators="" open="[" close="]"><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mi>t</m:mi></m:mrow></m:msup><m:mo>+</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mi>t</m:mi></m:mrow></m:msup></m:mfenced></m:mrow></m:math>
+then implies
+</para>
+        <equation id="id291140"><m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                    <m:mi>S</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>f</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+</m:mtd>                
+<m:mtd>
+    <m:mo>=</m:mo>
+       </m:mtd>
+<m:mtd columnalign="left"> 
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:mi>m</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:mi>f</m:mi>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>t</m:mi>
+                  </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:mfrac>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:mi>m</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>t</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:mfrac>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:mi>m</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>+</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>t</m:mi>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:mfrac>
+                    <m:mi>M</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>f</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:mfrac>
+                    <m:mi>M</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>f</m:mi>
+                      <m:mo>+</m:mo>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>.</m:mo>
+</m:mrow>        
+        </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <figure id="uid7"><media id="uid7_media" alt="This figure contains two graphs. The first plots f on the horizontal axis, and |M(f)| on the vertical axis. There is a box of height 1 and width 2W on this graph. The base of the box sits on the horizontal axis, with the left side at value -W and the right side at W. To the right of this graph is an arrow pointing to the right at the second graph, which plots horizontal axis f against vertical axis |S(f)|. In the graph, there are two boxes, one centered on the horizontal axis at -f_c and the other centered at f_c. The width of these is measured as 2B. The height is measured as 1/2.">
+            <image mime-type="image/png" src="../../media/fig24.png" id="uid7_onlineimage" width="604"><!-- NOTE: attribute width changes image size online (pixels). original width is 604. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig24.eps" id="uid7_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id291465">Because <m:math overflow="scroll"><m:mrow><m:mi>m</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>∈</m:mo><m:mi mathvariant="double-struck">R</m:mi></m:mrow></m:math>, know <m:math overflow="scroll"><m:mrow><m:mo>|</m:mo><m:mi>M</m:mi><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math> symmetric around <m:math overflow="scroll"><m:mrow><m:mi>f</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>, implying the
+AM transmitted spectrum below <emphasis effect="italics">f<sub>c</sub></emphasis> is redundant!
+This motivates the QAM and VSB modulation schemes...</para>
+        <para id="id291536">With <emphasis effect="italics">f<sub>c</sub></emphasis> known, AM demodulation can be accomplished by:</para>
+        <figure id="uid8"><media id="uid8_media" alt="This figure contains one flowchart and two expressions. The flowchart begins with the variable r(t) with an arrow pointing to the right at a circle labeled x. Below the circle is a circle containing a tilde, labeled cos(2πf_ct). An arrow from the tilde circle points up at the x circle. To the right of the x circle is an arrow pointing to the right at a box labeled LPF. To the right is an arrow pointing to the right at the expression v(t). To the right of this flowchart is the expression v(t) = LPF{r(t)*2cos(2πf_ct)}">
+            <image mime-type="image/png" src="../../media/fig25.png" id="uid8_onlineimage" width="768"><!-- NOTE: attribute width changes image size online (pixels). original width is 768. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig25.eps" id="uid8_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id291563">For a trivial noiseless channel, we have <m:math overflow="scroll"><m:mrow><m:mi>r</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>s</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>, so that</para>
+        <equation id="id291592">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>v</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:mi>s</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>·</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:mi>m</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>·</m:mo>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:msup>
+                            <m:mo form="prefix">cos</m:mo>
+                            <m:mn>2</m:mn>
+                          </m:msup>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:msub>
+                              <m:mi>f</m:mi>
+                              <m:mi>c</m:mi>
+                            </m:msub>
+                            <m:mi>t</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mrow>
+                        <m:mn>1</m:mn>
+                        <m:mo>+</m:mo>
+                        <m:mo form="prefix">cos</m:mo>
+                        <m:mo>(</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:mo>·</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:munder>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:mi>m</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:mi>m</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:mo>·</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>m</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id291854">assuming a LPF with passband cutoff <m:math overflow="scroll"><m:mrow><m:msub><m:mi>B</m:mi><m:mi>p</m:mi></m:msub><m:mo>≥</m:mo><m:mi>W</m:mi></m:mrow></m:math> Hz
+and stopband cutoff <m:math overflow="scroll"><m:mrow><m:msub><m:mi>B</m:mi><m:mi>s</m:mi></m:msub><m:mo>≤</m:mo><m:mn>2</m:mn><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mo>-</m:mo><m:mi>W</m:mi></m:mrow></m:math> Hz:</para>
+        <figure id="uid9"><media id="uid9_media" alt="This figure is a wide graph with horizontal axis f of three shapes and two dashed lines. In the middle of the graph, centered at the vertical axis and the origin, is a box  stretching from horizontal value -W to W. From the top of this box are two dashed lines that first start out horizontally and then decrease diagonally to the horizontal axis. The diagonal dashed lines land on horizontal values -B_s and B_s. Further outside are hash marks on either side of the dashed line, labeled -f_c and f_c. Beyond these are two more boxes, with bases on the horizontal axis. The inside corner of the boxes are labeled -2f_c + W and 2f_c - W, and the midpoints of the boxes are labeled -2f_c and 2f_c. Their height is not labeled but is approximately one-half the height of the box in the middle.">
+            <image mime-type="image/png" src="../../media/fig26.png" id="uid9_onlineimage" width="706"><!-- NOTE: attribute width changes image size online (pixels). original width is 706. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig26.eps" id="uid9_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id291918">Note that we've assumed perfectly synchronized oscillators!</para>
+        <para id="id291922">When the receiver oscillator has {freq,phase} offset <m:math overflow="scroll"><m:mrow><m:mo>{</m:mo><m:mi>γ</m:mi><m:mo>,</m:mo><m:mi>φ</m:mi><m:mo>}</m:mo></m:mrow></m:math>:</para>
+        <equation id="id291943">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>v</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mfenced separators="" open="{" close="}">
+                      <m:mi>m</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:munder>
+                        <m:munder accentunder="true">
+                          <m:mrow>
+                            <m:mo form="prefix">cos</m:mo>
+                            <m:mrow>
+                              <m:mo>(</m:mo>
+                              <m:mn>2</m:mn>
+                              <m:mi>π</m:mi>
+                              <m:msub>
+                                <m:mi>f</m:mi>
+                                <m:mi>c</m:mi>
+                              </m:msub>
+                              <m:mi>t</m:mi>
+                              <m:mo>)</m:mo>
+                            </m:mrow>
+                            <m:mo>·</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:mo form="prefix">cos</m:mo>
+                            <m:mrow>
+                              <m:mo>(</m:mo>
+                              <m:mn>2</m:mn>
+                              <m:mi>π</m:mi>
+                              <m:mrow>
+                                <m:mo>(</m:mo>
+                                <m:msub>
+                                  <m:mi>f</m:mi>
+                                  <m:mi>c</m:mi>
+                                </m:msub>
+                                <m:mo>+</m:mo>
+                                <m:mi>γ</m:mi>
+                                <m:mo>)</m:mo>
+                              </m:mrow>
+                              <m:mi>t</m:mi>
+                              <m:mo>+</m:mo>
+                              <m:mi>φ</m:mi>
+                              <m:mo>)</m:mo>
+                            </m:mrow>
+                          </m:mrow>
+                          <m:mo>︸</m:mo>
+                        </m:munder>
+                        <m:mrow>
+                          <m:mo form="prefix">cos</m:mo>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:mi>γ</m:mi>
+                            <m:mi>t</m:mi>
+                            <m:mo>+</m:mo>
+                            <m:mi>φ</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mspace width="3.33333pt"/>
+                          <m:mo>+</m:mo>
+                          <m:mspace width="3.33333pt"/>
+                          <m:mo form="prefix">cos</m:mo>
+                          <m:mo>(</m:mo>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:msub>
+                              <m:mi>f</m:mi>
+                              <m:mi>c</m:mi>
+                            </m:msub>
+                            <m:mo>+</m:mo>
+                            <m:mi>γ</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mi>t</m:mi>
+                          <m:mo>+</m:mo>
+                          <m:mi>φ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                      </m:munder>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>m</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mspace width="-8.53581pt"/>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mo form="prefix">cos</m:mo>
+                          <m:mo>(</m:mo>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:mi>γ</m:mi>
+                          <m:mi>t</m:mi>
+                          <m:mo>+</m:mo>
+                          <m:mi>φ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mrow>
+                        <m:mtext>time-varying</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>attenuation!</m:mtext>
+                      </m:mrow>
+                    </m:munder>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation><note id="eip-785">a freq offset of <m:math overflow="scroll"><m:mrow><m:mi>λ</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mi>ν</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub></m:mrow><m:mi>c</m:mi></m:mfrac></m:mrow></m:math> Hz can occur when there is
+relative velocity of <emphasis effect="italics">ν</emphasis> m/s between transmitter and receiver.</note>
+        
+      </section>
+      <section id="uid10">
+        <title>AM with “pilot tone” or “carrier tone”</title>
+        <para id="id292255">It's common to include a pilot/carrier tone with frequency| <emphasis effect="italics">f<sub>c</sub></emphasis>:</para>
+        
+        <equation id="id292274">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>s</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>m</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mi>A</m:mi>
+                          <m:mo form="prefix">cos</m:mo>
+                          <m:mo>(</m:mo>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mrow>
+                        <m:mtext>pilot/carrier</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>tone</m:mtext>
+                      </m:mrow>
+                    </m:munder>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>+</m:mo>
+                      <m:mi>A</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>S</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>f</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:mfrac>
+                        <m:mn>1</m:mn>
+                        <m:mn>2</m:mn>
+                      </m:mfrac>
+                      <m:mfenced separators="" open="[" close="]">
+                        <m:mi>M</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>f</m:mi>
+                          <m:mspace width="-0.166667em"/>
+                          <m:mo>-</m:mo>
+                          <m:mspace width="-0.166667em"/>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mspace width="-0.166667em"/>
+                        <m:mo>+</m:mo>
+                        <m:mspace width="-0.166667em"/>
+                        <m:mi>M</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>f</m:mi>
+                          <m:mspace width="-0.166667em"/>
+                          <m:mo>+</m:mo>
+                          <m:mspace width="-0.166667em"/>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mspace width="-0.166667em"/>
+                        <m:mo>+</m:mo>
+                        <m:mspace width="-0.166667em"/>
+                        <m:mi>A</m:mi>
+                        <m:mi>δ</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>f</m:mi>
+                          <m:mspace width="-0.166667em"/>
+                          <m:mo>-</m:mo>
+                          <m:mspace width="-0.166667em"/>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mspace width="-0.166667em"/>
+                        <m:mo>+</m:mo>
+                        <m:mspace width="-0.166667em"/>
+                        <m:mi>A</m:mi>
+                        <m:mi>δ</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>f</m:mi>
+                          <m:mspace width="-0.166667em"/>
+                          <m:mo>+</m:mo>
+                          <m:mspace width="-0.166667em"/>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                      </m:mfenced>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <figure id="uid11"><media id="uid11_media" alt="This figure is comprised of two cartesian graphs. The graph on the left is rather small, plotting f on the horizontal axis and |M(f)| on the vertical axis. The graph contains one large rectangle, with base sitting on the horizontal axis, and with measured to be from -W to W. To the right of this graph is an arrow pointing to the right at a larger graph, also plotting f on the horizontal axis, but this time with a vertical axis |S(f)|. In this graph there are two rectangles, each approximately one-half the height of the rectangle in the first graph, but with a similar width. The bases are both on the horizontal axis, and the centers of the bases are labeled -f_c and f_c. The width of each of these is measured with an arrow above, labeled 2W. In the center of the bases of these rectangles are vertical arrows that begin below the horizontal axis and point directly up.">
+            <image mime-type="image/png" src="../../media/fig27.png" id="uid11_onlineimage" width="656"><!-- NOTE: attribute width changes image size online (pixels). original width is 656. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig27.eps" id="uid11_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id292636">Advantage: aids receiver with carrier synchronization.</para>
+        <para id="id292640">Disadvantage: consumes transmission power.
+</para>
+        <para id="eip-166">While modern systems choose <m:math overflow="scroll"><m:mrow><m:mi>A</m:mi><m:mo>≪</m:mo><m:mo movablelimits="true" form="prefix">max</m:mo><m:mo>|</m:mo><m:mi>m</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math>, many older systems use
+<m:math overflow="scroll"><m:mrow><m:mi>A</m:mi><m:mo>&gt;</m:mo><m:mo movablelimits="true" form="prefix">max</m:mo><m:mo>|</m:mo><m:mi>m</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math>,
+known as “large carrier AM,” allowing reception based on
+<emphasis effect="italics">envelope detection</emphasis>:</para><equation id="id292712">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>v</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mi>π</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:mfrac>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mrow>
+                      <m:mo>{</m:mo>
+                      <m:mspace width="0.166667em"/>
+                      <m:mo>|</m:mo>
+                      <m:mi>r</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>|</m:mo>
+                      <m:mspace width="0.166667em"/>
+                      <m:mo>}</m:mo>
+                    </m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mi>A</m:mi>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>≈</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>m</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mspace width="1.em"/>
+                    <m:mtext>(with</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>a</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>trivial</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>channel)</m:mtext>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id292821">where <m:math overflow="scroll"><m:mrow><m:mo>|</m:mo><m:mo>·</m:mo><m:mo>|</m:mo></m:mrow></m:math> can be easily implemented using a diode.</para>
+        <para id="id292840">The gain <m:math overflow="scroll"><m:mfrac><m:mi>π</m:mi><m:mn>2</m:mn></m:mfrac></m:math> above makes up for the loss incurred when
+LPFing the rectified signal:</para>
+        <figure id="uid12"><media id="uid12_media" alt="This figure is comprised of three graphs, one equation, and one statement. Beginning in the top-left is a graph plotting t on the horizontal axis. There are a series of peaks in the first quadrant of the graph, with a peak beginning on the vertical axis and continuing downward. The first peak is shaded tea. The point where the first peak reaches the horizontal axis is measured at a horizontal value 1/4f_c. Midway up the vertical axis is a horizontal dashed line labeled LPF output level. Along the peaks is another dashed horizontal line labeled desired output level. There are three complete peaks, one half-peak at the beginning, and one half-peak at the end. To the right of the graph is an equation. The equation begins with a large fraction on the top, the numerator being the integral of lower bound 0 and upper bound 1/4f_c of cosine (2 pi f_c t) dt, and the denominator 1/4f_c. This is equal to 2 / pi. Below this equation on the right side are two graphs, the first plotting time against amplitude and showing closely packed waves moving together with increasing, then decreasing, then increasing amplitudes. The graph is titled large-carrier AM. The second plots time against amplitude and contains two graphs that closely follow one another with a simple wave and is titled envelope-detected signal (and original message). To the left of these graphs is the statement MATLAB code here.">
+            <image mime-type="image/png" src="../../media/fig28.png" id="uid12_onlineimage" width="792"><!-- NOTE: attribute width changes image size online (pixels). original width is 792. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig28.eps" id="uid12_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+      </section>
+      <section id="uid13">
+        <title>Quadrature Amplitude Modulation (QAM)</title>
+        <para id="id292880">QAM is motivated by unwanted redundancy in the AM spectrum, which
+was symmetric around <emphasis effect="italics">f<sub>c</sub></emphasis>.</para>
+        <para id="id292899">QAM sends two real-valued signals <m:math overflow="scroll"><m:mrow><m:mo>{</m:mo><m:msub><m:mi>m</m:mi><m:mi>I</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>,</m:mo><m:msub><m:mi>m</m:mi><m:mtext>Q</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow></m:math> simultaneously,
+resulting in a non-symmetric spectrum.</para>
+        <figure id="uid14"><media id="uid14_media" alt="This figure is a flowchart, beginning with an expression m_I(t), with an arrow pointing to the right at a circle containing an x. Below this is the expression m_Q(t), with an arrow pointing to the right at another circle containing an x. In between these two circles is a circle containing a tilde, with an arrow pointing up and another arrow pointing down at the two x-circles. These two arrows are labeled cos(2 pi f_c t) for the one pointing up, and sin (2 pi f_c t) for the one pointing down. To the right of both of the x-circles are arrows pointing at a single circle containing a plus sign, with the lower arrow labeled with a minus sign. The lower arrow is labeled quadrature, and the upper is labeled in phase. To the right of this plus-circle is an arrow pointing to the right at a large equation that reads s(t) = m_I(t)cos( 2 pi f_c t) - m_Q(t)sin (2 pi f_c t).">
+            <image mime-type="image/png" src="../../media/fig29.png" id="uid14_onlineimage" width="784"><!-- NOTE: attribute width changes image size online (pixels). original width is 784. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig29.eps" id="uid14_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id292955">QAM demodulation is accomplished by:</para>
+        <figure id="uid15"><media id="uid15_media" alt="This is a flowchart that starts with the expression r(t). From r(t) there are two arrows pointing at two separate circles containing an x, above and below one another. The arrow that points to the lower circle is labeled with a minus sign. In between the two circles is another circle with a tilde. Above and below this circle are arrows pointing up and down at the x-circles, and the arrows are labeled 2 cosine (2 pi f_c t) above  and 2 sine (2 pi f_c t) below. To the right of the x-circles are two boxes labeled LPF. To the right of these boxes are two arrows pointing to the right at two final expressions, v_I(t) above and v_Q(t) below.">
+            <image mime-type="image/png" src="../../media/fig30.png" id="uid15_onlineimage" width="454"><!-- NOTE: attribute width changes image size online (pixels). original width is 454. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig30.eps" id="uid15_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id292970">where the LPF specs are the same as in AM, i.e., passband edge
+<m:math overflow="scroll"><m:mrow><m:msub><m:mi>B</m:mi><m:mi>p</m:mi></m:msub><m:mo>≥</m:mo><m:mi>W</m:mi></m:mrow></m:math> Hz and stopband edge <m:math overflow="scroll"><m:mrow><m:msub><m:mi>B</m:mi><m:mi>s</m:mi></m:msub><m:mo>≤</m:mo><m:mn>2</m:mn><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mo>-</m:mo><m:mi>W</m:mi></m:mrow></m:math> Hz.</para>
+        <para id="id293025">For a trivial channel, we have <m:math overflow="scroll"><m:mrow><m:mi>r</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>s</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>, so that</para>
+        <equation id="id293056"><m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:msub><m:mi>v</m:mi>
+                    <m:mi>I</m:mi></m:msub>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:mi>r</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>·</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:msub><m:mi>m</m:mi>
+                    <m:mi>I</m:mi></m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:msup>
+                            <m:mo form="prefix">cos</m:mo>
+                            <m:mn>2</m:mn>
+                          </m:msup>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:msub>
+                              <m:mi>f</m:mi>
+                              <m:mi>c</m:mi>
+                            </m:msub>
+                            <m:mi>t</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mrow>
+                        <m:mn>1</m:mn>
+                        <m:mo>+</m:mo>
+                        <m:mo form="prefix">cos</m:mo>
+                        <m:mo>(</m:mo>
+                        <m:mn>4</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:munder>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd/>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:msub>
+                      <m:mi>m</m:mi>
+                      <m:mtext>Q</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:mo form="prefix">sin</m:mo>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:msub>
+                              <m:mi>f</m:mi>
+                              <m:mi>c</m:mi>
+                            </m:msub>
+                            <m:mi>t</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mo form="prefix">cos</m:mo>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:msub>
+                              <m:mi>f</m:mi>
+                              <m:mi>c</m:mi>
+                            </m:msub>
+                            <m:mi>t</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mrow>
+                        <m:mo form="prefix">sin</m:mo>
+                        <m:mo>(</m:mo>
+                        <m:mn>4</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:munder>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>m</m:mi>
+                      <m:mi>I</m:mi>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>v</m:mi>
+                      <m:mtext>Q</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:mi>r</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>·</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo form="prefix">sin</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:msub><m:mi>m</m:mi>
+                    <m:mi>I</m:mi></m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:mo form="prefix">cos</m:mo>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:msub>
+                              <m:mi>f</m:mi>
+                              <m:mi>c</m:mi>
+                            </m:msub>
+                            <m:mi>t</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mo form="prefix">sin</m:mo>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:msub>
+                              <m:mi>f</m:mi>
+                              <m:mi>c</m:mi>
+                            </m:msub>
+                            <m:mi>t</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mrow>
+                        <m:mo form="prefix">sin</m:mo>
+                        <m:mo>(</m:mo>
+                        <m:mn>4</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:munder>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd/>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:msub>
+                      <m:mi>m</m:mi>
+                      <m:mtext>Q</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:msup>
+                            <m:mo form="prefix">sin</m:mo>
+                            <m:mn>2</m:mn>
+                          </m:msup>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:msub>
+                              <m:mi>f</m:mi>
+                              <m:mi>c</m:mi>
+                            </m:msub>
+                            <m:mi>t</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mrow>
+                        <m:mn>1</m:mn>
+                        <m:mo>-</m:mo>
+                        <m:mo form="prefix">cos</m:mo>
+                        <m:mo>(</m:mo>
+                        <m:mn>4</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:munder>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>m</m:mi>
+                      <m:mi>Q</m:mi>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id293681">assuming synchronized oscillators.</para>
+        <para id="id293687">When the oscillators are not synchronized, one gets coupling between
+the I&amp;Q components as well as attenuation of each.
+Writing the I&amp;Q signals in the “complex-baseband” form</para>
+        <equation id="id293694"><m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mover accent="true">
+                      <m:mi>m</m:mi>
+                      <m:mo>˜</m:mo>
+                    </m:mover>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msub><m:mi>m</m:mi>
+                    <m:mi>I</m:mi></m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:mi>j</m:mi>
+                    <m:msub>
+                      <m:mi>m</m:mi>
+                      <m:mtext>Q</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mover accent="true">
+                      <m:mi>v</m:mi>
+                      <m:mo>˜</m:mo>
+                    </m:mover>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msub><m:mi>v</m:mi>
+                    <m:mi>I</m:mi></m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:mi>j</m:mi>
+                    <m:msub>
+                      <m:mi>v</m:mi>
+                      <m:mtext>Q</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id293826">yields a much simpler description of QAM:</para>
+        <figure id="uid16"><media id="uid16_media" alt="This is a complex figure comprised of two flowcharts with various graphs below in a column format. The first column is labeled QAM modulation. The flowchart below starts with m-tilde(t), with an arrow to the right, pointing to the right at an x-circle, with an arrow to the right, pointing to the right at a box labeled Re, with an arrow to the right pointing to the right at s(t). Below the x-circle is a circle with a tilde, labeled e ^ (j 2 pi f_c t), with an arrow pointing up at the x-circle. Below this are three graphs, each with the same shape in different positions. The shape is a quadrilateral with base on the horizontal axis, two vertical sides of different length, with the right side longer than the left, and the top line segment connecting the two vertical side with a positive slope. The first graph is labeled absolute value M-tilde (f), and the shape is centered at the origin. The second is labeled absolute value m-tilde (f - f_c), and the shape is in the first quadrant only. The third is labeled absolute value S (f) and there is one shape in the first quadrant and one shape, flipped horizontally in the second quadrant. The second column is labeled QAM demodulation. The flowchart begins with r(t) with an arrow pointing to the right at an x-circle, with an arrow pointing to the right of it at a box labeled LPF, with an arrow pointing to the right at the expression v-tilde (t). Below the x-circle is a circle with a tilde, and the expression 2e ^ -(j 2 pi f_c t). Below the flowchart are three graphs with the same shapes as in the graphs in the first column. The first looks identical in shape to the third graph in the first column, except that it is labeled absolute value R(f). The second has one shape far outside in the second quadrant, one shape flipped horizontally and centered at the origin. and one large dashed trapezoid centered at the origin. It is titled absolute value R (f + f_c). The third graph has one shape centered at the origin, and is titled absolute value v-tilde(f).">
+            <image mime-type="image/png" src="../../media/fig31.png" id="uid16_onlineimage" width="710"><!-- NOTE: attribute width changes image size online (pixels). original width is 710. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig31.eps" id="uid16_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        
+        <note id="eip-53"><m:math overflow="scroll"><m:mrow><m:mo form="prefix">Re</m:mo><m:mrow><m:mo>{</m:mo><m:mi>u</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mfenced separators="" open="[" close="]"><m:mi>u</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:msup><m:mi>u</m:mi><m:mo>*</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mfenced><m:mover><m:mo>↔ </m:mo><m:mi mathvariant="script">F</m:mi></m:mover><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mfenced separators="" open="[" close="]"><m:mi>U</m:mi><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:msup><m:mi>U</m:mi><m:mo>*</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:mfenced></m:mrow></m:math>.</note><para id="id293977">We now verify the complex-baseband model for modulation:
+</para>
+        <equation id="id293989"><m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mo form="prefix">Re</m:mo>
+                    <m:mo>{</m:mo>
+                    <m:mover accent="true">
+                      <m:mi>m</m:mi>
+                      <m:mo>˜</m:mo>
+                    </m:mover>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mo form="prefix">Re</m:mo>
+                    <m:mfenced separators="" open="{" close="}">
+                      <m:mfenced separators="" open="(" close=")">
+                        <m:msub><m:mi>m</m:mi>
+                        <m:mi>I</m:mi></m:msub>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>t</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mo>+</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:msub>
+                          <m:mi>m</m:mi>
+                          <m:mtext>Q</m:mtext>
+                        </m:msub>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>t</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                      </m:mfenced>
+                      <m:mfenced separators="" open="(" close=")">
+                        <m:mo form="prefix">cos</m:mo>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mo>+</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mo form="prefix">sin</m:mo>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                      </m:mfenced>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msub><m:mi>m</m:mi>
+                    <m:mi>I</m:mi></m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:msub>
+                      <m:mi>m</m:mi>
+                      <m:mtext>Q</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo form="prefix">sin</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mo>=</m:mo>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mi>s</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id294293">as well as for demodulation (assuming <m:math overflow="scroll"><m:mrow><m:mi>r</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>s</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>):</para>
+        <equation id="id294327"><m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mover accent="true">
+                      <m:mi>v</m:mi>
+                      <m:mo>˜</m:mo>
+                    </m:mover>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:mi>s</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>·</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:msub><m:mi>m</m:mi>
+                      <m:mi>I</m:mi></m:msub>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo form="prefix">cos</m:mo>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:msub>
+                        <m:mi>m</m:mi>
+                        <m:mtext>Q</m:mtext>
+                      </m:msub>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo form="prefix">sin</m:mo>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfenced>
+                    <m:mo>·</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:msub><m:mi>m</m:mi>
+                    <m:mi>I</m:mi></m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:msup>
+                        <m:mi>e</m:mi>
+                        <m:mrow>
+                          <m:mi>j</m:mi>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                        </m:mrow>
+                      </m:msup>
+                      <m:mo>+</m:mo>
+                      <m:msup>
+                        <m:mi>e</m:mi>
+                        <m:mrow>
+                          <m:mo>-</m:mo>
+                          <m:mi>j</m:mi>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                        </m:mrow>
+                      </m:msup>
+                    </m:mfenced>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd/>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:msub>
+                      <m:mi>m</m:mi>
+                      <m:mtext>Q</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mi>j</m:mi>
+                      <m:msup>
+                        <m:mi>e</m:mi>
+                        <m:mrow>
+                          <m:mo>-</m:mo>
+                          <m:mi>j</m:mi>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                        </m:mrow>
+                      </m:msup>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:msup>
+                        <m:mi>e</m:mi>
+                        <m:mrow>
+                          <m:mi>j</m:mi>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>c</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                        </m:mrow>
+                      </m:msup>
+                    </m:mfenced>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mfenced separators="" open="{" close="}">
+                      <m:msub><m:mi>m</m:mi>
+                      <m:mi>I</m:mi></m:msub>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mfenced separators="" open="(" close=")">
+                        <m:mn>1</m:mn>
+                        <m:mo>+</m:mo>
+                        <m:msup>
+                          <m:mi>e</m:mi>
+                          <m:mrow>
+                            <m:mo>-</m:mo>
+                            <m:mi>j</m:mi>
+                            <m:mn>4</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:msub>
+                              <m:mi>f</m:mi>
+                              <m:mi>c</m:mi>
+                            </m:msub>
+                            <m:mi>t</m:mi>
+                          </m:mrow>
+                        </m:msup>
+                      </m:mfenced>
+                      <m:mo>-</m:mo>
+                      <m:msub>
+                        <m:mi>m</m:mi>
+                        <m:mtext>Q</m:mtext>
+                      </m:msub>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mfenced separators="" open="(" close=")">
+                        <m:mi>j</m:mi>
+                        <m:msup>
+                          <m:mi>e</m:mi>
+                          <m:mrow>
+                            <m:mo>-</m:mo>
+                            <m:mi>j</m:mi>
+                            <m:mn>4</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:msub>
+                              <m:mi>f</m:mi>
+                              <m:mi>c</m:mi>
+                            </m:msub>
+                            <m:mi>t</m:mi>
+                          </m:mrow>
+                        </m:msup>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                      </m:mfenced>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msub><m:mi>m</m:mi>
+                    <m:mi>I</m:mi></m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:mi>j</m:mi>
+                    <m:msub>
+                      <m:mi>m</m:mi>
+                      <m:mtext>Q</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id294957">The convenience of complex-baseband results in widespread use of
+complex-valued signals for comm systems!</para><note id="eip-891">To get the complex baseband formulation for AM, we simply set
+<m:math overflow="scroll"><m:mrow><m:msub><m:mi>m</m:mi><m:mtext>Q</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> and <m:math overflow="scroll"><m:mrow><m:msub><m:mi>m</m:mi><m:mi>I</m:mi></m:msub><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>m</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</note>
+        
+      </section>
+      <section id="uid17">
+        <title>Vestigial Sideband Modulation (VSB)</title>
+        <para id="id295034">VSB is another way to restore regain the spectral efficiency lost in AM.
+It's used to transmit North American terrestrial TV, both analog (NTSC)
+and digital (ATSC) formats.</para>
+        <para id="id295039">Like AM, it can operate with or without a carrier tone.</para>
+        <para id="id295042">Basically, VSB suppresses most of the redundant AM spectrum by filtering it:</para>
+        <figure id="uid18"><media id="uid18_media" alt="This is a two-part figure, each part containing one graph and one flowchart. The first part, on the left, is titled AM, and begins with a graph plotting f against the absolute value of S(f). There are two rectangles with vertical dashed lines in the middle, located at -f_c and f_c on the horizontal axis. Below this is a flowchart, beginning with m(t), then with an arrow pointing to the right at an x-circle, then another arrow pointing to the right at s(t). Below the x-circle is a circle with a tilde, labeled cosine (2 pi f_c t). The second part is labeled VSB. The graph plots f against the absolute value of S(f). There are two trapezoids with one vertical side and the wider base on the horizontal axis. They are also located at -f_c and f_c, and contain the vertical dashed lines in the same position as the graph in AM. Below this is a flowchart, beginning with m(t), then an arrow pointing to the right at an x-circle, then an arrow pointing to the right at a box labeled passband VSB filter, then an arrow pointing to the right at s(t). Below the x-circle is a circle with a tilde, labeled cosine (2 pi f_c t).">
+            <image mime-type="image/png" src="../../media/fig32.png" id="uid18_onlineimage" width="658"><!-- NOTE: attribute width changes image size online (pixels). original width is 658. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig32.eps" id="uid18_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id295057">The passband VSB filter is a BPF <m:math overflow="scroll"><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:math> where</para>
+        <equation id="id295077">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:mi>C</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>f</m:mi>
+                <m:mo>-</m:mo>
+                <m:msub>
+                  <m:mi>f</m:mi>
+                  <m:mi>c</m:mi>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>C</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>f</m:mi>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>f</m:mi>
+                  <m:mi>c</m:mi>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mn>2</m:mn>
+              <m:mspace width="1.em"/>
+              <m:mtext>for</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mrow>
+                <m:mo>|</m:mo>
+                <m:mi>f</m:mi>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:mo>≤</m:mo>
+              <m:mi>W</m:mi>
+              <m:mo>,</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id295154">which implies its inside rolloff is symmetric around <m:math overflow="scroll"><m:mrow><m:mi>f</m:mi><m:mo>=</m:mo><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub></m:mrow></m:math>:</para>
+        <figure id="uid19"><media id="uid19_media" alt="This figure contains four graphs, each with vertical dashed lines at designated points and trapezoids of roughly similar shape. The first plots f against the absolute value of C(f). There are trapezoids and dashed vertical lines at -f_c and f_c. The second graph plots f against the absolute value of C(f + f_c). There are vertical dashed lines at -2f_c, -f_c, f_c, and 2f_c. There are trapezoids to the left of -2f_c and in the middle near the origin. the third graphs plots f against the absolute value of C(f - f_c), with dashed lines in the same place as in the second graph, and one trapezoid near the origin, one trapezoid near 2f_c. The fourth graph plots f against absolute value of C(f + f_c) + C(f - f_c). The vertical lines are again in the same place. There is a trapezoid at -2f_c, one at 2f_c and one larger, wider trapezoid at the origin, labeled below to be wider than 2W.">
+            <image mime-type="image/png" src="../../media/fig33.png" id="uid19_onlineimage" width="552"><!-- NOTE: attribute width changes image size online (pixels). original width is 552. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig33.eps" id="uid19_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id295191">For VSB modulation, we have</para>
+        <equation id="id295194">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>s</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>m</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>*</m:mo>
+                    <m:mi>c</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>S</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>f</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:mfrac>
+                    <m:mfenced separators="" open="[" close="]">
+                      <m:mi>M</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>+</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>+</m:mo>
+                      <m:mi>M</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfenced>
+                    <m:mi>C</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>f</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id295365">It turns out that VSB demod is <emphasis effect="italics">identical</emphasis> to AM demod:</para>
+        <equation id="id295376">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>v</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mfenced separators="" open="{" close="}">
+                      <m:mi>r</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>·</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mo form="prefix">cos</m:mo>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mfenced separators="" open="{" close="}">
+                      <m:mi>s</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>·</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mo form="prefix">cos</m:mo>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfenced>
+                    <m:mspace width="4.pt"/>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>(trivial</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>channel)</m:mtext>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>V</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>f</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mfenced separators="" open="{" close="}">
+                      <m:mi>S</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>+</m:mo>
+                      <m:mi>S</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>+</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:mfrac>
+                    <m:mtext>LPF</m:mtext>
+                    <m:mo>{</m:mo>
+                    <m:mfenced separators="" open="[" close="]">
+                      <m:mi>M</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>+</m:mo>
+                      <m:mi>M</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfenced>
+                    <m:mi>C</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>f</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd/>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:mfenced separators="" open="[" close="]">
+                      <m:mi>M</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>+</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>+</m:mo>
+                      <m:mi>M</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfenced>
+                    <m:mi>C</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>f</m:mi>
+                      <m:mo>+</m:mo>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>M</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>f</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mfrac>
+                            <m:mn>1</m:mn>
+                            <m:mn>2</m:mn>
+                          </m:mfrac>
+                          <m:mfenced separators="" open="[" close="]">
+                            <m:mi>C</m:mi>
+                            <m:mrow>
+                              <m:mo>(</m:mo>
+                              <m:mi>f</m:mi>
+                              <m:mo>-</m:mo>
+                              <m:msub>
+                                <m:mi>f</m:mi>
+                                <m:mi>c</m:mi>
+                              </m:msub>
+                              <m:mo>)</m:mo>
+                            </m:mrow>
+                            <m:mo>+</m:mo>
+                            <m:mi>C</m:mi>
+                            <m:mrow>
+                              <m:mo>(</m:mo>
+                              <m:mi>f</m:mi>
+                              <m:mo>+</m:mo>
+                              <m:msub>
+                                <m:mi>f</m:mi>
+                                <m:mi>c</m:mi>
+                              </m:msub>
+                              <m:mo>)</m:mo>
+                            </m:mrow>
+                          </m:mfenced>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mrow>
+                        <m:mo>=</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>for</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mi>f</m:mi>
+                        <m:mo>∈</m:mo>
+                        <m:mo>[</m:mo>
+                        <m:mo>-</m:mo>
+                        <m:mi>W</m:mi>
+                        <m:mo>,</m:mo>
+                        <m:mi>W</m:mi>
+                        <m:mo>]</m:mo>
+                      </m:mrow>
+                    </m:munder>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>M</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>f</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id295918">We note that the property</para>
+        <equation id="id295924">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi mathvariant="script">F</m:mi>
+                    <m:mfenced separators="" open="{" close="}">
+                      <m:mo form="prefix">cos</m:mo>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mi>c</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:mfrac>
+                    <m:mfenced separators="" open="[" close="]">
+                      <m:mi>C</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>+</m:mo>
+                      <m:mi>C</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>+</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id296056">may be convenient, e.g., for testing whether a given filter <m:math overflow="scroll"><m:mrow><m:mi>c</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+satisfies the passband VSB criterion. VSB ﬁltering can also be implemented at baseband using a complex-valued ﬁlter response <m:math><m:mrow><m:mover><m:mi>c</m:mi><m:mo>~</m:mo></m:mover><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> which satisﬁes
+</para>
+        <equation id="id296103">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:mover accent="true">
+                <m:mi>C</m:mi>
+                <m:mo>˜</m:mo>
+              </m:mover>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>f</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mover accent="true">
+                  <m:mi>C</m:mi>
+                  <m:mo>˜</m:mo>
+                </m:mover>
+                <m:mo>*</m:mo>
+              </m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mo>-</m:mo>
+                <m:mi>f</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mn>2</m:mn>
+              <m:mspace width="1.em"/>
+              <m:mtext>for</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mrow>
+                <m:mo>|</m:mo>
+                <m:mi>f</m:mi>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:mo>≤</m:mo>
+              <m:mi>W</m:mi>
+              <m:mo>,</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id296182">generating the complex-baseband message signal <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>m</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>.
+The message can be recovered by simplying ignoring the imaginary part
+of the complex-baseband output <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>v</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>.</para>
+        <figure id="uid20"><media id="uid20_media" alt="This figure is comprised of two columns, both beginning with a flowchart, followed by four graphs. The first column is titled VSB modulation. The flowchart shows movement from m(t) to baseband VSB flter to an x-circle with m-tilde(t) to Re to s(t), with a tilde-circle below the x-circle pointing up, labeled e^ j2πf_ct. The first graph below plots a large rectangle and a trapezoid of smaller base but same height on the graph f against the absolute value of M(f). The second graph simply shows a trapezoid with one vertical aide and same height as the shapes in the first graph, plotted this time on f against the absolute value of M-tilde(f). The third graph shows a trapezoid of the same shape, this time further into the first quadrant than the aforementioned shapes which are centered at the origin. This graph is plotted on f against the absolute value of M-tilde (f - f_c). The final graph is two trapezoids, the one on the right being identical in size and position to the trapezoid in the third graph, and the one on the left being a reflection across the vertical axis. This graph is of f plotted against  the absolute value of S(f). The second column is titled VSB demodulation. The flowchart shows movement from r(t) to an x-circle to LPF, to Re by v-tilde(t), to v(t). Below the x-circle is a tilde-circle pointing up labeled 2 e^ -j2πf_ct. Below this flowchart are four graphs. The first plots f against the absolute value of R(f), and looks similar to the fourth graph in the first column. The second graph plots f against the absolute value of R(f + f_c), and it shows two trapezoids each with vertical sides on the outside, with one on the fart left, and one centered at the origin. There is also a dashed trapezoid centered at the origin that is much wider and is symmetrical. The third graph plots f against the absolute value of V-tilde(f), and simply plots one trapezoid near the origin with base on the horizontal axis and one horizontal side on the right. The final graph in this column plots f against the absolute value of V(f), and it contains a rectangle with base on the horizontal axis and centered at the origin.">
+            <image mime-type="image/png" src="../../media/fig34.png" id="uid20_onlineimage" width="792"><!-- NOTE: attribute width changes image size online (pixels). original width is 792. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig34.eps" id="uid20_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id296248">Motivation: filtering at baseband is usually much cheaper than
+filtering at passband.</para>
+      </section>
+      <section id="uid21">
+        <title>Frequency Modulation (FM)</title>
+        <para id="id296262">While AM modulated the carrier amplitude,
+FM modulates the carrier frequency.</para>
+        
+        <figure id="uid22"><subfigure id="eip-id1165184150210">
+<code id="eip-id1165194911426" display="block">t_max = 2.0; W = 1;        % message params
+Ts = 1/1000; t = 0:Ts:t_max;
+m = sin(2*pi*W*t);         % message signal
+fc = 20;                   % carrier freq
+D = 15;                    % FM mod index
+kf = D*W/max(abs(m));      % freq sensitivity
+s_am = m.*cos(2*pi*fc*t);
+s_fm = cos(2*pi*fc*t+2*pi*kf*cumsum(m)*Ts);
+subplot(3,1,1)
+plot(t,m);
+grid on; title('message');
+subplot(3,1,2)
+plot(t,s_am);
+grid on; title('AM');
+subplot(3,1,3)
+plot(t,s_fm);
+grid on; title('FM');
+</code>
+</subfigure>
+
+<subfigure id="eip-id1165190408173">
+<media id="uid22_media" alt="This figure contains three graphs each containing some waves. The first has two complete waves from horizontal value 0 to 2 with amplitude 1, and is titled message. The second plots a much larger number of waves, each with a wavelength of approximately 0.02. The amplitudes vary in a wave-like shape, increasing from nearly zero to 1, and back down to zero, and the cycle happens four times from 0 to 2. This graph is titled AM. The third graph is a series of waves of constant amplitude 1 but varying wavelength. The wavelength changes in a wave-like way and completes two cycles. This graph is titled FM.">
+            <image mime-type="image/png" src="../../media/fig35.png" id="uid22_onlineimage" width="370"><!-- NOTE: attribute width changes image size online (pixels). original width is 370. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig35.eps" id="uid22_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </subfigure></figure>
+        <para id="id296436">In particular, FM modulates the real-valued message <m:math overflow="scroll"><m:mrow><m:mi>m</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> via</para>
+        <equation id="id296457"><m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:mi>s</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mfenced separators="" open="(" close=")">
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:msub>
+                  <m:mi>f</m:mi>
+                  <m:mi>c</m:mi>
+                </m:msub>
+                <m:mi>t</m:mi>
+                <m:mo>+</m:mo>
+                <m:munder>
+                  <m:munder accentunder="true">
+                    <m:mstyle scriptlevel="0" displaystyle="false">
+                      <m:mrow>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>k</m:mi>
+                          <m:mtext>f</m:mtext>
+                        </m:msub>
+                        <m:msubsup>
+                          <m:mo>∫</m:mo>
+                          <m:mn>0</m:mn>
+                          <m:mi>t</m:mi>
+                        </m:msubsup>
+                        <m:mi>m</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mi>d</m:mi>
+                        <m:mi>τ</m:mi>
+                      </m:mrow>
+                    </m:mstyle>
+                    <m:mo>︸</m:mo>
+                  </m:munder>
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:mi>ϕ</m:mi>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                      <m:mtext>"instantaneous modulation phase"</m:mtext>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:munder>
+              </m:mfenced>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id296608">where <m:math overflow="scroll"><m:msub><m:mi>k</m:mi><m:mtext>f</m:mtext></m:msub></m:math> is called the “frequency-sensitivity factor.”
+Since the instantaneous modulation frequency</para>
+        <equation id="id296630">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mi>ϕ</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:mfrac>
+              <m:mo>=</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>π</m:mi>
+              <m:msub>
+                <m:mi>k</m:mi>
+                <m:mtext>f</m:mtext>
+              </m:msub>
+              <m:mspace width="3.33333pt"/>
+              <m:mi>m</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id296686">is a scaled version of the message <m:math overflow="scroll"><m:mrow><m:mi>m</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>, it is fitting to
+call this scheme “frequency modulation.”
+</para>
+        <para id="eip-721">Using the peak frequency deviation
+<m:math overflow="scroll"><m:mrow><m:msub><m:mi>Δ</m:mi><m:mtext>f</m:mtext></m:msub><m:mo>=</m:mo><m:msub><m:mi>k</m:mi><m:mtext>f</m:mtext></m:msub><m:mo movablelimits="true" form="prefix">max</m:mo><m:mrow><m:mo>|</m:mo><m:mi>m</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow></m:mrow></m:math>,
+the “modulation index” <emphasis effect="italics">D</emphasis> is defined as</para><equation id="id296766"><m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:mi>D</m:mi>
+              <m:mspace width="3.33333pt"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="3.33333pt"/>
+              <m:mfrac>
+                <m:msub>
+                  <m:mi>Δ</m:mi>
+                  <m:mtext>f</m:mtext>
+                </m:msub>
+                <m:mi>W</m:mi>
+              </m:mfrac>
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mrow/>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mrow>
+                      <m:mo>←</m:mo>
+                      <m:mtext>denominator is the single-sided</m:mtext>
+                      <m:mspace width="4.pt"/>
+                      <m:mtext>BW</m:mtext>
+                      <m:mspace width="4.pt"/>
+                      <m:mtext>of</m:mtext>
+                      <m:mspace width="4.pt"/>
+                      <m:mi>m</m:mi>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                      <m:mo>.</m:mo>
+                    </m:mrow>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id296835">Increasing <emphasis effect="italics">D</emphasis> decreases spectral efficiency but increases robustness
+to noise/interference.</para>
+        <equation id="id296851">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>D</m:mi>
+                    <m:mo>≪</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>:</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>``narrowband</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>FM''</m:mtext>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>D</m:mi>
+                    <m:mo>≫</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>:</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>``wideband</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>FM''</m:mtext>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id296922">Carson's Rule approximates the FM passband signal-BW as</para>
+        <equation id="id296928">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mtext>BW</m:mtext>
+                <m:mn>99</m:mn>
+              </m:msub>
+              <m:mspace width="3.33333pt"/>
+              <m:mo>≈</m:mo>
+              <m:mspace width="3.33333pt"/>
+              <m:mn>2</m:mn>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>Δ</m:mi>
+                  <m:mtext>f</m:mtext>
+                </m:msub>
+                <m:mo>+</m:mo>
+                <m:mi>W</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mn>2</m:mn>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>D</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>W</m:mi>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id296994">Example: Mono FM radio:</para>
+        <list id="id297000" display="block" list-type="bulleted">
+          <item id="uid23">Message signal filtered to freq interval [30,15k] Hz.
+</item>
+          <item id="uid24">FCC limits <m:math overflow="scroll"><m:mrow><m:msub><m:mi>Δ</m:mi><m:mtext>f</m:mtext></m:msub><m:mo>≤</m:mo><m:mn>75</m:mn></m:mrow></m:math> kHz (channels 200 kHz apart).
+<m:math overflow="scroll"><m:mo>⇒</m:mo></m:math><m:math overflow="scroll"><m:mrow><m:mi>D</m:mi><m:mo>=</m:mo><m:mfrac><m:mn>75</m:mn><m:mn>15</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>5</m:mn></m:mrow></m:math></item>
+        </list>
+        <para id="id297085">FM stereo uses smaller <emphasis effect="italics">D</emphasis> due to message spectrum:</para>
+        <figure id="uid25"><media id="uid25_media" alt="This graph contains a number of shapes on a graph of horizontal axis kHz. The first shape is a trapezoid with a horizontal size on the right and the bottom-left vertex at the origin. The shape is titled, sum, quantity L + R divided by 2. The vertical side is located at horizontal value 15. At 19, there is a small arrow pointing up. This is followed by two trapezoids, each with vertical side on the outside, and two diagonal sides that meet at the same point on the horizontal axis, 38. These are titled AM-modulated diff, quantity L - R/2. The final group of shapes is one pentagon with horizontal base on the axis and two vertical sides, centered at value 57, another near horizontal value 95, and a rectangle with a right side at horizontal value 76. This group is titled, other optional services, text, muzak.">
+            <image mime-type="image/png" src="../../media/fig35a.png" id="uid25_onlineimage" width="702"><!-- NOTE: attribute width changes image size online (pixels). original width is 702. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig35a.eps" id="uid25_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id297107">There are various FM demodulators, but the “discriminator” is one of
+the best known.
+Recalling that</para>
+        <equation id="id297112">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:mfrac>
+                <m:mi>d</m:mi>
+                <m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:mfrac>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mfenced separators="" open="(" close=")">
+                <m:mi>ϕ</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mi>ϕ</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:mfrac>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mfenced separators="" open="(" close=")">
+                <m:mi>ϕ</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mfenced>
+              <m:mo>,</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id297204">we see that</para>
+        <equation id="id297210">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mi>d</m:mi>
+                      <m:mrow>
+                        <m:mi>d</m:mi>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:mfrac>
+                    <m:mi>s</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:mfrac>
+                        <m:mi>d</m:mi>
+                        <m:mrow>
+                          <m:mi>d</m:mi>
+                          <m:mi>t</m:mi>
+                        </m:mrow>
+                      </m:mfrac>
+                      <m:mo form="prefix">cos</m:mo>
+                      <m:mfenced separators="" open="(" close=")">
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>+</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>k</m:mi>
+                          <m:mtext>f</m:mtext>
+                        </m:msub>
+                        <m:msubsup>
+                          <m:mo>∫</m:mo>
+                          <m:mn>0</m:mn>
+                          <m:mi>t</m:mi>
+                        </m:msubsup>
+                        <m:mi>m</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mi>d</m:mi>
+                        <m:mi>τ</m:mi>
+                      </m:mfenced>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mfenced separators="" open="[" close="]">
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mo>+</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>k</m:mi>
+                          <m:mtext>f</m:mtext>
+                        </m:msub>
+                        <m:mspace width="0.166667em"/>
+                        <m:mi>m</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>t</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                      </m:mfenced>
+                      <m:mo form="prefix">sin</m:mo>
+                      <m:mfenced separators="" open="(" close=")">
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                        <m:mo>+</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msubsup>
+                          <m:mo>∫</m:mo>
+                          <m:mn>0</m:mn>
+                          <m:mi>t</m:mi>
+                        </m:msubsup>
+                        <m:mi>m</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mi>d</m:mi>
+                        <m:mi>τ</m:mi>
+                      </m:mfenced>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id297489">is a form of large-carrier AM (assuming <m:math overflow="scroll"><m:mrow><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mo>&gt;</m:mo><m:msub><m:mi>k</m:mi><m:mtext>f</m:mtext></m:msub><m:mspace width="0.166667em"/><m:mi>m</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>), which can be
+demodulated using an envelope detector as follows:</para>
+        <figure id="uid26"><media id="uid26_media" alt="This figure contains one flowchart above, and three graphs in a column to the right of a caption that reads, MATLAB code here. The flowchart shows movement from r(t) to a box labeled d/td to a box labeled envelope detector, to a box labeled DC block, to a final expression, v(t). The first graph is titled message, and is a series of waves of different amplitudes from horizontal value 0 to 2. Two full waves are completed, and their troughs and peaks are at different levels. The second graph is titled FM modulated, and consists of numerous waves of varying wavelengths. Each wave has an amplitude of 1 and the wavelengths change in a cyclical pattern. The third graph is titled discriminator demodulated, and consists of one dashed line as a wave of constant wavelength but increasing overall value, and one solid line starting with a sharp increase and continuing in a pattern that closely follows the dashed line. Two waves are completed by both lines.">
+            <image mime-type="image/png" src="../../media/fig36.png" id="uid26_onlineimage" width="768"><!-- NOTE: attribute width changes image size online (pixels). original width is 768. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig36.eps" id="uid26_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+      </section>
+  </content>
+</document>

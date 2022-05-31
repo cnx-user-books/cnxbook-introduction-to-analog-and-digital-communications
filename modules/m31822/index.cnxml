@@ -1,0 +1,238 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>The Communications Channel</title>
+  <metadata>
+  <md:content-id>m31822</md:content-id><md:title>The Communications Channel</md:title>
+  <md:abstract>This module gives a brief introduction to the communications channel, which is modeled here as a linear filtering plus an additive noise.</md:abstract>
+  <md:uuid>561b452c-14dc-4dd9-bf81-35797f709685</md:uuid>
+</metadata>
+<featured-links>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit below.
+       Changes to the links section in the source will not be saved. -->
+    <link-group type="supplemental">
+      <link url="related matlab files.zip" strength="3">Related M-Files</link>
+    </link-group>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit above.
+       Changes to the links section in the source will not be saved. -->
+</featured-links>
+<content>
+    
+      <para id="id165835">The effects of signal propagation are usually modeled as:</para>
+      <figure id="uid1"><media id="uid1_media" alt="This figure is comprised of three object. The first, on the left, is a graph with horizontal axis f and vertical axis |S(f)|. The graph contains two boxes, one in the second and one in the first quadrant, of equal height and width. The base of both boxes sit on the horizontal axis. The second, in the middle,  is a flowchart titled the communications channel. the chart begins on the left with the expression s(t). To the right of this is an arrow pointing to the right at a boxed expression, H(f). to the right of this is an arrow pointing to the right at a circle with a plus sign. The arrow is labeled x(t). Above the circle with the plus sign is an expression ω(t). This expression also points at the circle with the plus sign with an arrow pointing down. To the right of the circle is an arrow pointing to the right at the expression r(t). The third object is a graph with horizontal axis f and vertical axis |R(f)|. The graph is titled received signal. The graph contains two shapes. The shapes are identical, although flipped horizontally. They consist of two vertical lines, with a small sinusoidal wave connecting the lines together. Along the horizontal axis is a teal shaded line.">
+          <image mime-type="image/png" src="../../media/fig19.png" id="uid1_onlineimage" width="770"><!-- NOTE: attribute width changes image size online (pixels). original width is 770. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig19.eps" id="uid1_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id165848">where</para>
+      
+      <para id="eip-920"><m:math overflow="scroll">
+                  <m:mrow>
+                    <m:mi>H</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>f</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>:
+linear filtering due to multipath propagation
+<newline/>
+                <m:math overflow="scroll">
+                  <m:mrow>
+                    <m:mi>w</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>:
+          additive noise/interference.</para><para id="id165903">Noise/interference sources include:
+<list id="eip-id1165890418975">
+<item id="uid2">electronic circuitry (“thermal/shot noise” or
+“quantization noise”); usually broadband,
+</item>
+        <item id="uid3">other comm systems (“multi-access interference”
+or “co-channel interference”); broadband or narrowband.
+</item>
+      </list></para>
+      
+      <para id="id165937">SNR can be improved with appropriate filtering at receiver:
+<list id="eip-id1169250455234"><item id="uid4">signal-to-noise ratio (SNR)
+<m:math overflow="scroll"><m:mrow><m:mo>=</m:mo><m:mfrac><m:mrow><m:mtext>signal</m:mtext><m:mspace width="4.pt"/><m:mtext>energy</m:mtext></m:mrow><m:mrow><m:mtext>noise</m:mtext><m:mspace width="4.pt"/><m:mtext>energy</m:mtext></m:mrow></m:mfrac><m:mo>=</m:mo><m:mfrac><m:msub><m:mi mathvariant="script">E</m:mi><m:mi>s</m:mi></m:msub><m:msub><m:mi mathvariant="script">E</m:mi><m:mi>n</m:mi></m:msub></m:mfrac></m:mrow></m:math>
+</item>
+        <item id="uid5">roughly speaking, average SNR can be improved by filtering out
+the frequencies dominated by noise:
+</item>
+      </list></para>
+      
+      <figure id="uid6"><media id="uid6_media" alt="This figure is comprised of two graphs, both plotting the horizontal axis as f. The first is titled before filtering, and contains two trapezoids, one in the second quadrant and one in the first, with their base along the horizontal axis. There is one long horizontal shaded teal region, and two smaller vertical shaded teal regions that cross through the top of the trapezoid. The second graph is labeled after filtering, and contains the same trapezoid shapes, except separated into one triangle on the inside and one trapezoid with a vertical side. Inside the shaded trapezoid is the same teal stripe, except that it is confined to the trapezoid itself.">
+          <image mime-type="image/png" src="../../media/fig20.png" id="uid6_onlineimage" width="812"><!-- NOTE: attribute width changes image size online (pixels). original width is 812. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig20.eps" id="uid6_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <section id="uid7">
+        <title>Filtering due to Multipath Propagation</title>
+        <para id="id166042">The signal may propagate along paths with different lengths:</para>
+        <figure id="uid8"><media id="uid8_media" alt="This figure is one flowchart showing movement between different shapes. On the left is a signal tower labeled s(t). From this signal are three arrows. One moves directly to a signal on the right, labeled x(t). One arrow moves above through a shape that looks like a battery, then moves back down to the x(t) signal. The third moves down through something that looks like a mountain and continues over to the x(t) signal.">
+            <image mime-type="image/png" src="../../media/fig21.png" id="uid8_onlineimage" width="396"><!-- NOTE: attribute width changes image size online (pixels). original width is 396. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig21.eps" id="uid8_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id166055">Since different path lengths imply different path delays:</para>
+        <equation id="id166058">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi>c</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mi>s</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>-</m:mo>
+                <m:msub>
+                  <m:mi>τ</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>c</m:mi>
+                <m:mn>2</m:mn>
+              </m:msub>
+              <m:mi>s</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>-</m:mo>
+                <m:msub>
+                  <m:mi>τ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mo>⋯</m:mo>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>c</m:mi>
+                <m:mi>N</m:mi>
+              </m:msub>
+              <m:mi>s</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>-</m:mo>
+                <m:msub>
+                  <m:mi>τ</m:mi>
+                  <m:mi>N</m:mi>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>,</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id166349">which can be written as <m:math overflow="scroll"><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>s</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>*</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> for</para>
+        <equation id="id166391">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>τ</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi>c</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mi>δ</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>τ</m:mi>
+                <m:mo>-</m:mo>
+                <m:msub>
+                  <m:mi>τ</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>c</m:mi>
+                <m:mn>2</m:mn>
+              </m:msub>
+              <m:mi>δ</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>τ</m:mi>
+                <m:mo>-</m:mo>
+                <m:msub>
+                  <m:mi>τ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mo>⋯</m:mo>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>c</m:mi>
+                <m:mi>N</m:mi>
+              </m:msub>
+              <m:mi>δ</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>τ</m:mi>
+                <m:mo>-</m:mo>
+                <m:msub>
+                  <m:mi>τ</m:mi>
+                  <m:mi>N</m:mi>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id166502">The result is an <m:math overflow="scroll"><m:mrow><m:mo>|</m:mo><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math> that varies with <emphasis effect="italics">f</emphasis>, implying
+frequency-dependent signal attenuation:</para>
+        
+        <figure id="uid9"><subfigure id="eip-id1172115715789">
+<code id="eip-id1172115715791" display="block">
+t_max = 1;
+Ts = 1/1000;
+c1 = 1; tau1 = 0.02;
+c2 = -0.5; tau2 = 0.08;
+c3 = 0.2; tau3 = 0.10;
+h = zeros(1,t_max/Ts);
+h(tau1/Ts) = c1/Ts;
+h(tau2/Ts) = c2/Ts;
+h(tau3/Ts) = c3/Ts;
+plottf(h,Ts);
+</code>
+</subfigure>
+<subfigure id="eip-id1172115715799">
+<media id="uid9_media" alt="This figure is comprised of two graphs. The first graph plots time on the horizontal axis, and amplitude on the vertical axis. The horizontal values range from 0 to 1 in increments of 0.1. The vertical values range from -500 to 1000 in increments of 500. The graph is mostly horizontal across amplitude = 0, except or one large peak at 0.002, one large trough at 0.009, and one small peak at 0.1. The second graph plots horizontal axis frequency and vertical axis magnitude. The horizontal axis ranges in value from -500 to 500 in increments of 100. The vertical axis ranges in value from 0 to 2 in increments of 0.5. The graph consists of a pattern of waves. Two waves with amplitudes of 0.4, then one wave with an amplitude of 0.6. These waves are centered about magnitude = 1.">
+            <image mime-type="image/png" src="../../media/fig22.png" id="uid9_onlineimage" width="368"><!-- NOTE: attribute width changes image size online (pixels). original width is 368. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig22.eps" id="uid9_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </subfigure></figure>
+      </section>
+  </content>
+</document>

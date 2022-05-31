@@ -1,0 +1,2537 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Digital Communication</title>
+  <metadata>
+  <md:content-id>m31812</md:content-id><md:title>Digital Communication</md:title>
+  <md:abstract>This module outlines the basics of digital communication through a white-noise channel. Transmission consists of pulse shaping and modulation, while reception consists of demodulation, filtering, and sampling. The combined pulse-shaping and filtering designs which prevent inter-symbol interference (ISI) are identified as those satisfying the Nyquist criterion, which is examined in both the time and frequency domains, and the raised-cosine (combined) pulse is given as a common example. The Cauchy-Schwarz inequality is then used to show the matched filtering maximizes the signal-to-noise ratio.  Finally, the square-root raised cosine pulse/filter is given as an example of matched filtering that satisfies the Nyquist criterion.</md:abstract>
+  <md:uuid>4ae7ae83-636e-40b4-9502-a5ab26d69893</md:uuid>
+</metadata>
+<featured-links>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit below.
+       Changes to the links section in the source will not be saved. -->
+    <link-group type="supplemental">
+      <link url="related matlab files.zip" strength="3">Related M-Files</link>
+    </link-group>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit above.
+       Changes to the links section in the source will not be saved. -->
+</featured-links>
+<content>
+      <para id="id276324">Transmission consists of</para>
+      <list id="id276327" display="block" list-type="enumerated">
+        <item id="uid1">pulse shaping: <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>m</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msub><m:mo>∑</m:mo><m:mi>n</m:mi></m:msub><m:mi>a</m:mi><m:mrow><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>n</m:mi><m:mi>T</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>,
+</item>
+        <item id="uid2">modulation: <m:math overflow="scroll"><m:mrow><m:mi>s</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mo form="prefix">Re</m:mo><m:mo>{</m:mo><m:mover accent="true"><m:mi>m</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mi>t</m:mi></m:mrow></m:msup><m:mo>}</m:mo></m:mrow></m:math>.
+</item>
+      </list>
+      <para id="id276661">Reception consists of</para>
+      <list id="id276664" display="block" list-type="enumerated">
+        <item id="uid3">demodulation: <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>v</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mtext>LPF</m:mtext><m:mrow><m:mo>{</m:mo><m:mn>2</m:mn><m:mi>r</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mi>t</m:mi></m:mrow></m:msup><m:mo>}</m:mo></m:mrow></m:mrow></m:math>,
+</item>
+        <item id="uid4">filtering: <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mover accent="true"><m:mi>v</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>*</m:mo><m:mi>q</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>,
+</item>
+        <item id="uid5">sampling: <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>m</m:mi><m:mi>T</m:mi><m:mo>)</m:mo></m:mrow></m:math>.
+</item>
+      </list>
+      <figure id="uid6"><media id="uid6_media" alt="This is a two-part flowchart. The first part is title digital modulation, and begins with the expression a[n], then moves to a box titled g(t). Below the box is a circle containing a hook shape, labeled nT. To the right of the box is an arrow pointing to the right, labeled m-tilde(t). This arrow points at an x-circle. Below the x-circle is a circle with a tilde and an arrow pointing back up at the x-circle, labeled e^j2πf_ct.  The middle of this part of the flowchart is bracketed and labeled analog QAM mod. To the right of the x-circle is an arrow pointing to the right at a box labeled Re. To the right of this is an arrow pointing to the right labeled s(t). This arrow points at a cloud labeled channel, which is in the middle of the two parts of the flowchart. The second part of the flowchart is labeled digital demodulation. Beginning on this side to the right of the cloud is an arrow pointing to the right at an x-circle, labeled r(t). Below the x-circle is a circle with a tilde, labeled 2e^-j2πf_ct, with an arrow pointing back up. This section is bracketed and labeled analog QAM demod. To the right of the x-circle is a box labeled LPF. To the right is an arrow labeled v-tilde(t) that points at a box labeled q(t). To the right of this is a line labeled y(t) that is angled upward and disconnected from a final arrow, although an arrow is drawn to show that this disconnected segment is in motion to connect. Below the disconnected portion is another circle with a hook, labeled t = mT. The final arrow points to the right at a final expression, y[m].">
+          <image mime-type="image/png" src="../../media/fig50.png" id="uid6_onlineimage" width="648"><!-- NOTE: attribute width changes image size online (pixels). original width is 648. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig50.eps" id="uid6_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id276854">Building on analog QAM mod/demod components, digital mod adds
+pulse shaping &amp; demod adds filtering/sampling.</para>
+      <para id="id276858">Simplifying via the complex-baseband equivalent channel:</para>
+      <figure id="uid7"><media id="uid7_media" alt="This figure is a flowchart. It begins with the movement from a[n] to a box labeled g(t). Below the box is a circle with a hook, labeled nT. To the right of the box is an arrow labeled m-tilde(t) that points to the right at a box labeled h-tilde(t). To the right of this is movement to a plus-circle. Below and pointing up at the plus circle is the expression w-tilde(t). To the right of the plus-circle is an arrow labeled v-tilde(t) that points at a box labeled q(t). To the right of this is a line angled upward that is disconnected from the final arrow and general flow of the chart in the figure. This line is labeled y(t). Below the disconnected portion is a circle with a hook, labeled t = mT, with an arrow pointing back up at the line. There is indication with an angled arrow that the disconnected segment may be moving to connect to the line. The final arrow points at the final expression, y[m].">
+          <image mime-type="image/png" src="../../media/fig51.png" id="uid7_onlineimage" width="500"><!-- NOTE: attribute width changes image size online (pixels). original width is 500. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig51.eps" id="uid7_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id276872"><emphasis effect="underline">Transmitter pulse shaping</emphasis> is used to convert the symbol sequence
+<m:math overflow="scroll"><m:mrow><m:mo>{</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>}</m:mo></m:mrow></m:math> into the continuous message <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>m</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>:</para>
+      <equation id="id276923"><m:math overflow="scroll" mode="display">
+          <m:mtable displaystyle="true">
+            <m:mtr>
+              <m:mtd columnalign="right">
+                <m:mrow>
+                  <m:mover accent="true">
+                    <m:mi>m</m:mi>
+                    <m:mo>˜</m:mo>
+                  </m:mover>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd>
+                <m:mo>=</m:mo>
+              </m:mtd>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:munder>
+                    <m:mo>∑</m:mo>
+                    <m:mi>n</m:mi>
+                  </m:munder>
+                  <m:mi>a</m:mi>
+                  <m:mrow>
+                    <m:mo>[</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>]</m:mo>
+                  </m:mrow>
+                  <m:mi>g</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mi>T</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mspace width="1.em"/>
+                  <m:mtext>"baseband message"</m:mtext>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+            <m:mtr>
+              <m:mtd columnalign="right">
+                <m:mi>T</m:mi>
+              </m:mtd>
+              <m:mtd>
+                <m:mo>=</m:mo>
+              </m:mtd>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:mtext>"symbol period"</m:mtext>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+          </m:mtable>
+        </m:math>
+      </equation>
+      <para id="id277026">Thus, <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>m</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> can be seen to be a superposition of
+<emphasis effect="italics">scaled</emphasis> and <emphasis effect="italics">time-shifted</emphasis> copies of the pulse waveform <m:math overflow="scroll"><m:mrow><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+      <para id="id277080">Example, if the symbol sequence <m:math overflow="scroll"><m:mfenced separators="" open="[" close="]"><m:mi>a</m:mi><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>]</m:mo><m:mo>,</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mn>1</m:mn><m:mo>]</m:mo><m:mo>,</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mn>2</m:mn><m:mo>]</m:mo><m:mo>,</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mn>3</m:mn><m:mo>]</m:mo><m:mo>,</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mn>4</m:mn><m:mo>]</m:mo></m:mfenced></m:math>
+equals <m:math overflow="scroll"><m:mrow><m:mo>[</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>3</m:mn><m:mo>]</m:mo></m:mrow></m:math>, then the square pulse <m:math overflow="scroll"><m:mrow><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> shown below left yields
+the message <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>m</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> shown below right.</para>
+      <figure id="uid8"><media id="uid8_media" alt="This figure is comprised of five aligned graphs in a column and two separate graphs to their right. The graphs plot t against g(t) in the first, g(t - T) in the second, up to g(t - 4T) in the fifth. Horizontal values are labeled in the first quadrant as T, 2T, 3T, 4T, 5T, and 6T. There is one colored box in each graph, occurring down the chart to be centered at 0, T, 2T and so on until 4T. The first chart on the right shows these boxes displayed on the same graph and thus at a different perspective. The graph is labeled a[n]g(t - nT) for n= 0,..., 4. The second graph on the side is the same thing, without the colors, and is labeled m-tilde(t) = Σ_n a[n]g(t - nT).">
+          <image mime-type="image/png" src="../../media/fig52.png" id="uid8_onlineimage" width="816"><!-- NOTE: attribute width changes image size online (pixels). original width is 816. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig52.eps" id="uid8_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id277252"><emphasis effect="underline">Receiver filtering</emphasis> (via <m:math overflow="scroll"><m:mrow><m:mi>q</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>) has two goals:</para>
+      <list id="id277275" display="block" list-type="enumerated">
+        <item id="uid9">noise suppression (i.e., SNR improvement),
+</item>
+        <item id="uid10">inter-symbol interference (ISI) prevention.
+</item>
+      </list>
+      <para id="id277303">Noise suppression was briefly discussed  in <link document="m31815">Preliminaries</link> and will soon be revisited in more detail. Next we describe ISI.</para>
+      <para id="id277311">Realize that, in the <emphasis effect="italics">ideal</emphasis> digital comm system, the <m:math overflow="scroll"><m:msup><m:mi>n</m:mi><m:mrow><m:mi>t</m:mi><m:mi>h</m:mi></m:mrow></m:msup></m:math> output
+<m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> would simply equal the <m:math overflow="scroll"><m:msup><m:mi>n</m:mi><m:mrow><m:mi>t</m:mi><m:mi>h</m:mi></m:mrow></m:msup></m:math> input <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>.
+But in practice, <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> can be corrupted by interference
+from the other symbols <m:math overflow="scroll"><m:msub><m:mrow><m:mo>{</m:mo><m:mi>a</m:mi><m:mrow><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mrow><m:mi>m</m:mi><m:mo>≠</m:mo><m:mi>n</m:mi></m:mrow></m:msub></m:math>, known as “inter-symbol
+interference,” and noise.</para>
+      <section id="uid11">
+        <title>ISI-prevention for the noiseless trivial channel</title>
+        <para id="id277440">Consider the idealized system</para>
+        <figure id="uid12"><media id="uid12_media" alt="This figure is a flowchart. To begin is the expression a[n] which points at a box labeled g(t). Below the box is a circle containing a hook, labeled nT. To the right of the box is an arrow labeled m-tilde(t) that points at a box labeled q(t). To the right of this is a line angled upward that is disconnected from the final arrow and general flow of the chart in the figure. This line is labeled y(t). Below the disconnected portion is a circle with a hook, labeled t = mT, with an arrow pointing back up at the line. There is indication with an angled arrow that the disconnected segment may be moving to connect to the line. The final arrow points at the final expression, y[m].">
+            <image mime-type="image/png" src="../../media/fig53.png" id="uid12_onlineimage" width="478"><!-- NOTE: attribute width changes image size online (pixels). original width is 478. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig53.eps" id="uid12_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <equation id="id277454">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>y</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mo>∫</m:mo>
+                    <m:mi>q</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mover accent="true">
+                      <m:mi>m</m:mi>
+                      <m:mo>˜</m:mo>
+                    </m:mover>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mi>d</m:mi>
+                    <m:mi>τ</m:mi>
+                    <m:mspace width="4.pt"/>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>for</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mspace width="4.pt"/>
+                    <m:mrow>
+                      <m:mover accent="true">
+                        <m:mi>m</m:mi>
+                        <m:mo>˜</m:mo>
+                      </m:mover>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>=</m:mo>
+                      <m:msub>
+                        <m:mo>∑</m:mo>
+                        <m:mi>n</m:mi>
+                      </m:msub>
+                      <m:mi>a</m:mi>
+                      <m:mrow>
+                        <m:mo>[</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>]</m:mo>
+                      </m:mrow>
+                      <m:mi>g</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mi>T</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:munder>
+                      <m:mo>∑</m:mo>
+                      <m:mi>n</m:mi>
+                    </m:munder>
+                    <m:mi>a</m:mi>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mo>∫</m:mo>
+                    <m:mi>q</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mi>g</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mi>T</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mi>d</m:mi>
+                    <m:mi>τ</m:mi>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:munder>
+                      <m:mo>∑</m:mo>
+                      <m:mi>n</m:mi>
+                    </m:munder>
+                    <m:mi>a</m:mi>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mi>p</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mi>T</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mspace width="4.pt"/>
+                    <m:mspace width="4.pt"/>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>for</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mspace width="4.pt"/>
+                    <m:mi>p</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>=</m:mo>
+                    <m:mi>g</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>*</m:mo>
+                    <m:mi>q</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id277746">Thus, the idealized system can be re-drawn as</para>
+        <figure id="uid13"><media id="uid13_media" alt="This figure is a flowchart beginning with movement from a[n] to a box labeled p(t). Below the box is a circle containing a hook, labeled nT. To the right of this is a line angled upward that is disconnected from the final arrow and general flow of the chart in the figure. This line is labeled y(t). Below the disconnected portion is a circle with a hook, labeled t = mT, with an arrow pointing back up at the line. There is indication with an angled arrow that the disconnected segment may be moving to connect to the line. The final arrow points at the final expression, y[m].">
+            <image mime-type="image/png" src="../../media/fig54.png" id="uid13_onlineimage" width="366"><!-- NOTE: attribute width changes image size online (pixels). original width is 366. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig54.eps" id="uid13_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id277762">where</para>
+        <equation id="id277765">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>y</m:mi>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mo>=</m:mo>
+                    <m:mi>y</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mi>T</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>=</m:mo>
+                    <m:munder>
+                      <m:mo>∑</m:mo>
+                      <m:mi>n</m:mi>
+                    </m:munder>
+                    <m:mi>a</m:mi>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mi>p</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mi>T</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mi>T</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>=</m:mo>
+                    <m:munder>
+                      <m:mo>∑</m:mo>
+                      <m:mi>n</m:mi>
+                    </m:munder>
+                    <m:mi>a</m:mi>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mi>p</m:mi>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mo>(</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>)</m:mo>
+                      <m:mi>T</m:mi>
+                    </m:mfenced>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id277891">To make <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo></m:mrow></m:math> (i.e., prevent ISI), we need</para>
+        <figure id="uid14"><media id="uid14_media" alt="This figure is a graph with a two-part equation to its right. The graph plots t against p(t). A curve of one large wave centered at the vertical axis and two smaller curves on the outside. The curve intersects with the vertical axis at vertical value 1. The curve then decreases on both sides to intersect with the horizontal axis at -T and T. The curve dips to a trough and then increases to intersect with the horizontal axis again at -2T and 2T. Finally, the curve increases slightly, peaks, and then decreases to intersect again with the horizontal axis at -3T and 3T. The equation to the right defines the expression p(mT) to be equal to 1 if m = 0 and equal to 0 if m does not equal zero.">
+            <image mime-type="image/png" src="../../media/fig55.png" id="uid14_onlineimage" width="648"><!-- NOTE: attribute width changes image size online (pixels). original width is 648. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig55.eps" id="uid14_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id277932">which is known as the “Nyquist Criterion.”
+This criterion can be simply stated as <m:math overflow="scroll"><m:mrow><m:mi>p</m:mi><m:mo>(</m:mo><m:mi>m</m:mi><m:mi>T</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>δ</m:mi><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo></m:mrow></m:math> using</para>
+        
+        <equation id="id278018"><m:math overflow="scroll" mode="display">
+<m:mtable>
+<m:mtr>
+<m:mtd columnalign="left">           
+
+<m:mi>δ</m:mi>
+<m:mo>[</m:mo>
+<m:mi>m</m:mi>
+<m:mo>]</m:mo>
+<m:mo>=</m:mo>
+<m:mo>{</m:mo>
+<m:mrow>
+<m:mtable>
+<m:mtr>
+<m:mtd>
+<m:mn>1</m:mn>
+</m:mtd>
+<m:mtd>
+<m:mi>m</m:mi>
+<m:mo>=</m:mo>
+<m:mn>0</m:mn>
+</m:mtd>
+<m:mtd>
+<m:mtext>
+"distcrete-time impulse,"
+</m:mtext>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd>
+<m:mn>0</m:mn>
+</m:mtd>
+<m:mtd>
+<m:mi>m</m:mi>
+<m:mo>≠</m:mo>
+<m:mn>0</m:mn>
+</m:mtd>
+<m:mtd>
+<m:mtext>or "Kronecker delta."</m:mtext>
+</m:mtd>
+</m:mtr>
+</m:mtable>
+</m:mrow>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd columnalign="left">
+ <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>a</m:mi>
+                    <m:mo>[</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>]</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:munderover>
+                      <m:mo>∑</m:mo>
+                      <m:mrow>
+                        <m:mi>m</m:mi>
+                        <m:mo>=</m:mo>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:munderover>
+                    <m:mi>a</m:mi>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mi>δ</m:mi>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mspace width="2.em"/>
+                    <m:mtext>"sifting</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>property."</m:mtext>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+</m:mtd>
+</m:mtr>
+</m:mtable>        
+  </m:math>
+        </equation>
+        <para id="id278102">Examples of Nyquist, and non-Nyquist, combined-pulses <m:math overflow="scroll"><m:mrow><m:mi>p</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+for <m:math overflow="scroll"><m:mrow><m:mfenced separators="" open="[" close="]"><m:mi>a</m:mi><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>]</m:mo><m:mo>,</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mn>1</m:mn><m:mo>]</m:mo><m:mo>,</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mn>2</m:mn><m:mo>]</m:mo><m:mo>,</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mn>3</m:mn><m:mo>]</m:mo><m:mo>,</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mn>4</m:mn><m:mo>]</m:mo></m:mfenced><m:mo>=</m:mo><m:mrow><m:mo>[</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>3</m:mn><m:mo>]</m:mo></m:mrow></m:mrow></m:math>:</para>
+        <figure id="uid15"><media id="uid15_media" alt="This figure consists of two sets of five graphs, each with two graphs to the right connecting the data. The graphs plot t against p(t), p(t - T) and so on until p(t - 4T). The graphs each show a curve that begins with a complete small wave, a large peak, and an identical complete small wave. These waves are centered at 0, T, 2T, and so on unitl 4T for the first set of five graphs. To the right is the composition of all of the graphs together, so that their different sizes and wavelengths are shown in a graph titled a[n]p(t - nT) for n = 0,..., 4. Below this is a simple connection of the strongest occurrences of the graphs, and the graph is titled y(t) = Σ_n a[n]p(t - nT). The second series of five graphs, and the compositions to the right, are similar in construction except that they are all upside-down v-shapes rather than curves, making a much more rigid composition.">
+            <image mime-type="image/png" src="../../media/fig56.png" id="uid15_onlineimage" width="536"><!-- NOTE: attribute width changes image size online (pixels). original width is 536. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig56.eps" id="uid15_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id278252">There is an interesting frequency-domain interpretation.
+Since</para>
+        <equation id="id278256"><m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:mi>T</m:mi>
+                    </m:mfrac>
+                    <m:munderover>
+                      <m:mo>∑</m:mo>
+                      <m:mrow>
+                        <m:mi>k</m:mi>
+                        <m:mo>=</m:mo>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:munderover>
+                    <m:mi>δ</m:mi>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mi>f</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mfrac>
+                        <m:mi>k</m:mi>
+                        <m:mi>T</m:mi>
+                      </m:mfrac>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mover>
+                    <m:mo>↔ </m:mo>
+                    <m:mi mathvariant="script">F</m:mi>
+                  </m:mover>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:munderover>
+                      <m:mo>∑</m:mo>
+                      <m:mrow>
+                        <m:mi>m</m:mi>
+                        <m:mo>=</m:mo>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:munderover>
+                    <m:mi>δ</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mi>T</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id278369">we can see that</para>
+        <equation id="id278375"><m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:munder>
+                    <m:munder accentunder="true">
+                      <m:mrow>
+                        <m:mi>P</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>f</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mo>*</m:mo>
+                        <m:mfrac>
+                          <m:mn>1</m:mn>
+                          <m:mi>T</m:mi>
+                        </m:mfrac>
+                        <m:munderover>
+<m:mrow>
+                          <m:mo>∑</m:mo>
+</m:mrow>        
+                  <m:mrow>
+                            <m:mi>k</m:mi>
+                            <m:mo>=</m:mo>
+                            <m:mo>-</m:mo>
+                            <m:mi>∞</m:mi>
+                          </m:mrow>
+                          <m:mi>∞</m:mi>
+                        </m:munderover>
+                        <m:mi>δ</m:mi>
+                        <m:mfenced separators="" open="(" close=")">
+                          <m:mi>f</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mfrac>
+                            <m:mi>k</m:mi>
+                            <m:mi>T</m:mi>
+                          </m:mfrac>
+                        </m:mfenced>
+                      </m:mrow>
+                      <m:mo>︸</m:mo>
+                    </m:munder>
+                    <m:mstyle scriptlevel="0" displaystyle="true">
+                      <m:mrow>
+                        <m:mfrac>
+                          <m:mn>1</m:mn>
+                          <m:mi>T</m:mi>
+                        </m:mfrac>
+                        <m:munderover>
+<m:mrow>
+                          <m:mo>∑</m:mo>
+</m:mrow>        
+                  <m:mrow>
+                            <m:mi>k</m:mi>
+                            <m:mo>=</m:mo>
+                            <m:mo>-</m:mo>
+                            <m:mi>∞</m:mi>
+                          </m:mrow>
+                          <m:mi>∞</m:mi>
+                        </m:munderover>
+                        <m:mi>P</m:mi>
+                        <m:mfenced separators="" open="(" close=")">
+                          <m:mi>f</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mfrac>
+                            <m:mi>k</m:mi>
+                            <m:mi>T</m:mi>
+                          </m:mfrac>
+                        </m:mfenced>
+                      </m:mrow>
+                    </m:mstyle>
+                  </m:munder>
+                </m:mtd>
+                <m:mtd>
+                  <m:mover>
+                    <m:mo>↔ </m:mo>
+                    <m:mi mathvariant="script">F</m:mi>
+                  </m:mover>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mi>p</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>t</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mo>·</m:mo>
+                          <m:munderover>
+<m:mrow>
+                            <m:mo>∑</m:mo>
+</m:mrow>        
+                    <m:mrow>
+                              <m:mi>m</m:mi>
+                              <m:mo>=</m:mo>
+                              <m:mo>-</m:mo>
+                              <m:mi>∞</m:mi>
+                            </m:mrow>
+                            <m:mi>∞</m:mi>
+                          </m:munderover>
+                          <m:mi>δ</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>t</m:mi>
+                            <m:mo>-</m:mo>
+                            <m:mi>m</m:mi>
+                            <m:mi>T</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mstyle scriptlevel="0" displaystyle="true">
+                        <m:mrow>
+                          <m:munderover>
+<m:mrow>
+                            <m:mo>∑</m:mo>
+</m:mrow>        
+                    <m:mrow>
+                              <m:mi>m</m:mi>
+                              <m:mo>=</m:mo>
+                              <m:mo>-</m:mo>
+                              <m:mi>∞</m:mi>
+                            </m:mrow>
+                            <m:mi>∞</m:mi>
+                          </m:munderover>
+                          <m:mi>p</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>m</m:mi>
+                            <m:mi>T</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mi>δ</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>t</m:mi>
+                            <m:mo>-</m:mo>
+                            <m:mi>m</m:mi>
+                            <m:mi>T</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                        </m:mrow>
+                      </m:mstyle>
+                    </m:munder>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id278644">So, the time-domain Nyquist criterion <m:math overflow="scroll"><m:mrow><m:mi>p</m:mi><m:mo>(</m:mo><m:mi>m</m:mi><m:mi>T</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>δ</m:mi><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo></m:mrow></m:math> implies</para>
+        <equation id="id278680"><m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:mi>T</m:mi>
+                    </m:mfrac>
+                    <m:munderover>
+                      <m:mo>∑</m:mo>
+                      <m:mrow>
+                        <m:mi>k</m:mi>
+                        <m:mo>=</m:mo>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:munderover>
+                    <m:mi>P</m:mi>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mi>f</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mfrac>
+                        <m:mi>k</m:mi>
+                        <m:mi>T</m:mi>
+                      </m:mfrac>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mover>
+                    <m:mo>↔ </m:mo>
+                    <m:mi mathvariant="script">F</m:mi>
+                  </m:mover>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>δ</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id278770">which in turn implies</para>
+        <figure id="uid16"><media id="uid16_media" alt="This figure consists of one equation and one graph. The equation reads 1/T Σ_(k = -∞)^∞ P(f - k/T) = 1. The first part of the equation is also the label for the vertical axis of the graph to the right. The horizontal axis is labeled f. The graph is a series of alternating and cyclical peaks and troughs, with each peak and trough occurring at a vertical value of 1 and 0. Two graphs continue simultaneously so that there is a peak and a trough occurring at the same time. These graphs intersect at -3/2T, -1/2T, 1/2T, and 3/2T.">
+            <image mime-type="image/png" src="../../media/fig57.png" id="uid16_onlineimage" width="830"><!-- NOTE: attribute width changes image size online (pixels). original width is 830. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig57.eps" id="uid16_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id278786">In other words, the superposition of
+<m:math overflow="scroll"><m:msub><m:mfenced separators="" open="{" close="}"><m:mfrac><m:mn>1</m:mn><m:mi>T</m:mi></m:mfrac><m:mi>P</m:mi><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>-</m:mo><m:mfrac><m:mi>k</m:mi><m:mi>T</m:mi></m:mfrac><m:mo>)</m:mo></m:mrow></m:mfenced><m:mrow><m:mi>k</m:mi><m:mo>∈</m:mo><m:mi mathvariant="double-struck">Z</m:mi></m:mrow></m:msub></m:math> must sum to one.
+This frequency-domain version of the Nyquist Criterion
+will soon come in handy...</para>
+        <para id="id278845">A popular choice of combined pulse <m:math overflow="scroll"><m:mrow><m:mi>p</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>*</m:mo><m:mi>q</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+the “raised-cosine pulse” with rolloff parameter <m:math overflow="scroll"><m:mrow><m:mi>α</m:mi><m:mo>∈</m:mo><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>]</m:mo></m:mrow></m:math>:</para>
+        <equation id="id278911">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>p</m:mi>
+                      <m:mtext>RC</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mrow>
+                        <m:mo form="prefix">cos</m:mo>
+                        <m:mo>(</m:mo>
+                        <m:mi>π</m:mi>
+                        <m:mi>α</m:mi>
+                        <m:mi>t</m:mi>
+                        <m:mo>/</m:mo>
+                        <m:mi>T</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mrow>
+                        <m:mn>1</m:mn>
+                        <m:mo>-</m:mo>
+                        <m:msup>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>2</m:mn>
+                            <m:mi>α</m:mi>
+                            <m:mi>t</m:mi>
+                            <m:mo>/</m:mo>
+                            <m:mi>T</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                      </m:mrow>
+                    </m:mfrac>
+                    <m:mspace width="0.166667em"/>
+                    <m:mo form="prefix">sinc</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>/</m:mo>
+                      <m:mi>T</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>,</m:mo>
+                    <m:mspace width="1.em"/>
+                    <m:mo form="prefix">sinc</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>x</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>:</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mfrac>
+                      <m:mrow>
+                        <m:mo form="prefix">sin</m:mo>
+                        <m:mo>(</m:mo>
+                        <m:mi>π</m:mi>
+                        <m:mi>x</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mrow>
+                        <m:mi>π</m:mi>
+                        <m:mi>x</m:mi>
+                      </m:mrow>
+                    </m:mfrac>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>P</m:mi>
+                      <m:mtext>RC</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>f</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfenced separators="" open="{" close="">
+                      <m:mtable>
+                        <m:mtr>
+                          <m:mtd columnalign="left">
+                            <m:mi>T</m:mi>
+                          </m:mtd>
+                          <m:mtd columnalign="left">
+                            <m:mrow>
+                              <m:mrow>
+                                <m:mo>|</m:mo>
+                                <m:mi>f</m:mi>
+                                <m:mo>|</m:mo>
+                              </m:mrow>
+                              <m:mo>≤</m:mo>
+                              <m:mfrac>
+                                <m:mrow>
+                                  <m:mo>(</m:mo>
+                                  <m:mn>1</m:mn>
+                                  <m:mo>-</m:mo>
+                                  <m:mi>α</m:mi>
+                                  <m:mo>)</m:mo>
+                                </m:mrow>
+                                <m:mrow>
+                                  <m:mn>2</m:mn>
+                                  <m:mi>T</m:mi>
+                                </m:mrow>
+                              </m:mfrac>
+                            </m:mrow>
+                          </m:mtd>
+                        </m:mtr>
+                        <m:mtr>
+                          <m:mtd columnalign="left">
+                            <m:mrow>
+                              <m:mi>T</m:mi>
+                              <m:msup>
+                                <m:mo form="prefix">cos</m:mo>
+                                <m:mn>2</m:mn>
+                              </m:msup>
+                              <m:mfenced separators="" open="(" close=")">
+                                <m:mfrac>
+                                  <m:mrow>
+                                    <m:mi>π</m:mi>
+                                    <m:mi>T</m:mi>
+                                  </m:mrow>
+                                  <m:mrow>
+                                    <m:mn>2</m:mn>
+                                    <m:mi>α</m:mi>
+                                  </m:mrow>
+                                </m:mfrac>
+                                <m:mfenced separators="" open="(" close=")">
+                                  <m:mrow>
+                                    <m:mo>|</m:mo>
+                                    <m:mi>f</m:mi>
+                                    <m:mo>|</m:mo>
+                                  </m:mrow>
+                                  <m:mo>-</m:mo>
+                                  <m:mfrac>
+                                    <m:mrow>
+                                      <m:mn>1</m:mn>
+                                      <m:mo>-</m:mo>
+                                      <m:mi>α</m:mi>
+                                    </m:mrow>
+                                    <m:mrow>
+                                      <m:mn>2</m:mn>
+                                      <m:mi>T</m:mi>
+                                    </m:mrow>
+                                  </m:mfrac>
+                                </m:mfenced>
+                              </m:mfenced>
+                            </m:mrow>
+                          </m:mtd>
+                          <m:mtd columnalign="left">
+                            <m:mrow>
+                              <m:mfrac>
+                                <m:mrow>
+                                  <m:mo>(</m:mo>
+                                  <m:mn>1</m:mn>
+                                  <m:mo>-</m:mo>
+                                  <m:mi>α</m:mi>
+                                  <m:mo>)</m:mo>
+                                </m:mrow>
+                                <m:mrow>
+                                  <m:mn>2</m:mn>
+                                  <m:mi>T</m:mi>
+                                </m:mrow>
+                              </m:mfrac>
+                              <m:mo>≤</m:mo>
+                              <m:mrow>
+                                <m:mo>|</m:mo>
+                                <m:mi>f</m:mi>
+                                <m:mo>|</m:mo>
+                              </m:mrow>
+                              <m:mo>≤</m:mo>
+                              <m:mfrac>
+                                <m:mrow>
+                                  <m:mo>(</m:mo>
+                                  <m:mn>1</m:mn>
+                                  <m:mo>+</m:mo>
+                                  <m:mi>α</m:mi>
+                                  <m:mo>)</m:mo>
+                                </m:mrow>
+                                <m:mrow>
+                                  <m:mn>2</m:mn>
+                                  <m:mi>T</m:mi>
+                                </m:mrow>
+                              </m:mfrac>
+                            </m:mrow>
+                          </m:mtd>
+                        </m:mtr>
+                        <m:mtr>
+                          <m:mtd columnalign="left">
+                            <m:mn>0</m:mn>
+                          </m:mtd>
+                          <m:mtd columnalign="left">
+                            <m:mrow>
+                              <m:mfrac>
+                                <m:mrow>
+                                  <m:mo>(</m:mo>
+                                  <m:mn>1</m:mn>
+                                  <m:mo>+</m:mo>
+                                  <m:mi>α</m:mi>
+                                  <m:mo>)</m:mo>
+                                </m:mrow>
+                                <m:mrow>
+                                  <m:mn>2</m:mn>
+                                  <m:mi>T</m:mi>
+                                </m:mrow>
+                              </m:mfrac>
+                              <m:mo>≤</m:mo>
+                              <m:mrow>
+                                <m:mo>|</m:mo>
+                                <m:mi>f</m:mi>
+                                <m:mo>|</m:mo>
+                              </m:mrow>
+                            </m:mrow>
+                          </m:mtd>
+                        </m:mtr>
+                      </m:mtable>
+                    </m:mfenced>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id279312">Tradeoff: larger <m:math overflow="scroll"><m:mrow><m:mi>α</m:mi><m:mspace width="3.33333pt"/><m:mo>⇒</m:mo></m:mrow></m:math> less time-spread but more freq-spread:</para>
+        <figure id="uid17"><media id="uid17_media" alt="This figure consists of two graphs, each containing three curves, labeled as α=0, α=0.5, α=1. The first graph shows that these three curves closely follow a wave-like shape with two small waves on the outside and one large peak in the middle at horizontal value 0 and vertical value 1. The graph's horizontal axis is labeled time (T=1). The smaller the alpha-value, the larger the amplitude of the smaller waves will be. The second graph has the same labeled curves except that this graph plots frequency, and the curves follow one large increase, one peak, then one large decrease across the page. The alpha value of 1 is very wavelike, while the alpha of 0.5 is wavelike except that its amplitude is cut off by a horizontal peak that occurs at the maximum value of the graph, 1. The alpha of 0 is a rectangle from -0.5 on the left to 0.5 on the right with height one.">
+            <image mime-type="image/png" src="../../media/fig58.png" id="uid17_onlineimage" width="524"><!-- NOTE: attribute width changes image size online (pixels). original width is 524. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig58.eps" id="uid17_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id279345">So, we now know how to design the combined pulse <m:math overflow="scroll"><m:mrow><m:mi>p</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+        <para id="id279366">But what about the individual pulses <m:math overflow="scroll"><m:mrow><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math overflow="scroll"><m:mrow><m:mi>q</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>?</para>
+      </section>
+      <section id="uid18">
+        <title>Maximizing SNR for ISI-free Pulses in White Noise</title>
+        <para id="id279414">Now let's bring the noise back into consideration. Given</para>
+        <figure id="uid19"><media id="uid19_media" alt="This figure is a flowchart. To begin is the expression a[n] which points at a box labeled g(t). To the right of the box is an arrow that points at a circle containing a plus sign. Above the circle is an expression, w-tilde(t), that points down at the plus-circle. To the right of the plus-circle is a box labeled q(t). To the right of this is a line angled upward that is disconnected from the final arrow and general flow of the chart in the figure. This line is labeled y(t). Below the disconnected portion is the label t = mT. There is indication with an angled arrow that the disconnected segment may be moving to connect to the line. The final arrow points at the final expression, y[m].">
+            <image mime-type="image/png" src="../../media/fig59.png" id="uid19_onlineimage" width="564"><!-- NOTE: attribute width changes image size online (pixels). original width is 564. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig59.eps" id="uid19_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <equation id="id279428">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mo form="prefix">E</m:mo>
+                    <m:mo>{</m:mo>
+                    <m:mover accent="true">
+                      <m:mi>w</m:mi>
+                      <m:mo>˜</m:mo>
+                    </m:mover>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mspace width="0.166667em"/>
+                    <m:msup>
+                      <m:mover accent="true">
+                        <m:mi>w</m:mi>
+                        <m:mo>˜</m:mo>
+                      </m:mover>
+                      <m:mo>*</m:mo>
+                    </m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:msub>
+                        <m:mi>N</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                      <m:mi>δ</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>τ</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mspace width="4.pt"/>
+                      <m:mspace width="4.pt"/>
+                      <m:mspace width="4.pt"/>
+                      <m:mtext>(complex</m:mtext>
+                      <m:mspace width="4.pt"/>
+                      <m:mtext>white</m:mtext>
+                      <m:mspace width="4.pt"/>
+                      <m:mtext>noise)</m:mtext>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id279555">we want a <m:math overflow="scroll"><m:mrow><m:mo>{</m:mo><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>,</m:mo><m:mi>q</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math> pair that maximizes the SNR of <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo></m:mrow></m:math>.</para>
+        <para id="id279610">Separating the noise and signal contributions to <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo></m:mrow></m:math> via</para>
+        <figure id="uid20"><media id="uid20_media" alt="This is a flowchart of two rows that connect to a final shape and expression. The top row shows movement from w-tile(t) to a box labeled q(t) to a line angled upward that is disconnected from the next arrow and general flow of the chart in the figure. This line is labeled y_n(t). Below the disconnected portion is the label t = mT. There is indication with an angled arrow that the disconnected segment may be moving to connect to the line. The final arrow in this row is labeled y_n[m]. The lower row shows movement from a[n] to a box labeled g(t) to a box labeled q(t). The two boxes are bracketed and labeled p(t). To the right of the boxes is a line angled upward that is disconnected from the next arrow and general flow of the chart in the figure. This line is labeled y_s(t). Below the disconnected portion is the label t = mT. There is indication with an angled arrow that the disconnected segment may be moving to connect to the line. The final arrow in this row is labeled y_s[m].">
+            <image mime-type="image/png" src="../../media/fig60.png" id="uid20_onlineimage" width="546"><!-- NOTE: attribute width changes image size online (pixels). original width is 546. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig60.eps" id="uid20_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id279640">the SNR can be written</para>
+        <equation id="id279643">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mtext>SNR</m:mtext>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:msub>
+                        <m:mi mathvariant="script">E</m:mi>
+                        <m:mi>s</m:mi>
+                      </m:msub>
+                      <m:msub>
+                        <m:mi mathvariant="script">E</m:mi>
+                        <m:mi>n</m:mi>
+                      </m:msub>
+                    </m:mfrac>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mo>=</m:mo>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mfrac>
+                      <m:mrow>
+                        <m:mo form="prefix">E</m:mo>
+                        <m:mo>{</m:mo>
+                        <m:mo>|</m:mo>
+                        <m:msub>
+                          <m:mi>y</m:mi>
+                          <m:mi>s</m:mi>
+                        </m:msub>
+                        <m:mrow>
+                          <m:mo>[</m:mo>
+                          <m:mi>m</m:mi>
+                          <m:mo>]</m:mo>
+                        </m:mrow>
+                        <m:msup>
+                          <m:mo>|</m:mo>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mo>}</m:mo>
+                      </m:mrow>
+                      <m:mrow>
+                        <m:mo form="prefix">E</m:mo>
+                        <m:mo>{</m:mo>
+                        <m:mo>|</m:mo>
+                        <m:msub>
+                          <m:mi>y</m:mi>
+                          <m:mi>n</m:mi>
+                        </m:msub>
+                        <m:mrow>
+                          <m:mo>[</m:mo>
+                          <m:mi>m</m:mi>
+                          <m:mo>]</m:mo>
+                        </m:mrow>
+                        <m:msup>
+                          <m:mo>|</m:mo>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mo>}</m:mo>
+                      </m:mrow>
+                    </m:mfrac>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id279774">where <emphasis effect="italics">E<sub>s</sub></emphasis> and <emphasis effect="italics">E<sub>n</sub></emphasis> are average signal and noise energies.</para>
+        <para id="id279814">Here, we treat both <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>w</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> and <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> as random,
+implying that <m:math overflow="scroll"><m:mrow><m:msub><m:mi>y</m:mi><m:mi>s</m:mi></m:msub><m:mrow><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo></m:mrow></m:mrow></m:math> and <m:math overflow="scroll"><m:mrow><m:msub><m:mi>y</m:mi><m:mi>n</m:mi></m:msub><m:mrow><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo></m:mrow></m:mrow></m:math> are both random.
+</para>
+        <para id="eip-501">Notice that, with an ISI-free combined pulse <m:math overflow="scroll"><m:mrow><m:mi>p</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>, we get</para><equation id="id279922">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>y</m:mi>
+                      <m:mi>s</m:mi>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:munder>
+                      <m:mo>∑</m:mo>
+                      <m:mi>n</m:mi>
+                    </m:munder>
+                    <m:mi>a</m:mi>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mi>p</m:mi>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mo>(</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>)</m:mo>
+                      <m:mi>T</m:mi>
+                    </m:mfenced>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mo>=</m:mo>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mi>a</m:mi>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mi>p</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>0</m:mn>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>p</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mn>0</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:mi>q</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mi>g</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>0</m:mn>
+                      <m:mo>-</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mi>d</m:mi>
+                    <m:mi>τ</m:mi>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id280101">so that</para>
+        <equation id="id280106">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:msub>
+                    <m:mi mathvariant="script">E</m:mi>
+                    <m:mi>s</m:mi>
+                  </m:msub>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mrow>
+                      <m:mo form="prefix">E</m:mo>
+                      <m:mo>{</m:mo>
+                      <m:mo>|</m:mo>
+                    </m:mrow>
+                    <m:msub>
+                      <m:mi>y</m:mi>
+                      <m:mi>s</m:mi>
+                    </m:msub>
+                    <m:msup>
+                      <m:mrow>
+                        <m:mrow>
+                          <m:mo>[</m:mo>
+                          <m:mi>m</m:mi>
+                          <m:mo>]</m:mo>
+                        </m:mrow>
+                        <m:mo>|</m:mo>
+                      </m:mrow>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mrow>
+                      <m:mo>}</m:mo>
+                      <m:mspace width="3.33333pt"/>
+                      <m:mo>=</m:mo>
+                      <m:mspace width="3.33333pt"/>
+                      <m:mo form="prefix">E</m:mo>
+                      <m:mo>{</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mfenced separators="" open="|" close="|">
+                        <m:mi>a</m:mi>
+                        <m:mrow>
+                          <m:mo>[</m:mo>
+                          <m:mi>m</m:mi>
+                          <m:mo>]</m:mo>
+                        </m:mrow>
+                        <m:msubsup>
+                          <m:mo>∫</m:mo>
+                          <m:mrow>
+                            <m:mo>-</m:mo>
+                            <m:mi>∞</m:mi>
+                          </m:mrow>
+                          <m:mi>∞</m:mi>
+                        </m:msubsup>
+                        <m:mi>q</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mi>g</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mo>-</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mi>d</m:mi>
+                        <m:mi>τ</m:mi>
+                      </m:mfenced>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mo form="prefix">E</m:mo>
+                          <m:mfenced open="{" close="}">
+                            <m:msup>
+                              <m:mrow>
+                                <m:mo>|</m:mo>
+                                <m:mi>a</m:mi>
+                                <m:mrow>
+                                  <m:mo>[</m:mo>
+                                  <m:mi>m</m:mi>
+                                  <m:mo>]</m:mo>
+                                </m:mrow>
+                                <m:mo>|</m:mo>
+                              </m:mrow>
+                              <m:mn>2</m:mn>
+                            </m:msup>
+                          </m:mfenced>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:msubsup>
+                        <m:mi>σ</m:mi>
+                        <m:mi>a</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msubsup>
+                    </m:munder>
+                    <m:mspace width="0.166667em"/>
+                    <m:msup>
+                      <m:mfenced separators="" open="|" close="|">
+                        <m:msubsup>
+                          <m:mo>∫</m:mo>
+                          <m:mrow>
+                            <m:mo>-</m:mo>
+                            <m:mi>∞</m:mi>
+                          </m:mrow>
+                          <m:mi>∞</m:mi>
+                        </m:msubsup>
+                        <m:mi>q</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mi>g</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mo>-</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mi>d</m:mi>
+                        <m:mi>τ</m:mi>
+                      </m:mfenced>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id280395">where <emphasis effect="italics">σ<sub>a</sub><sup>2</sup></emphasis> denotes average symbol energy. Next, notice that</para>
+        <equation id="id280419">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>y</m:mi>
+                      <m:mi>n</m:mi>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>y</m:mi>
+                      <m:mi>n</m:mi>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mi>T</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mo>=</m:mo>
+                    <m:mspace width="3.33333pt"/>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:mi>q</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mspace width="0.166667em"/>
+                    <m:mover accent="true">
+                      <m:mi>w</m:mi>
+                      <m:mo>˜</m:mo>
+                    </m:mover>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mi>T</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mi>d</m:mi>
+                    <m:mi>τ</m:mi>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id280542">so that</para>
+        <equation id="id280548">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:msub>
+                    <m:mi mathvariant="script">E</m:mi>
+                    <m:mi>n</m:mi>
+                  </m:msub>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mrow>
+                      <m:mo form="prefix">E</m:mo>
+                      <m:mo>{</m:mo>
+                      <m:mo>|</m:mo>
+                    </m:mrow>
+                    <m:msub>
+                      <m:mi>y</m:mi>
+                      <m:mi>n</m:mi>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>[</m:mo>
+                      <m:mi>m</m:mi>
+                      <m:mo>]</m:mo>
+                    </m:mrow>
+                    <m:mrow>
+                      <m:msup>
+                        <m:mo>|</m:mo>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                      <m:mo>}</m:mo>
+                    </m:mrow>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mo>=</m:mo>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mo form="prefix">E</m:mo>
+                    <m:mfenced open="{" close="}">
+                      <m:msup>
+                        <m:mfenced separators="" open="|" close="|">
+                          <m:msubsup>
+                            <m:mo>∫</m:mo>
+                            <m:mrow>
+                              <m:mo>-</m:mo>
+                              <m:mi>∞</m:mi>
+                            </m:mrow>
+                            <m:mi>∞</m:mi>
+                          </m:msubsup>
+                          <m:mi>q</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>τ</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mover accent="true">
+                            <m:mi>w</m:mi>
+                            <m:mo>˜</m:mo>
+                          </m:mover>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>m</m:mi>
+                            <m:mi>T</m:mi>
+                            <m:mo>-</m:mo>
+                            <m:mi>τ</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mi>d</m:mi>
+                          <m:mi>τ</m:mi>
+                        </m:mfenced>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mo form="prefix">E</m:mo>
+                    <m:mfenced separators="" open="{" close="}">
+                      <m:msubsup>
+                        <m:mo>∫</m:mo>
+                        <m:mrow>
+                          <m:mo>-</m:mo>
+                          <m:mi>∞</m:mi>
+                        </m:mrow>
+                        <m:mi>∞</m:mi>
+                      </m:msubsup>
+                      <m:mi>q</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>τ</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mover accent="true">
+                        <m:mi>w</m:mi>
+                        <m:mo>˜</m:mo>
+                      </m:mover>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>m</m:mi>
+                        <m:mi>T</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mi>τ</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mi>d</m:mi>
+                      <m:mi>τ</m:mi>
+                      <m:msubsup>
+                        <m:mo>∫</m:mo>
+                        <m:mrow>
+                          <m:mo>-</m:mo>
+                          <m:mi>∞</m:mi>
+                        </m:mrow>
+                        <m:mi>∞</m:mi>
+                      </m:msubsup>
+                      <m:msup>
+                        <m:mi>q</m:mi>
+                        <m:mo>*</m:mo>
+                      </m:msup>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:msup>
+                          <m:mi>τ</m:mi>
+                          <m:mo>'</m:mo>
+                        </m:msup>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:msup>
+                        <m:mover accent="true">
+                          <m:mi>w</m:mi>
+                          <m:mo>˜</m:mo>
+                        </m:mover>
+                        <m:mo>*</m:mo>
+                      </m:msup>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>m</m:mi>
+                        <m:mi>T</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:msup>
+                          <m:mi>τ</m:mi>
+                          <m:mo>'</m:mo>
+                        </m:msup>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mi>d</m:mi>
+                      <m:msup>
+                        <m:mi>τ</m:mi>
+                        <m:mo>'</m:mo>
+                      </m:msup>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:mi>q</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:msup>
+                      <m:mi>q</m:mi>
+                      <m:mo>*</m:mo>
+                    </m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:msup>
+                        <m:mi>τ</m:mi>
+                        <m:mo>'</m:mo>
+                      </m:msup>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mo form="prefix">E</m:mo>
+                          <m:mfenced separators="" open="{" close="}">
+                            <m:mover accent="true">
+                              <m:mi>w</m:mi>
+                              <m:mo>˜</m:mo>
+                            </m:mover>
+                            <m:mrow>
+                              <m:mo>(</m:mo>
+                              <m:mi>m</m:mi>
+                              <m:mi>T</m:mi>
+                              <m:mo>-</m:mo>
+                              <m:mi>τ</m:mi>
+                              <m:mo>)</m:mo>
+                            </m:mrow>
+                            <m:msup>
+                              <m:mover accent="true">
+                                <m:mi>w</m:mi>
+                                <m:mo>˜</m:mo>
+                              </m:mover>
+                              <m:mo>*</m:mo>
+                            </m:msup>
+                            <m:mrow>
+                              <m:mo>(</m:mo>
+                              <m:mi>m</m:mi>
+                              <m:mi>T</m:mi>
+                              <m:mo>-</m:mo>
+                              <m:msup>
+                                <m:mi>τ</m:mi>
+                                <m:mo>'</m:mo>
+                              </m:msup>
+                              <m:mo>)</m:mo>
+                            </m:mrow>
+                          </m:mfenced>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mstyle scriptlevel="0" displaystyle="true">
+                        <m:mrow>
+                          <m:msub>
+                            <m:mi>N</m:mi>
+                            <m:mn>0</m:mn>
+                          </m:msub>
+                          <m:mi>δ</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:msup>
+                              <m:mi>τ</m:mi>
+                              <m:mo>'</m:mo>
+                            </m:msup>
+                            <m:mo>-</m:mo>
+                            <m:mi>τ</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                        </m:mrow>
+                      </m:mstyle>
+                    </m:munder>
+                    <m:mi>d</m:mi>
+                    <m:msup>
+                      <m:mi>τ</m:mi>
+                      <m:mo>'</m:mo>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>τ</m:mi>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>N</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:msup>
+                      <m:mrow>
+                        <m:mo>|</m:mo>
+                        <m:mi>q</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mo>|</m:mo>
+                      </m:mrow>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>τ</m:mi>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id281136">Putting these together, we find</para>
+        <equation id="id281142">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mtext>SNR</m:mtext>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:msubsup>
+                        <m:mi>σ</m:mi>
+                        <m:mi>a</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msubsup>
+                      <m:msub>
+                        <m:mi>N</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mfrac>
+                    <m:mspace width="0.166667em"/>
+                    <m:mfrac>
+                      <m:msup>
+                        <m:mfenced separators="" open="|" close="|">
+                          <m:msubsup>
+                            <m:mo>∫</m:mo>
+                            <m:mrow>
+                              <m:mo>-</m:mo>
+                              <m:mi>∞</m:mi>
+                            </m:mrow>
+                            <m:mi>∞</m:mi>
+                          </m:msubsup>
+                          <m:mi>q</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>τ</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mi>g</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mo>-</m:mo>
+                            <m:mi>τ</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mi>d</m:mi>
+                          <m:mi>τ</m:mi>
+                        </m:mfenced>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                      <m:mrow>
+                        <m:msubsup>
+                          <m:mo>∫</m:mo>
+                          <m:mrow>
+                            <m:mo>-</m:mo>
+                            <m:mi>∞</m:mi>
+                          </m:mrow>
+                          <m:mi>∞</m:mi>
+                        </m:msubsup>
+                        <m:msup>
+                          <m:mrow>
+                            <m:mo>|</m:mo>
+                            <m:mi>q</m:mi>
+                            <m:mrow>
+                              <m:mo>(</m:mo>
+                              <m:mi>τ</m:mi>
+                              <m:mo>)</m:mo>
+                            </m:mrow>
+                            <m:mo>|</m:mo>
+                          </m:mrow>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mi>d</m:mi>
+                        <m:mi>τ</m:mi>
+                      </m:mrow>
+                    </m:mfrac>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id281297">Cauchy-Schwarz says</para>
+        <equation id="id281303">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:msup>
+                      <m:mfenced separators="" open="|" close="|">
+                        <m:msubsup>
+                          <m:mo>∫</m:mo>
+                          <m:mrow>
+                            <m:mo>-</m:mo>
+                            <m:mi>∞</m:mi>
+                          </m:mrow>
+                          <m:mi>∞</m:mi>
+                        </m:msubsup>
+                        <m:mi>b</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mi>c</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mi>d</m:mi>
+                        <m:mi>τ</m:mi>
+                      </m:mfenced>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                  </m:mstyle>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>≤</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:msubsup>
+                        <m:mo>∫</m:mo>
+                        <m:mrow>
+                          <m:mo>-</m:mo>
+                          <m:mi>∞</m:mi>
+                        </m:mrow>
+                        <m:mi>∞</m:mi>
+                      </m:msubsup>
+                      <m:msup>
+                        <m:mrow>
+                          <m:mo>|</m:mo>
+                          <m:mi>b</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>τ</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mo>|</m:mo>
+                        </m:mrow>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                      <m:mi>d</m:mi>
+                      <m:mi>τ</m:mi>
+                      <m:mo>·</m:mo>
+                      <m:msubsup>
+                        <m:mo>∫</m:mo>
+                        <m:mrow>
+                          <m:mo>-</m:mo>
+                          <m:mi>∞</m:mi>
+                        </m:mrow>
+                        <m:mi>∞</m:mi>
+                      </m:msubsup>
+                      <m:msup>
+                        <m:mrow>
+                          <m:mo>|</m:mo>
+                          <m:mi>c</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>τ</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mo>|</m:mo>
+                        </m:mrow>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                      <m:mi>d</m:mi>
+                      <m:mi>τ</m:mi>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd/>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>with</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>equality</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>iff</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mrow>
+                      <m:mi>b</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>τ</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>=</m:mo>
+                      <m:mi>K</m:mi>
+                      <m:msup>
+                        <m:mi>c</m:mi>
+                        <m:mo>*</m:mo>
+                      </m:msup>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>τ</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mrow>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>for</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>any</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mi>K</m:mi>
+                    <m:mtext>,</m:mtext>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id281552">which implies</para>
+        <equation id="id281558">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mtext>SNR</m:mtext>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>≤</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:msubsup>
+                        <m:mi>σ</m:mi>
+                        <m:mi>a</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msubsup>
+                      <m:msub>
+                        <m:mi>N</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mfrac>
+                    <m:mspace width="0.166667em"/>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:msup>
+                      <m:mrow>
+                        <m:mo>|</m:mo>
+                        <m:mi>g</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mo>-</m:mo>
+                          <m:mi>τ</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mo>|</m:mo>
+                      </m:mrow>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>τ</m:mi>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd/>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mtext>with</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>equality</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>iff</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mrow>
+                      <m:mi>q</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>τ</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>=</m:mo>
+                      <m:mi>K</m:mi>
+                      <m:msup>
+                        <m:mi>g</m:mi>
+                        <m:mo>*</m:mo>
+                      </m:msup>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mo>-</m:mo>
+                        <m:mi>τ</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mrow>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>for</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>any</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mi>K</m:mi>
+                    <m:mtext>.</m:mtext>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id281725">Noting that SNR doesn't depend on <emphasis effect="italics">K</emphasis>, we choose <m:math overflow="scroll"><m:mrow><m:mi>K</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math>.
+Thus, given pulse <m:math overflow="scroll"><m:mrow><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>, the SNR-maximizing receiver filter is</para>
+        <equation id="id281772"><m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>q</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>=</m:mo>
+                    <m:msup>
+                      <m:mi>g</m:mi>
+                      <m:mo>*</m:mo>
+                    </m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mo>-</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mspace width="1.em"/>
+                    <m:mtext>known as a "matched filter".</m:mtext>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id281845">We can write this in the frequency domain as</para>
+        <equation id="id281851">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>Q</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>f</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:mi>q</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:mi>f</m:mi>
+                        <m:mi>τ</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>τ</m:mi>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mo>=</m:mo>
+                    <m:mspace width="3.33333pt"/>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:msup>
+                      <m:mi>g</m:mi>
+                      <m:mo>*</m:mo>
+                    </m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mo>-</m:mo>
+                      <m:mi>τ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:mi>f</m:mi>
+                        <m:mi>τ</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>τ</m:mi>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:msup>
+                      <m:mi>g</m:mi>
+                      <m:mo>*</m:mo>
+                    </m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:mi>f</m:mi>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>t</m:mi>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mo>=</m:mo>
+                    <m:mspace width="3.33333pt"/>
+                    <m:msup>
+                      <m:mfenced separators="" open="[" close="]">
+                        <m:msubsup>
+                          <m:mo>∫</m:mo>
+                          <m:mrow>
+                            <m:mo>-</m:mo>
+                            <m:mi>∞</m:mi>
+                          </m:mrow>
+                          <m:mi>∞</m:mi>
+                        </m:msubsup>
+                        <m:mi>g</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>t</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:msup>
+                          <m:mi>e</m:mi>
+                          <m:mrow>
+                            <m:mo>-</m:mo>
+                            <m:mi>j</m:mi>
+                            <m:mn>2</m:mn>
+                            <m:mi>π</m:mi>
+                            <m:mi>f</m:mi>
+                            <m:mi>t</m:mi>
+                          </m:mrow>
+                        </m:msup>
+                        <m:mi>d</m:mi>
+                        <m:mi>t</m:mi>
+                      </m:mfenced>
+                      <m:mo>*</m:mo>
+                    </m:msup>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msup>
+                      <m:mi>G</m:mi>
+                      <m:mo>*</m:mo>
+                    </m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>f</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id282156">Summary: For SNR-maximizing ISI-free pulses, we need</para>
+        <list id="id282162" display="block" list-type="enumerated"><item id="uid21"><m:math overflow="scroll"><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo><m:mi>Q</m:mi><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>P</m:mi><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:math> satisfying the Nyquist criterion,
+</item>
+          <item id="uid22"><m:math overflow="scroll"><m:mrow><m:mi>Q</m:mi><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>G</m:mi><m:mo>*</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>,
+</item>
+        </list>
+        <para id="id282259">which together imply <m:math overflow="scroll"><m:msup><m:mrow><m:mo>|</m:mo><m:mi>G</m:mi><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup></m:math> must satisfy the Nyquist criterion.</para>
+        <para id="id282290">One option is <m:math overflow="scroll"><m:mrow><m:mi>G</m:mi><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msqrt><m:mrow><m:msub><m:mi>P</m:mi><m:mtext>RC</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:msqrt></m:mrow></m:math>, since <m:math overflow="scroll"><m:mrow><m:msub><m:mi>P</m:mi><m:mtext>RC</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> was Nyquist.
+We call this the “square-root raised cosine” (SRRC) pulse.
+Working out the details of <m:math overflow="scroll"><m:mrow><m:msup><m:mrow><m:mi mathvariant="script">F</m:mi></m:mrow><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mrow><m:mo>{</m:mo><m:msub><m:mi>G</m:mi><m:mtext>SRRC</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow></m:mrow></m:math>, we find</para>
+        <equation id="id282396">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>g</m:mi>
+                      <m:mtext>SRRC</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mrow>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mn>1</m:mn>
+                          <m:mo>-</m:mo>
+                          <m:mi>α</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mo form="prefix">sinc</m:mo>
+                        <m:mo>(</m:mo>
+                        <m:mfrac>
+                          <m:mi>t</m:mi>
+                          <m:mi>T</m:mi>
+                        </m:mfrac>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mn>1</m:mn>
+                          <m:mo>-</m:mo>
+                          <m:mi>α</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mrow>
+                        <m:mn>1</m:mn>
+                        <m:mo>-</m:mo>
+                        <m:msup>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>4</m:mn>
+                            <m:mi>α</m:mi>
+                            <m:mfrac>
+                              <m:mi>t</m:mi>
+                              <m:mi>T</m:mi>
+                            </m:mfrac>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                      </m:mrow>
+                    </m:mfrac>
+                    <m:mo>+</m:mo>
+                    <m:mfrac>
+                      <m:mrow>
+                        <m:mn>4</m:mn>
+                        <m:mi>α</m:mi>
+                        <m:mo form="prefix">cos</m:mo>
+                        <m:mo>(</m:mo>
+                        <m:mi>π</m:mi>
+                        <m:mfrac>
+                          <m:mi>t</m:mi>
+                          <m:mi>T</m:mi>
+                        </m:mfrac>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mn>1</m:mn>
+                          <m:mo>+</m:mo>
+                          <m:mi>α</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mrow>
+                        <m:mi>π</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>-</m:mo>
+                        <m:msup>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mn>4</m:mn>
+                            <m:mi>α</m:mi>
+                            <m:mfrac>
+                              <m:mi>t</m:mi>
+                              <m:mi>T</m:mi>
+                            </m:mfrac>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfrac>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <figure id="uid23"><media id="uid23_media" alt="This figure consists of two graphs, each containing three curves, labeled as α=0, α=0.5, α=1. The first graph shows that these three curves closely follow a wave-like shape with two small waves on the outside and one large peak in the middle at horizontal value 0 and vertical value 1. The graph's horizontal axis is labeled time (T=1). The smaller the alpha-value, the larger the amplitude of the smaller waves will be. The second graph has the same labeled curves except that this graph plots frequency, and the curves follow one large increase, one peak, then one large decrease across the page. The alpha value of 1 is very wavelike, while the alpha of 0.5 is wavelike except that its amplitude is cut off by a horizontal peak that occurs at the maximum value of the graph, 1. The alpha of 0 is a rectangle from -0.5 on the left to 0.5 on the right with height one.">
+            <image mime-type="image/png" src="../../media/fig61.png" id="uid23_onlineimage" width="532"><!-- NOTE: attribute width changes image size online (pixels). original width is 532. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig61.eps" id="uid23_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id282591">At the receiver, we would use <m:math overflow="scroll"><m:mrow><m:msub><m:mi>q</m:mi><m:mtext>SRRC</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msubsup><m:mi>g</m:mi><m:mrow><m:mtext>SRRC</m:mtext></m:mrow><m:mo>*</m:mo></m:msubsup><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msub><m:mi>g</m:mi><m:mtext>SRRC</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>;
+the latter equality is due to <m:math overflow="scroll"><m:mrow><m:msub><m:mi>g</m:mi><m:mtext>SRRC</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> being real and symmetric.
+</para>
+      </section>
+  </content>
+</document>

@@ -1,0 +1,756 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Preliminaries</title>
+  <metadata>
+  <md:content-id>m31815</md:content-id><md:title>Preliminaries</md:title>
+  <md:abstract>The module provides a review of the background concepts needed for the study of analog and digital communications: the Fourier transform, various definitions of bandwith, the Dirac delta, frequency-domain representation of sinusoids, frequency-domain plotting in Matlab, linear time invariant (LTI) systems, linear filtering, lowpass filters, and Matlab design of lowpass filters.</md:abstract>
+  <md:uuid>7e8c1def-4056-4be8-ad2f-42dc8ba7d311</md:uuid>
+</metadata>
+<featured-links>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit below.
+       Changes to the links section in the source will not be saved. -->
+    <link-group type="supplemental">
+      <link url="related matlab files.zip" strength="3">Related M-Files</link>
+    </link-group>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit above.
+       Changes to the links section in the source will not be saved. -->
+</featured-links>
+<content>
+<section id="fs-id1164306743799">
+<title>Fourier Transform (FT)</title>
+        <para id="id93036">Definition:
+<equation id="eip-id12966901">
+<m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>W</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>f</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:mi>w</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:mi>f</m:mi>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>t</m:mi>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mo>=</m:mo>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mi mathvariant="script">F</m:mi>
+                    <m:mrow>
+                      <m:mo>{</m:mo>
+                      <m:mi>w</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>}</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi>w</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:msubsup>
+                      <m:mo>∫</m:mo>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>∞</m:mi>
+                      </m:mrow>
+                      <m:mi>∞</m:mi>
+                    </m:msubsup>
+                    <m:mi>W</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>f</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:mi>f</m:mi>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mi>f</m:mi>
+                    <m:mspace width="3.33333pt"/>
+                    <m:mo>=</m:mo>
+                    <m:mspace width="3.33333pt"/>
+                    <m:msup>
+                      <m:mrow>
+                        <m:mi mathvariant="script">F</m:mi>
+                      </m:mrow>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mrow>
+                      <m:mo>{</m:mo>
+                      <m:mi>W</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>}</m:mo>
+                    </m:mrow>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation></para>
+        
+        <para id="id92494">Properties:</para>
+        <list id="id92499" display="block" list-type="bulleted"><item id="uid2">Linearity: <m:math overflow="scroll"><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:msub><m:mi>c</m:mi><m:mn>1</m:mn></m:msub><m:msub><m:mi>w</m:mi><m:mn>1</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:msub><m:mi>c</m:mi><m:mn>2</m:mn></m:msub><m:msub><m:mi>w</m:mi><m:mn>2</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:msub><m:mi>c</m:mi><m:mn>1</m:mn></m:msub><m:msub><m:mi>W</m:mi><m:mn>1</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:msub><m:mi>c</m:mi><m:mn>2</m:mn></m:msub><m:msub><m:mi>W</m:mi><m:mn>2</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>.
+</item>
+          <item id="uid3">Real-valued <m:math overflow="scroll"><m:mrow><m:mi>w</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mspace width="3.33333pt"/><m:mo>⇒</m:mo></m:mrow><m:mo>{</m:mo><m:mtable>
+<m:mtr>
+<m:mtd>
+<m:mtext>conjugate symmetric</m:mtext> <m:mi>W</m:mi>
+<m:mo>(</m:mo>
+<m:mi>f</m:mi>
+<m:mo>)</m:mo>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd>
+<m:mo>|</m:mo>
+<m:mi>W</m:mi>
+<m:mo>(</m:mo>
+<m:mi>f</m:mi>
+<m:mo>)</m:mo>
+<m:mo>|</m:mo>
+<m:mtext>symmetric around</m:mtext>
+<m:mi>f</m:mi>
+<m:mo>=</m:mo>
+<m:mn>0</m:mn>
+</m:mtd>
+</m:mtr>
+</m:mtable>
+</m:math>
+.</item>
+        </list>
+</section>
+      <section id="uid4">
+        <title>“Bandwidth”</title>
+        <figure id="uid5"><media id="uid5_media" alt="This figure consists of two graphs. The first is labeled bandpass signal, with horizontal axis f and vertical axis |W(f)|. In the graph, there are two identical curves that begin at the horizontal axis, peak with a flat, horizontal section, and symmetrically decrease and end at the horizontal axis. The first is unlabeled, and is located in the second quadrant. The second is in the first quadrant. its height is measured 1 and 0 dB. A horizontal line across this curve about is also labeled 1/√2 and -3 dB. Below this line are three widths measured inside the curve. The narrowest width measures from the intersection points of the -3 dB, and is labeled 1/2 power BW. Below this is a wider width, labeled 99%-power BW. Below this is a final width, the width between the curve's two intersections with the horizontal axis, and this width is labeled absolute BW. The second graph is labeled lowpass signal. It is similarly labeled, with the same axes and curve as in bandpass signal. This curve, however, is centered at the middle of the horizontal axis. The width at the base is labeled double-sided BW. Half of this width is measured above as single-sided BW.">
+            <image mime-type="image/png" src="../../media/fig5.png" id="uid5_onlineimage" width="814"><!-- NOTE: attribute width changes image size online (pixels). original width is 814. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig5.eps" id="uid5_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+      </section>
+      <section id="uid6">
+        <title>Dirac Delta (or “continuous impulse”) <m:math overflow="scroll"><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mo>·</m:mo><m:mo>)</m:mo></m:mrow></m:math></title>
+        <para id="id93702">An infinitely tall and thin waveform <emphasis effect="italics">with unit area</emphasis>:</para>
+        <figure id="uid7"><media id="uid7_media" alt="This figure contains four graphs, each with a curve that begins on the horizontal axis, increases to a peak and then decreases back to the horizontal axis, from left to right, the four graphs change in shape, increasing in amplitude and decreasing in wavelength. After the third graph, there is an arrow pointing to the right, labeled limit, that points at the fourth graph, where the curve is indistinguishable from the vertical axis. The fourth graph is labeled δ(t).">
+            <image mime-type="image/png" src="../../media/fig6.png" id="uid7_onlineimage" width="804"><!-- NOTE: attribute width changes image size online (pixels). original width is 804. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig6.eps" id="uid7_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id93721">that's often used to “kick” a system and see how it responds.</para>
+        
+        <list id="id93729" display="block" list-type="enumerated"><title>Key properties:</title><item id="uid8">Sifting:
+<m:math overflow="scroll"><m:mstyle scriptlevel="0" displaystyle="true"><m:mrow><m:msubsup><m:mo>∫</m:mo><m:mrow><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>w</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>q</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>t</m:mi><m:mo>=</m:mo><m:mi>w</m:mi><m:mrow><m:mo>(</m:mo><m:mi>q</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mstyle></m:math>.
+</item>
+          <item id="uid9">Time-domain impulse <m:math overflow="scroll"><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> has a flat spectrum:
+<equation id="id93835"><m:math overflow="scroll" mode="display"><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:msubsup><m:mo>∫</m:mo><m:mrow><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>f</m:mi><m:mi>t</m:mi></m:mrow></m:msup><m:mi>d</m:mi><m:mi>t</m:mi><m:mspace width="3.33333pt"/><m:mo>=</m:mo><m:mspace width="3.33333pt"/><m:mn>1</m:mn><m:mspace width="3.33333pt"/><m:mtext>(for</m:mtext><m:mspace width="4.pt"/><m:mtext>all</m:mtext><m:mspace width="4.pt"/><m:mi>f</m:mi><m:mtext>)</m:mtext><m:mo>.</m:mo></m:mrow></m:math></equation></item>
+          <item id="uid10">Freq-domain impulse <m:math overflow="scroll"><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:math> corresponds to a DC waveform:
+<equation id="id93969"><m:math overflow="scroll" mode="display"><m:mrow><m:msup><m:mrow><m:mi mathvariant="script">F</m:mi></m:mrow><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mrow><m:mo>{</m:mo><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:msubsup><m:mo>∫</m:mo><m:mrow><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>f</m:mi><m:mi>t</m:mi></m:mrow></m:msup><m:mi>d</m:mi><m:mi>f</m:mi><m:mspace width="3.33333pt"/><m:mo>=</m:mo><m:mspace width="3.33333pt"/><m:mn>1</m:mn><m:mspace width="3.33333pt"/><m:mtext>(for</m:mtext><m:mspace width="4.pt"/><m:mtext>all</m:mtext><m:mspace width="4.pt"/><m:mi>t</m:mi><m:mtext>)</m:mtext><m:mo>.</m:mo></m:mrow></m:math></equation></item>
+        </list>
+      </section>
+      <section id="uid11">
+        <title>Frequency-Domain Representation of Sinusoids</title>
+        <para id="id94094">Notice from the sifting property that</para>
+        <equation id="id94098">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:msup>
+                <m:mrow>
+                  <m:mi mathvariant="script">F</m:mi>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mrow>
+                <m:mo>{</m:mo>
+                <m:mi>δ</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>f</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:msub>
+                    <m:mi>f</m:mi>
+                    <m:mi>o</m:mi>
+                  </m:msub>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>}</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:msubsup>
+              <m:mi>δ</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>f</m:mi>
+                <m:mo>-</m:mo>
+                <m:msub>
+                  <m:mi>f</m:mi>
+                  <m:mi>o</m:mi>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mi>f</m:mi>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mi>d</m:mi>
+              <m:mi>f</m:mi>
+              <m:mo>=</m:mo>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:msub>
+                    <m:mi>f</m:mi>
+                    <m:mi>o</m:mi>
+                  </m:msub>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id94228">Thus, Euler's equations</para>
+        <equation id="id94233">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mo>(</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                    <m:msub>
+                      <m:mi>f</m:mi>
+                      <m:mi>o</m:mi>
+                    </m:msub>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:mfrac>
+                        <m:mn>1</m:mn>
+                        <m:mn>2</m:mn>
+                      </m:mfrac>
+                      <m:msup>
+                        <m:mi>e</m:mi>
+                        <m:mrow>
+                          <m:mi>j</m:mi>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>o</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                        </m:mrow>
+                      </m:msup>
+                      <m:mo>+</m:mo>
+                      <m:mfrac>
+                        <m:mn>1</m:mn>
+                        <m:mn>2</m:mn>
+                      </m:mfrac>
+                      <m:msup>
+                        <m:mi>e</m:mi>
+                        <m:mrow>
+                          <m:mo>-</m:mo>
+                          <m:mi>j</m:mi>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>o</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                        </m:mrow>
+                      </m:msup>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mo form="prefix">sin</m:mo>
+                    <m:mo>(</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                    <m:msub>
+                      <m:mi>f</m:mi>
+                      <m:mi>o</m:mi>
+                    </m:msub>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:mfrac>
+                        <m:mn>1</m:mn>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:mi>j</m:mi>
+                        </m:mrow>
+                      </m:mfrac>
+                      <m:msup>
+                        <m:mi>e</m:mi>
+                        <m:mrow>
+                          <m:mi>j</m:mi>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>o</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                        </m:mrow>
+                      </m:msup>
+                      <m:mo>-</m:mo>
+                      <m:mfrac>
+                        <m:mn>1</m:mn>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:mi>j</m:mi>
+                        </m:mrow>
+                      </m:mfrac>
+                      <m:msup>
+                        <m:mi>e</m:mi>
+                        <m:mrow>
+                          <m:mo>-</m:mo>
+                          <m:mi>j</m:mi>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msub>
+                            <m:mi>f</m:mi>
+                            <m:mi>o</m:mi>
+                          </m:msub>
+                          <m:mi>t</m:mi>
+                        </m:mrow>
+                      </m:msup>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id94452">and the Fourier transform pair <m:math overflow="scroll"><m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>f</m:mi><m:mi>o</m:mi></m:msub><m:mi>t</m:mi></m:mrow></m:msup><m:mo>↔</m:mo><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>-</m:mo><m:msub><m:mi>f</m:mi><m:mi>o</m:mi></m:msub><m:mo>)</m:mo></m:mrow></m:mrow></m:math>
+imply that</para>
+        <equation id="id94507">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi mathvariant="script">F</m:mi>
+                    <m:mo>{</m:mo>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>o</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:mfrac>
+                        <m:mn>1</m:mn>
+                        <m:mn>2</m:mn>
+                      </m:mfrac>
+                      <m:mi>δ</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>o</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>+</m:mo>
+                      <m:mfrac>
+                        <m:mn>1</m:mn>
+                        <m:mn>2</m:mn>
+                      </m:mfrac>
+                      <m:mi>δ</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>+</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>o</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mi mathvariant="script">F</m:mi>
+                    <m:mo>{</m:mo>
+                    <m:mo form="prefix">sin</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>o</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:mfrac>
+                        <m:mn>1</m:mn>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:mi>j</m:mi>
+                        </m:mrow>
+                      </m:mfrac>
+                      <m:mi>δ</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>o</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mfrac>
+                        <m:mn>1</m:mn>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:mi>j</m:mi>
+                        </m:mrow>
+                      </m:mfrac>
+                      <m:mi>δ</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>f</m:mi>
+                        <m:mo>+</m:mo>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>o</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>.</m:mo>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id94730">Often we draw this as</para>
+        <figure id="uid12"><media id="uid12_media" alt="This is a graph with vertical axis f and horizontal axis labeled |F{cos(2πf_0t)}| = |F{sin(2πf_0t)}|. The graph consists of two identical arrows pointing up, with their base attached to the horizontal axis. Their height is measured as 1/2, and their horizontal position is labeled -f_0 on the left and f_0 on the right.">
+            <image mime-type="image/png" src="../../media/fig7.png" id="uid12_onlineimage" width="634"><!-- NOTE: attribute width changes image size online (pixels). original width is 634. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig7.eps" id="uid12_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+      </section>
+      <section id="uid13">
+        <title>Frequency Domain via MATLAB</title>
+        <para id="id94755">Fourier transform requires evaluation of an integral.
+What do we do if we can't define/solve the integral?</para>
+        <list id="id94759" display="block" list-type="enumerated">
+          <item id="uid14">Generate (rate-<m:math overflow="scroll"><m:mfrac><m:mn>1</m:mn><m:msub><m:mi>T</m:mi><m:mi>s</m:mi></m:msub></m:mfrac></m:math>) sampled signal in MATLAB.
+</item>
+          <item id="uid15">Plot magnitude of Discrete Fourier Transform (DFT)
+using <code display="inline">plottf.m</code> (from course webpage).
+</item>
+        </list>
+        
+        
+        <figure id="uid16"><title>Square-wave example:</title><subfigure id="eip-id3331903">
+<code id="eip-id7066217" display="block">
+f = 10;
+t_max = 2;
+Ts = 1/1000;
+t = 0:Ts:t_max;
+x = sign(cos(2*pi*f*t));
+plottf(x,Ts);
+</code>
+
+</subfigure>
+<subfigure id="eip-id7785098">
+<media id="uid16_media" alt="This figure contains two graphs, the first plotting time on the horizontal axis against amplitude on the vertical axis. The horizontal values range from 0 to 2 in increments of 0.2 and the vertical axis values range from -1 to 1 in increments of 0.5. The graph consists of a series of near-vertical, nonlinear blue lines, with one occurring approximately every 0.05 units of time. The second graph plots frequency on the horizontal axis and magnitude on the vertical axis. The horizontal axis ranges from -500 to 500 in increments of 100. The vertical axis ranges in value from 0 to 1.4 in increments of 0.2. This graph consists of a vertical line every 25 units of frequency. The height of these lines starts out very small, then increases to a peak at (0, 1.4), and then symmetrically decreases out to the far right of the graph. The increases and decreases are very gradual until within 100 horizontal units of the peak, where they sharply increase.">
+            <image mime-type="image/png" src="../../media/fig8.png" id="uid16_onlineimage" width="402"><!-- NOTE: attribute width changes image size online (pixels). original width is 402. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig8.eps" id="uid16_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+       </subfigure> </figure>
+        
+        
+        <figure id="uid17"><title>Noise-wave example</title><subfigure id="eip-id7746691">
+<code id="eip-id5724082" display="block">
+t_max = 1;
+Ts = 1/1000;
+x = randn(1,t_max/Ts);
+plottf(x,Ts);
+</code>
+</subfigure>
+
+<subfigure id="eip-id8307209">
+<media id="uid17_media" alt="This figure consists of two graphs. The first plots a horizontal axis labeled time, and vertical axis labeled amplitude. The horizontal axis changes in value from 0 to 1 in increments of 0.1. The vertical axis changes in value from -3 to 3 in increments of 1. This graph is a series of waves of varying amplitudes, a large amount of noise and randomness. The second graph plots frequency against magnitude. Frequency ranges from -500 to 500 in increments of 100, and magnitude ranges from 0 to 0.08 in increments of 0.02. The second graph is very similar in shape to the first graph, with a large amount of noise and randomness in a series of waves.">
+            <image mime-type="image/png" src="../../media/fig9.png" id="uid17_onlineimage" width="386"><!-- NOTE: attribute width changes image size online (pixels). original width is 386. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig9.eps" id="uid17_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </subfigure></figure>
+        <para id="id94924">Notice that <code display="inline">plottf.m</code> only plots frequencies <m:math overflow="scroll"><m:mrow><m:mi>f</m:mi><m:mo>∈</m:mo><m:mo>[</m:mo><m:mo>-</m:mo><m:mfrac><m:mn>1</m:mn><m:mrow><m:mn>2</m:mn><m:msub><m:mi>T</m:mi><m:mi>s</m:mi></m:msub></m:mrow></m:mfrac><m:mo>,</m:mo><m:mfrac><m:mn>1</m:mn><m:mrow><m:mn>2</m:mn><m:msub><m:mi>T</m:mi><m:mi>s</m:mi></m:msub></m:mrow></m:mfrac><m:mo>)</m:mo></m:mrow></m:math>.
+</para>
+      </section>
+      <section id="uid18">
+        <title>Linear Time-Invariant (LTI) Systems</title>
+        <para id="id94994">An LTI system can be described by either its “impulse response”
+<m:math overflow="scroll"><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> or its “frequency response” <m:math overflow="scroll"><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math>.
+</para>
+        <figure id="uid19"><media id="uid19_media" alt="This figure consists of two flowcharts. The first begins with the title, in time domain. After this another title to the right, labeled impulse δ(t). To the right of this is an arrow pointing to the right at a box labeled LTI System. To the right of this is an arrow pointing to the right at the label h(t) impulse response. The second flowchart begins with the label, in frequency domain. To the right of this is the label flat spectrum, 1. To the right of this is an arrow pointing to the right at a box labeled LTI system. To the right of this is an arrow pointing to the right at the label H(f) frequency response.">
+            <image mime-type="image/png" src="../../media/fig10.png" id="uid19_onlineimage" width="594"><!-- NOTE: attribute width changes image size online (pixels). original width is 594. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig10.eps" id="uid19_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        
+        <list id="id95076" display="block" list-type="bulleted"><title>Input/output relationships:</title><item id="uid20">Time-domain: Convolution with impulse response <m:math overflow="scroll"><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math><figure id="uid21"><media id="uid21_media" alt="This figure contains a small flowchart and a large equation. First is a flowchart, showing movement from x(t), to a boxed h(t), to y(t). The equation reads y(t) = h(t) * x(t) = the integral from negative infinity to infinity of h(t - τ)x(τ)dτ."><image mime-type="image/png" src="../../media/fig11.png" id="uid21_onlineimage" width="744"><!-- NOTE: attribute width changes image size online (pixels). original width is 744. --></image><image for="pdf" mime-type="application/postscript" src="../../media/fig11.eps" id="uid21_printimage" print-width="3.2in"><!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)--></image></media></figure></item>
+          <item id="uid22">Freq-domain: Multiplication with freq response <m:math overflow="scroll"><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:math><figure id="uid23"><media id="uid23_media" alt="This figure contains a flowchart and an equation. The flowchart shows movement from X(f) to the boxed H(f) to Y(f). The equation reads Y(f) = H(f)X(f)."><image mime-type="image/png" src="../../media/fig12.png" id="uid23_onlineimage" width="508"><!-- NOTE: attribute width changes image size online (pixels). original width is 508. --></image><image for="pdf" mime-type="application/postscript" src="../../media/fig12.eps" id="uid23_printimage" print-width="3.2in"><!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)--></image></media></figure></item>
+        </list>
+      </section>
+      <section id="uid24">
+        <title>Linear Filtering</title>
+        <para id="id95183">Freq-domain illustration of LPF, BPF, and HPF:
+</para>
+        <figure id="uid25"><media id="uid25_media" alt="This figure contains one large equation, with multiple graphs underneath each expression in the equation. The equation reads X(f) time H(f) = Y(f). Below X(f) are three graphs. Each graph plots a horizontal axis, f, and contains a curve with several small waves along the curve. Below H(f) are three graphs, each plotting f on the horizontal axis. The graph on top plots a vertical axis LPF, the graph below it plots a vertical axis BPF, and the graph below it plots a vertical axis HPF. The top graph contains one box centered in the middle of the horizontal axis with its base on the horizontal axis. The graph below it contains two boxes, one in the second quadrant and one in the first quadrant. The bottom graph contains two incomplete boxes, one in the second and one in the first quadrant. Below Y(f) are three final graphs. The graphs plot horizontal axes as f. The top graph contains a wave similar to the graphs under X(f), coupled with two vertical lines at the same places that the box in H(f) touches the horizontal axis. The lower two graphs show this box splitting into two boxes, then extending off the page as incomplete figures.">
+            <image mime-type="image/png" src="../../media/fig13.png" id="uid25_onlineimage" width="714"><!-- NOTE: attribute width changes image size online (pixels). original width is 714. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig13.eps" id="uid25_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+      </section>
+      <section id="uid26"><title>Lowpass Filters</title><para id="id95215">Ideal non-causal LPF (using <m:math overflow="scroll"><m:mrow><m:mo form="prefix">sinc</m:mo><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>:</m:mo><m:mo>=</m:mo><m:mfrac><m:mrow><m:mo form="prefix">sin</m:mo><m:mo>(</m:mo><m:mi>π</m:mi><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mrow><m:mi>π</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac></m:mrow></m:math>):
+</para>
+        <figure id="uid27"><media id="uid27_media" alt="This figure contains two graphs and one equation. The equation reads H(f) = 1, if |f| less than or equal to B, and 0 if |f| greater than B, then an arrow pointing in both directions, labeled F. To the right of the arrow is the equation h(t) = 2Bsinc(2Bt). The first graph plots a horizontal axis f and vertical axis H(f). The graph contains a rectangle, with its base on the horizontal axis from -B to B, with a height of 1. The second graph plots a horizontal axis t and vertical axis h(t). There is a wave on this graph, with one large peak in the middle reaching 2B while on the vertical axis. The peak decreases to cross the horizontal axis at -1/2B and 1/2B. Below this are two smaller troughs, then a rise back to the horizontal axis at -1/B and 1/B.">
+            <image mime-type="image/png" src="../../media/fig14.png" id="uid27_onlineimage" width="642"><!-- NOTE: attribute width changes image size online (pixels). original width is 642. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig14.eps" id="uid27_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id95284">Ideal LPF with group-delay <emphasis effect="italics">t<sub>o</sub></emphasis>:
+</para>
+        <figure id="uid28"><media id="uid28_media" alt="This figure contains two graphs and one equation. The equation reads H(f) = e^-j2πft_0, if |f| less than or equal to B, and 0 if |f| greater than B, then an arrow pointing in both directions, labeled F. To the right of the arrow is the equation h(t) = 2Bsinc(2B(t - t_0)). The first graph plots a horizontal axis f and vertical axis H(f). The graph contains a rectangle, with its base on the horizontal axis from -B to B, with a height of 1. The second graph plots a horizontal axis t and vertical axis h(t). There is a wave on this graph, with one large peak in the middle reaching 2B, at a horizontal value t_0. The peak decreases to a smaller wave, and the width of half of the wave is 1/2B.">
+            <image mime-type="image/png" src="../../media/fig15.png" id="uid28_onlineimage" width="724"><!-- NOTE: attribute width changes image size online (pixels). original width is 724. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig15.eps" id="uid28_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id95320">A causal linear-phase LPF with group-delay <emphasis effect="italics">t<sub>o</sub></emphasis>:
+</para>
+        <figure id="uid29"><media id="uid29_media" alt="This figure contains two graphs. The first plots f on the horizontal axis against |H(f)|. This graph consists of a wavering curve that floats along the horizontal axis until horizontal axis -B, where the wavering graph increases sharply to a flat peak from -B to B, where it then decreases back down to the horizontal axis and floats across to the edge of the graph on the right. The second graph plots t on the horizontal axis and h(t) on the vertical axis. It consists of two small troughs and one large peak in a continuous wave. The height of the peak is 2B, and the peak is centered at horizontal value t_0. The trough to the right of the peak ends at horizontal value 2t_0. The width of the troughs are 1/2B. The entire wave is bracketed symmetry around center yields linear phase.">
+            <image mime-type="image/png" src="../../media/fig16.png" id="uid29_onlineimage" width="638"><!-- NOTE: attribute width changes image size online (pixels). original width is 638. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig16.eps" id="uid29_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id95356">but MATLAB can give better causal linear-phase LPFs... </para>
+        <para id="eip-103">In MATLAB, generate <m:math overflow="scroll"><m:mfrac><m:mn>1</m:mn><m:msub><m:mi>T</m:mi><m:mi>s</m:mi></m:msub></m:mfrac></m:math>-sampled LPF impulse response via
+</para><para id="id95383">
+          <code display="inline">h = firls(Lf, [0,fp,fs,1], [G,G,0,0])/Ts;</code>
+        </para>
+        <para id="id95398">where...
+</para>
+        <figure id="uid30"><media id="uid30_media" alt="This figure contains one graph and a series of labels. The graph plots two horizontal lines. The first is shorter, at vertical value G. It ends at horizontal value fp. The second is longer, at vertical value 0. It begins at horizontal value fs and ends at horizontal value 1. The horizontal axis is labeled f/[/(2T_S)]. To the right of this graph are three expressions. The first reads Lf + 1 = impulse response length. The second reads {0, fp}, {fs, 1} = normalized freq pairs. The third reads {G, G}, {0, 0} = corresp. magnitude pairs.">
+            <image mime-type="image/png" src="../../media/fig17.png" id="uid30_onlineimage" width="838"><!-- NOTE: attribute width changes image size online (pixels). original width is 838. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig17.eps" id="uid30_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id95420">The commands 
+<code display="inline">firpm</code>
+ and 
+<code display="inline">fir2</code>
+ have the same interface,
+but yield slightly different results (often worse for our apps).
+</para>
+        <para id="id95452">In MATLAB, perform filtering on <m:math overflow="scroll"><m:mfrac><m:mn>1</m:mn><m:msub><m:mi>T</m:mi><m:mi>s</m:mi></m:msub></m:mfrac></m:math>-sampled signal 
+<code display="inline">x</code>
+ via
+</para>
+        <para id="id95490"><code display="inline">y = Ts*filter(h,1,x);</code>
+  or  
+<code display="inline">y = Ts*conv(h,x);</code></para>
+        
+        <figure id="uid31"><subfigure id="eip-id1170418994625">
+<code id="eip-id8682699" display="block">
+t_max = 3; Ts = 1/1000;
+x = randn(1,t_max/Ts);
+h = firls(100,[0,0.2,0.4,1],[1,1,0,0])/Ts;
+y = Ts*filter(h,1,x);
+subplot(3,1,1);
+plottf(x,Ts,’f’);
+ylabel(’|X(f)|’)
+subplot(3,1,2);
+plottf(h,Ts,’f’);
+ylabel(’|H(f)|’)
+subplot(3,1,3);
+plottf(y,Ts,’f’);
+ylabel(’|Y(f)|’)
+</code>
+</subfigure>
+
+<subfigure id="eip-id1170418877418">
+<media id="uid31_media" alt="This figure contains three graphs. The first plots frequency on the horizontal axis and |X(f)| on the vertical axis. The horizontal axis ranges in value from -500 to 500 in increments of 100. The vertical axis ranges in value from 0 to 0.2 in increments of 0.05. The graph is a series of noisy waves of varying amplitudes, hovering around a vertical value of 0.05. The second graph plots frequency against |H(f)|. The horizontal values are the same as the first graph, and the vertical values range from 0 to 1.5 in increments of 0.5. The graph is one single curve that stays flat along the horizontal axis until (-200, 0), where the graph begins sharply increasing to a flat peak from (-125, 1) to (125, 1). The graph then symmetrically decreases to (200, 0), where it then continues along the horizontal axis to the edge of the page. The third graph has the same horizontal axis, this time with a vertical axis of |Y(f)|, from 0 to 0.2 in increments of 0.05. The graph continues along the horizontal axis till (-200, 0), where it then increases in a noisy wavering pattern of varying amplitude, until it then decreases back to the horizontal axis by (200, 0).">
+            <image mime-type="image/png" src="../../media/fig18.png" id="uid31_onlineimage" width="370"><!-- NOTE: attribute width changes image size online (pixels). original width is 370. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig18.eps" id="uid31_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </subfigure></figure><note id="eip-707" type="important">The routines 
+<code display="inline">firls,firpm,fir2</code>
+ generate
+
+<emphasis effect="italics">causal</emphasis>
+ linear-phase filters with group delay
+<m:math overflow="scroll"><m:mrow><m:mo>=</m:mo><m:mfrac><m:mi mathvariant="monospace">Lf</m:mi><m:mn>2</m:mn></m:mfrac></m:mrow></m:math> samples.
+Thus, the filtered output 
+<code display="inline">y</code>
+ will be delayed by
+<m:math overflow="scroll"><m:mfrac><m:mi mathvariant="monospace">Lf</m:mi><m:mn>2</m:mn></m:mfrac></m:math> samples relative to 
+<code display="inline">x</code>
+.
+
+</note>
+</section>        
+  </content>
+</document>

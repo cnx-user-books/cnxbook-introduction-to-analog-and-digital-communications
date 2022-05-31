@@ -1,0 +1,374 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Complex-Baseband Equivalent Channel</title>
+  <metadata>
+  <md:content-id>m31811</md:content-id><md:title>Complex-Baseband Equivalent Channel</md:title>
+  <md:abstract>In this module, the "complex-baseband equivalent channel" is derived from the three-part cascade of modulation, wideband channel, and demodulation.</md:abstract>
+  <md:uuid>567e3fef-859c-4745-9bbb-7b6a8184ad81</md:uuid>
+</metadata>
+<featured-links>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit below.
+       Changes to the links section in the source will not be saved. -->
+    <link-group type="supplemental">
+      <link url="related matlab files.zip" strength="3">Related M-Files</link>
+    </link-group>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit above.
+       Changes to the links section in the source will not be saved. -->
+</featured-links>
+<content>
+      <para id="id173617">Linear communication schemes (e.g., AM, QAM, VSB) can all be represented
+(using complex-baseband mod/demod) as:</para>
+      <figure id="uid1"><media id="uid1_media" alt="This figure is a three-part flowchart. The parts are connected with labeled arrows. The first part is titled modulation, and begins with movement from m-tilde(t) to a circle containing an x, then to a box labeled Re. Below the x-circle is a circle containing a tilde, labeled e ^ j2πf_ct, with an arrow pointing up to the x-circle. To the right of the box labeled Re is an arrow labeled s(t) pointing to the right into the second part of the flowchart, labeled wideband channel. The arrow points at a box labeled h(t), which then points to a circle containing a plus sign. Below the plus-circle is the expression w(t), with an arrow pointing up. To the right of the plus-circle is an arrow labeled r(t) that points to the right into the third part, labeled demodulation. The arrow points at a second x-circle, and below the x-circle is a circle containing a tilde, with the label 2e ^ -j2πf_ct, and an arrow pointing back up. To the right of the x-circle is an arrow pointing at a box labeled LPF. To the right of this is an arrow pointing to the right at a final expression, v-tilde(t).">
+          <image mime-type="image/png" src="../../media/fig37.png" id="uid1_onlineimage" width="694"><!-- NOTE: attribute width changes image size online (pixels). original width is 694. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig37.eps" id="uid1_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id173631">It turns out that this diagram can be greatly simplified...</para>
+      <para id="id173635">First, consider the signal path on its own:</para>
+      <figure id="uid2"><media id="uid2_media" alt="This figure is a flowchart with movement to the right. The chart begins with the expression m-tilde(t), followed by an x-circle. Below the x-circle is a circle containing a tilde, and next to it is the expression e ^ j2πf_ct. To the right of the x-circle is a box labeled Re. To the right of this is an arrow labeled s(t) that points at a box labeled h(t). To the right of this is an arrow labeled x(t) pointing to the right at a second x-circle. Below the x-circle is a second circle with a tilde, labeled 2e ^ -j2πf_ct. To the right of the x-circle is a box labeled LPF, and to the right of this is a final expression, v-tilde_s (t).">
+          <image mime-type="image/png" src="../../media/fig38.png" id="uid2_onlineimage" width="644"><!-- NOTE: attribute width changes image size online (pixels). original width is 644. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig38.eps" id="uid2_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id173648">Since <m:math overflow="scroll"><m:mrow><m:mi>s</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> is a bandpass signal, we can <emphasis effect="underline">replace</emphasis> the
+<emphasis effect="italics">wideband</emphasis> channel response <m:math overflow="scroll"><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> with its
+<emphasis effect="italics">bandpass equivalent</emphasis> <m:math overflow="scroll"><m:mrow><m:msub><m:mi>h</m:mi><m:mtext>bp</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>:</para>
+      <figure id="uid3"><media id="uid3_media" alt="Thsi figure is comprised of two columns, each with three graphs, and a caption to the left. The caption reads ...because filtering s(t) with h(t) is equivalent to filtering s(t) with h_bp(t). The first column's first graph plots f against the absolute value of S(f), and plots two four-sided shapes, each with a slanted top side with the outside vertical sides longer than the inside. One is in the second quadrant, and one in the first. The first graph in the second column is identical to this except that the width of the shape on the right is measured with arrows as 2W. The second graph in the first column plots f against the absolute value of H(f). The graph plots one line above the horizontal axis containing four complete waves, symmetric about the vertical axis, and of different unspecified amplitudes. The second graph in the second column is identical except that the curve is cut out so that only segments that are the width of the shapes in the first graph are displayed. The width is again labeled as 2W. The vertical axis is labeled as the absolute value of H_bp(f). The third graph in the first column plots f against the absolute value of X(f). This graph displays two shapes that consist each of two vertical lines and one misshapen top side completing an object in each quadrant. The third graph in the second column is identical except that the vertical axis is labeled the absolute value of S(f)H_bp(f).">
+          <image mime-type="image/png" src="../../media/fig39.png" id="uid3_onlineimage" width="800"><!-- NOTE: attribute width changes image size online (pixels). original width is 800. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig39.eps" id="uid3_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id173730">Then, notice that</para>
+      <equation id="id173733">
+        <m:math overflow="scroll" mode="display">
+          <m:mtable displaystyle="true">
+            <m:mtr>
+              <m:mtd columnalign="right">
+                <m:mrow>
+                  <m:mfenced separators="" open="[" close="]">
+                    <m:mi>s</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>*</m:mo>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mtext>bp</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mfenced>
+                  <m:mn>2</m:mn>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd>
+                <m:mo>=</m:mo>
+              </m:mtd>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:mo>∫</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>τ</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:msub>
+                    <m:mi>h</m:mi>
+                    <m:mtext>bp</m:mtext>
+                  </m:msub>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>τ</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mi>τ</m:mi>
+                  <m:mo>·</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>t</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+            <m:mtr>
+              <m:mtd/>
+              <m:mtd>
+                <m:mo>=</m:mo>
+              </m:mtd>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:mo>∫</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>τ</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mn>2</m:mn>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mi>τ</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                  <m:msub>
+                    <m:mi>h</m:mi>
+                    <m:mtext>bp</m:mtext>
+                  </m:msub>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mspace width="-0.166667em"/>
+                    <m:mo>-</m:mo>
+                    <m:mspace width="-0.166667em"/>
+                    <m:mi>τ</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:msub>
+                        <m:mi>f</m:mi>
+                        <m:mi>c</m:mi>
+                      </m:msub>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>t</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mi>τ</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mi>d</m:mi>
+                  <m:mi>τ</m:mi>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+            <m:mtr>
+              <m:mtd/>
+              <m:mtd>
+                <m:mo>=</m:mo>
+              </m:mtd>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:mfenced separators="" open="[" close="]">
+                    <m:mi>s</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                  </m:mfenced>
+                  <m:mo>*</m:mo>
+                  <m:mfenced separators="" open="[" close="]">
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mtext>bp</m:mtext>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>t</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:msub>
+                          <m:mi>f</m:mi>
+                          <m:mi>c</m:mi>
+                        </m:msub>
+                        <m:mi>t</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                  </m:mfenced>
+                  <m:mo>,</m:mo>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+          </m:mtable>
+        </m:math>
+      </equation>
+      <para id="id174289">which means we can rewrite the block diagram as</para>
+      <figure id="uid4"><media id="uid4_media" alt="This figure is a flowchart with movement to the right. The chart begins with the expression m-tilde(t), followed by an x-circle. Below the x-circle is a circle containing a tilde, and next to it is the expression e ^ j2πf_ct. To the right of the x-circle is a box labeled Re. To the right of this is an arrow labeled s(t) that points at a second x-circle. Below the x-circle is a second circle with a tilde, labeled 2e ^ -j2πf_ct. To the right of the x-circle is a box labeled h_bp(t)e ^ -j2πf_ct. To the right of this is a box labeled LPF. To the right of this is a final expression, v-tilde_s(t).">
+          <image mime-type="image/png" src="../../media/fig40.png" id="uid4_onlineimage" width="690"><!-- NOTE: attribute width changes image size online (pixels). original width is 690. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig40.eps" id="uid4_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id174304">We can now reverse the order of the LPF and
+<m:math overflow="scroll"><m:mrow><m:msub><m:mi>h</m:mi><m:mtext>bp</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mi>t</m:mi></m:mrow></m:msup></m:mrow></m:math> (since both are LTI systems), giving</para>
+      <figure id="uid5"><media id="uid5_media" alt="This figure is a flowchart with movement to the right. The chart begins with the expression m-tilde(t), followed by an x-circle. Below the x-circle is a circle containing a tilde, and next to it is the expression e ^ j2πf_ct. To the right of the x-circle is a box labeled Re. To the right of this is an arrow labeled s(t) that points at a second x-circle. Below the x-circle is a second circle with a tilde, labeled 2e ^ -j2πf_ct. To the right of the x-circle is a box labeled LPF. To the right of this is a box labeled h_bp(t)e ^ -j2πf_ct. To the right of this is a final expression, v-tilde_s(t).">
+          <image mime-type="image/png" src="../../media/fig41.png" id="uid5_onlineimage" width="700"><!-- NOTE: attribute width changes image size online (pixels). original width is 700. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig41.eps" id="uid5_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id174364">Since mod/demod is transparent (with synched oscillators),
+it can be removed, simplifying the block diagram to</para>
+      <figure id="uid6"><media id="uid6_media" alt="This is a simple flowchart, with movement from m-tilde(t), to a box labeled h_bp(t)e^-j2πf_ct, to v-tilde_s(t).">
+          <image mime-type="image/png" src="../../media/fig42.png" id="uid6_onlineimage" width="392"><!-- NOTE: attribute width changes image size online (pixels). original width is 392. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig42.eps" id="uid6_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id174378">Now, since <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>m</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is bandlimited to <emphasis effect="italics">W</emphasis> Hz, there is no need to model
+the left component of <m:math overflow="scroll"><m:mrow><m:msub><m:mi>H</m:mi><m:mtext>bp</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>+</m:mo><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:msub><m:mi>h</m:mi><m:mtext>bp</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mi>t</m:mi></m:mrow></m:msup><m:mo>}</m:mo></m:mrow></m:mrow></m:math>:</para>
+      <figure id="uid7"><media id="uid7_media" alt="This is a figure comprised of three graphs in a row. The first graph plots f against the absolute value H_bp(f). There are two shapes, each with a pair of vertical lines, with the inside vertical line taller than the outside, and a portion of a wave as the top side of the shape. The shapes are centered with base on the horizontal axis at -f_c and f_c. In the second graph, which plots f against the absolute value of H_bp(f + f_c), the shapes are identical except that the leftmost shape is centered at -2f_c and is crossed out, and the rightmost shape is centered at the origin. The third graph plots f against the absolute value of H-tilde(f), and contains only one similar shape, with its left side at horizontal position -B and right side at position B.">
+          <image mime-type="image/png" src="../../media/fig43.png" id="uid7_onlineimage" width="784"><!-- NOTE: attribute width changes image size online (pixels). original width is 784. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig43.eps" id="uid7_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id174505">Replacing <m:math overflow="scroll"><m:mrow><m:msub><m:mi>h</m:mi><m:mtext>bp</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mi>t</m:mi></m:mrow></m:msup></m:mrow></m:math> with the
+<emphasis effect="italics">complex-baseband response</emphasis> <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>h</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> gives the
+“complex-baseband equivalent” signal path:</para>
+      <figure id="uid8"><media id="uid8_media" alt="This is a simple flowchart showing movement from expression m-tilde(t) to box h-tilde(t) to expression v-tilde_s(t).">
+          <image mime-type="image/png" src="../../media/fig44.png" id="uid8_onlineimage" width="328"><!-- NOTE: attribute width changes image size online (pixels). original width is 328. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig44.eps" id="uid8_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id174594">The spectrums above show that 
+<m:math overflow="scroll"><m:mrow><m:msub><m:mi>h</m:mi><m:mtext>bp</m:mtext></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mo form="prefix">Re</m:mo><m:mrow><m:mo>{</m:mo><m:mover accent="true"><m:mi>h</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>·</m:mo><m:mn>2</m:mn><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mi>t</m:mi></m:mrow></m:msup><m:mo>}</m:mo></m:mrow></m:mrow></m:math>.</para>
+      <para id="id174673">Next consider the noise path on it's own:</para>
+      <figure id="uid9"><media id="uid9_media" alt="This figure contains one flowchart and one graph. The flowchart shows movement from w(t) to an x-circle to LPF to v-tilde_n(t). Below the x-circle is a circle containing a tilde, labeled 2e^-j2πf_ct, with an arrow pointing up. The graph plots f against the absolute value of LPF(f). The graph is a curve shaped like a large trapezoid, with various horizontal positions marked. The outermost edges are marked as -B_s and B_s. The angled sides connect to the horizontal top at positions -B_p and B_p. Two points inside the shape and marked by vertical dashed lines that intersect with the top side of the trapezoid, and are labeled -W and W.">
+          <image mime-type="image/png" src="../../media/fig45.png" id="uid9_onlineimage" width="702"><!-- NOTE: attribute width changes image size online (pixels). original width is 702. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig45.eps" id="uid9_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <figure id="uid10"><media id="uid10_media" alt="This figure is comprised of three graphs with jagged curves across the graph in an unpredictable pattern. The first plots f against the absolute value of W(f), and in addition to the jagged curve there is a trapezoid centered at a horizontal value f_c. The second graph plots f against the absolute value of W(f + f_c), and in addition to the jagged curve, which is of different shape than the jagged curve in the first graph, there is a trapezoid centered at the origin with sides reaching horizontal values of -B_s and B_s. The third graph plots f against the absolute value of V-tilde_n(f), and the jagged curve roughly follows the shape of the trapezoid in the second graph with the same width and approximate height.">
+          <image mime-type="image/png" src="../../media/fig46.png" id="uid10_onlineimage" width="252"><!-- NOTE: attribute width changes image size online (pixels). original width is 252. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig46.eps" id="uid10_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+</figure>
+      
+      
+      
+      
+      <para id="eip-273">From the diagram, <m:math overflow="scroll"><m:mrow><m:msub><m:mover accent="true"><m:mi>v</m:mi><m:mo>˜</m:mo></m:mover><m:mi>n</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is a baseband version of the bandpass noise
+spectrum that occupies the frequency range
+
+<m:math overflow="scroll"><m:mrow><m:mi>f</m:mi><m:mo>∈</m:mo><m:mo>[</m:mo><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mo>-</m:mo><m:msub><m:mi>B</m:mi><m:mi>s</m:mi></m:msub><m:mo>,</m:mo><m:msub><m:mi>f</m:mi><m:mi>c</m:mi></m:msub><m:mo>+</m:mo><m:msub><m:mi>B</m:mi><m:mi>s</m:mi></m:msub><m:mo>]</m:mo></m:mrow></m:math>.
+<newline/>
+
+Since <m:math overflow="scroll"><m:mrow><m:msub><m:mover accent="true"><m:mi>v</m:mi><m:mo>˜</m:mo></m:mover><m:mi>n</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is complex-valued, <m:math overflow="scroll"><m:mrow><m:msub><m:mover accent="true"><m:mi>V</m:mi><m:mo>˜</m:mo></m:mover><m:mi>n</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is
+non-symmetric.
+</para><para id="id174854">Say that <m:math overflow="scroll"><m:mrow><m:mi>w</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> is real-valued white noise with power spectral
+density (PSD) <m:math overflow="scroll"><m:mrow><m:msub><m:mi>S</m:mi><m:mi>w</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msub><m:mi>N</m:mi><m:mn>0</m:mn></m:msub></m:mrow></m:math>. Since <m:math overflow="scroll"><m:mrow><m:msub><m:mi>S</m:mi><m:mi>w</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is constant over
+all <emphasis effect="italics">f</emphasis>, the PSD of the complex noise <m:math overflow="scroll"><m:mrow><m:msub><m:mover accent="true"><m:mi>v</m:mi><m:mo>˜</m:mo></m:mover><m:mi>n</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> will be constant over
+the LPF passband, i.e., <m:math overflow="scroll"><m:mrow><m:mi>f</m:mi><m:mo>∈</m:mo><m:mo>[</m:mo><m:mo>-</m:mo><m:msub><m:mi>B</m:mi><m:mi>p</m:mi></m:msub><m:mo>,</m:mo><m:msub><m:mi>B</m:mi><m:mi>p</m:mi></m:msub><m:mo>]</m:mo></m:mrow></m:math>:</para>
+      <figure id="uid12"><media id="uid12_media" alt="This graph plots f against S_v-tilde_n(f). The graph is a curve shaped like a large trapezoid, with various horizontal positions marked. The outermost edges are marked as -B_s and B_s. The angled sides connect to the horizontal top at positions -B_p and B_p. Two points inside the shape and marked by vertical dashed lines that intersect with the top side of the trapezoid, and are labeled -W and W.">
+          <image mime-type="image/png" src="../../media/fig47.png" id="uid12_onlineimage" width="404"><!-- NOTE: attribute width changes image size online (pixels). original width is 404. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig47.eps" id="uid12_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id175008">A well-designed communications receiver will suppress all
+energy outside the signal bandwidth <emphasis effect="italics">W</emphasis>, since it is purely noise.
+Given that the noise spectrum outside <m:math overflow="scroll"><m:mrow><m:mi>f</m:mi><m:mo>∈</m:mo><m:mo>[</m:mo><m:mo>-</m:mo><m:mi>W</m:mi><m:mo>,</m:mo><m:mi>W</m:mi><m:mo>]</m:mo></m:mrow></m:math> will get totally
+suppressed, <emphasis effect="italics">it doesn't matter how we model it!</emphasis>
+Thus, we choose to <emphasis effect="underline">replace</emphasis> the lowpass complex noise
+<m:math overflow="scroll"><m:mrow><m:msub><m:mover accent="true"><m:mi>v</m:mi><m:mo>˜</m:mo></m:mover><m:mi>n</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> with something simpler to describe:
+<emphasis effect="italics">white</emphasis> complex noise <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>w</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> with PSD <m:math overflow="scroll"><m:mrow><m:msub><m:mi>S</m:mi><m:mover accent="true"><m:mi>w</m:mi><m:mo>˜</m:mo></m:mover></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msub><m:mi>N</m:mi><m:mn>0</m:mn></m:msub></m:mrow></m:math>:</para>
+      <figure id="uid13"><media id="uid13_media" alt="This graph plots f against S_w-tilde(f). There is one horizontal line across the figure above the horizontal axis. There are two dashed vertical lines at -W and W that intersect the horizontal line. The markings on the horizontal axis are the same as the previous figure, with -B_s, -B_p, -W, W, B_p, and B_s.">
+          <image mime-type="image/png" src="../../media/fig48.png" id="uid13_onlineimage" width="414"><!-- NOTE: attribute width changes image size online (pixels). original width is 414. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig48.eps" id="uid13_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id175158">We'll refer to <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>w</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> as "<emphasis effect="italics">complex baseband equivalent</emphasis>" noise.</para>
+      <para id="id175189">Putting the signal and noise paths together, we arrive at the
+<emphasis effect="italics">complex baseband equivalent channel model</emphasis>:</para>
+      <figure id="uid14"><media id="uid14_media" alt="This is a complex figure comprised of three rows of flowcharts. The first shows movement from m-tilde(t) into a section titled complex baseband equivalent channel and pointing at h-tilde(t), which points at a circle with a plus, which then points out of the section at the expression v-tilde(t). Below the plus-circle is an arrow pointing up at the circle, labeled w-tilde(t). To the right of this flowchart is an equation that reads h_bp(t) = Re(h-tilde(t) * 2e^j2πf_ct), and a label that reads w-tilde(t) = complex-valued white noise. The second row of the figure is a flowchart that begins with a section labeled complex baseband modulation. The section begins with the expression m-tilde(t), which points to the right at an x-circle, which points to the right at a box labeled Re. Below the x-circle is a circle with a tilde, labeled e^j2πf_ct. to the right of the Re-box is an arrow that points to the right, labeled s(t) into a new section labeled bandpass equiv channel. The arrow points at a box labeled h_bp(t), which is followed by a plus-circle, and below it w(t) with an arrow pointing up. To the right of this is an arrow pointing to the right at a third section, labeled complex baseband demodulation. The arrow is labeled r(t), and it points at a second x-circle, below it a tilde-circle labeled 2e^-j2πf_ct. to the right of the x-circle is a box labeled LPF. To the right of this is a final expression, v-tilde(t). In the third row is another flowchart consisting of three parts. The first part is labeled I/Q modulation. It begins with two rows. The upper row is labeled m_I(t) and the lower is labeled m_Q(t). Both point to the right at x-circles. In between the x-circles is a tilde-circle. Pointing up to the top x-circle is an arrow labeled cos(2πf_ct). Pointing down to the bottom x-circle is an arrow labeled sin(2πf_ct). Pointing to the right from both x-circles are arrows that both point at a single plus-circle, with the lower arrow labeled with a minus sign. An arrow to the right points to the right at the second part, labeled wideband channel. The arrow points at a box labeled h(t), which then points at a plus-circle. Below the plus-circle is an arrow pointing up, labeled w(t). To the right of the plus-circle is an arrow labeled r(t) that points into the third part of the flowchart, labeled I/Q demodulation. The arrow splits into two rows, and both portions of the split point at x-circles. In between the x-circles again is a tilde-circle with the same labeled arrows as in the I/Q modulation part. To the right of both x-circles are boxes labeled LPF. To the right of these boxes are two final expressions, v_I(t) above and v_Q(t) below.">
+          <image mime-type="image/png" src="../../media/fig49.png" id="uid14_onlineimage" width="606"><!-- NOTE: attribute width changes image size online (pixels). original width is 606. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig49.eps" id="uid14_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id175209">The diagrams above should convince you of the utility of the
+complex-baseband representation in simplifying the system model!</para>
+  </content>
+</document>

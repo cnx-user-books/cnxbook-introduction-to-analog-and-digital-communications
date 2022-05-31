@@ -1,0 +1,1278 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Error Analysis of Digital Communications</title>
+  <metadata>
+  <md:content-id>m31814</md:content-id><md:title>Error Analysis of Digital Communications</md:title>
+  <md:abstract>In this module, we first introduce the eye diagram and constellation diagram as qualitative ways of evaluating the symbol error probability of a digital communication system.  We discuss various symbol alphabets, such as QAM, PAM, and PSK, and their associated decision regions.
+Finally, we derive the symbol error probability for PAM and QAM in additive white Gaussian noise, using the Q and erfc functions, and discuss Gray coding.</md:abstract>
+  <md:uuid>d4559051-c696-4592-a0e7-b84db6a9b2d7</md:uuid>
+</metadata>
+<featured-links>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit below.
+       Changes to the links section in the source will not be saved. -->
+    <link-group type="supplemental">
+      <link url="related matlab files.zip" strength="3">Related M-Files</link>
+    </link-group>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit above.
+       Changes to the links section in the source will not be saved. -->
+</featured-links>
+<content>
+    
+      <para id="id261392">Recall the figure below, from the module <link document="m31813">Discrete-Time Implementation of Digital Communication</link>.
+When the channel is trivial and noiseless and the
+pulses satisfy the Nyquist criterion
+(i.e., <m:math overflow="scroll"><m:mrow><m:mi>g</m:mi><m:mo>[</m:mo><m:mi>k</m:mi><m:mo>]</m:mo><m:mo>*</m:mo><m:mi>q</m:mi><m:mo>[</m:mo><m:mi>k</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>δ</m:mi><m:mo>[</m:mo><m:mi>k</m:mi><m:mo>]</m:mo></m:mrow></m:math>), the digital comm system
+will work perfectly, yielding <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>.</para>
+      <figure id="uid11"><media id="uid11_media" alt="This flowchart shows movement from a[m] to a box containing an up arrow and the variable P, then with an arrow labeled a-up-arrow[k] shows movement to the right to a box labeled g[k]. To the right of this is an arrow labeled m-tilde[k] that points to the right at a box labeled h-tilde[k]. To the right of this is an arrow that points to the right at a plus-circle. Above the plus-circle is the expression w-tilde[k], which points down at the circle. To the right of the plus-circle is an arrow labeled v-tilde[k] that points to the right at a box labeled q[k]. To the right of this is an arrow labeled y-up-arrow[k] that points to the right at a box containing a down arrow and the variable P. To the right of this is an arrow that points to the right at a final expression, y[n].">
+          <image mime-type="image/png" src="../../media/fig69.png" id="uid11_onlineimage" width="804"><!-- NOTE: attribute width changes image size online (pixels). original width is 804. --></image>
+          <image for="pdf" mime-type="application/postscript" src="../../media/fig69.eps" id="uid11_printimage" print-width="3.2in">
+            <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+          </image>
+        </media>
+      </figure>
+      <para id="id261472">In practice, however,</para>
+      <list id="id261476" display="block" list-type="bulleted">
+        <item id="uid12">the pulses <m:math overflow="scroll"><m:mrow><m:mi>g</m:mi><m:mo>[</m:mo><m:mi>k</m:mi><m:mo>]</m:mo></m:mrow></m:math> and <m:math overflow="scroll"><m:mrow><m:mi>q</m:mi><m:mo>[</m:mo><m:mi>k</m:mi><m:mo>]</m:mo></m:mrow></m:math> will be truncated to finite length,
+</item>
+        <item id="uid13">the channel will not be trivial (i.e., <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>h</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>[</m:mo><m:mi>k</m:mi><m:mo>]</m:mo></m:mrow><m:mo>≠</m:mo><m:mi>δ</m:mi><m:mrow><m:mo>[</m:mo><m:mi>k</m:mi><m:mo>]</m:mo></m:mrow></m:mrow></m:math>), and
+</item>
+        <item id="uid14">the channel will not be noiseless (i.e., <m:math overflow="scroll"><m:mrow><m:mover accent="true"><m:mi>w</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>[</m:mo><m:mi>k</m:mi><m:mo>]</m:mo></m:mrow><m:mo>≠</m:mo><m:mn>0</m:mn></m:mrow></m:math>),
+</item>
+      </list>
+      <para id="id261614">leading to <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>≠</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>, in which case
+we must <emphasis effect="italics">infer</emphasis> the value of <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>
+from the received samples <m:math overflow="scroll"><m:msubsup><m:mrow><m:mo>{</m:mo><m:mi>y</m:mi><m:mrow><m:mo>[</m:mo><m:mi>m</m:mi><m:mo>]</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mrow><m:mi>m</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup></m:math>.
+For now, we consider using only the single sample <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> to infer <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>.</para>
+      <para id="id261739">Key question: What are the mechanisms by which errors are made?</para>
+      <para id="id261743">To better understand error behavior, we can plot the “eye diagram” or the
+“constellation diagram” and calculate the symbol error rate (SER).</para>
+      <section id="uid15">
+        <title>Eye Diagrams</title>
+        <para id="id261757">Usually used when <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>∈</m:mo><m:mi mathvariant="double-struck">R</m:mi></m:mrow></m:math>,
+the eye diagram is a plot which superimposes <emphasis effect="italics">T</emphasis>-second segments of
+<m:math overflow="scroll"><m:mrow><m:mo form="prefix">Re</m:mo><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math> over the time intervals
+<m:math overflow="scroll"><m:mrow><m:mi>t</m:mi><m:mo>∈</m:mo><m:mo>[</m:mo><m:mi>n</m:mi><m:mi>T</m:mi><m:mo>-</m:mo><m:mfrac><m:mi>T</m:mi><m:mn>2</m:mn></m:mfrac><m:mo>,</m:mo><m:mi>n</m:mi><m:mi>T</m:mi><m:mo>+</m:mo><m:mfrac><m:mi>T</m:mi><m:mn>2</m:mn></m:mfrac><m:mo>)</m:mo></m:mrow></m:math> for many integers <emphasis effect="italics">n</emphasis>.</para>
+        <figure id="uid16"><media id="uid16_media" alt="This graph shows a series of waves on a graph of t and Re[y(t)], and specific points of these waves are drawn to correspond to a prism-like graph of width T called eye diagram.">
+            <image mime-type="image/png" src="../../media/fig70.png" id="uid16_onlineimage" width="798"><!-- NOTE: attribute width changes image size online (pixels). original width is 798. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig70.eps" id="uid16_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id261883">In MATLAB, the eye diagram can be made by
+superimposing <emphasis effect="italics">P</emphasis>-sample segments of <m:math overflow="scroll"><m:mrow><m:mo form="prefix">Re</m:mo><m:mo>{</m:mo><m:msub><m:mi>y</m:mi><m:mo>↑</m:mo></m:msub><m:mrow><m:mo>[</m:mo><m:mi>k</m:mi><m:mo>]</m:mo></m:mrow><m:mo>}</m:mo></m:mrow></m:math> corresponding
+to intervals <m:math overflow="scroll"><m:mrow><m:mi>k</m:mi><m:mo>∈</m:mo><m:mo>{</m:mo><m:mi>n</m:mi><m:mi>P</m:mi><m:mo>-</m:mo><m:mfrac><m:mi>P</m:mi><m:mn>2</m:mn></m:mfrac><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mo>,</m:mo><m:mi>n</m:mi><m:mi>P</m:mi><m:mo>+</m:mo><m:mfrac><m:mrow><m:mi>P</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow><m:mn>2</m:mn></m:mfrac><m:mo>}</m:mo></m:mrow></m:math>
+for many <emphasis effect="italics">n</emphasis>. (Usually <m:math overflow="scroll"><m:mrow><m:mi>P</m:mi><m:mo>≥</m:mo><m:mn>8</m:mn></m:mrow></m:math>.)</para>
+        <figure id="uid17"><media id="uid17_media" alt="This figure illustrates two prism-like graphs. The first has the caption, when the eye is 'open,' decisions will be reliable. The graph is in four segments and has various intersecting lines of rather uniform shape. In comparison, the second graph is labeled, as the eye 'closes', decisions get more unrelaible, and the graph displayed has the same four sections but with many more lines in the graph drawn and a chaotic amount of intersections across the different sections and curves.">
+            <image mime-type="image/png" src="../../media/fig71.png" id="uid17_onlineimage" width="696"><!-- NOTE: attribute width changes image size online (pixels). original width is 696. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig71.eps" id="uid17_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id262016">If <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>∈</m:mo><m:mi mathvariant="double-struck">C</m:mi></m:mrow></m:math>, eye diagrams can be plotted for both the
+“I” and “Q” channels using <m:math overflow="scroll"><m:mrow><m:mo form="prefix">Re</m:mo><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math> and <m:math overflow="scroll"><m:mrow><m:mo form="prefix">Im</m:mo><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math>,
+respectively.
+MATLAB for digital mod/demod with eye diagram:</para>
+        
+        <figure id="uid18"><subfigure id="eip-id1171801264879">
+<code id="eip-id1171805080434" display="block">"% design SRRC
+P = 16; % oversampling factor
+alpha = 0.5; % SRRC rolloff param
+D = 2; % truncation to [-DT,DT]
+g = srrc(D,alpha,P); % SRRC pulse
+Ng = length(g);
+% generate symbols
+N = 100; % # symbols
+M = 4; % alphabet size
+sig2a = 1; % symbol variance
+a = pam(N,M,sig2a); % symbol sequence
+% pulse-amplitude modulate
+a_up = zeros(1,N*P);
+a_up(1:P:end) = a; % upsampled symbols
+m = conv(a_up,g); % PAM
+% matched-filter demodulate
+y_up = conv(m,g); % use SRRC again
+% remove causal filtering delay
+left = -P/2; % left edge of eye diagram
+k = left+[1:P*N]; % desired time indices
+dly = (Ng-1)/2+(Ng-1)/2;% delay due to pulses
+y_up = y_up(k+dly); % remove delay
+y = y_up([1-left:P:P*N]);% downsample
+% plot received signal
+figure(1)
+plot(left/P+[0:P*N-1]/P,y_up,’r’,[0:N-1],y,’.’);
+axis(‘tight’)
+title([‘SRRC (\alpha=‘,num2str(alpha),...
+‘) truncated to \pm’,num2str(D),’T’])
+xlabel([‘symbol index’])
+% plot eye diagram
+figure(2)
+Y_up = reshape(y_up,P,N); % extract segments
+plot(left/P+[0:P-1]/P,Y_up) % superimpose them
+title([‘SRRC (\alpha=‘,num2str(alpha),...
+‘) truncated to \pm’,num2str(D),’T’])
+xlabel([‘relative symbol index’])
+</code>
+</subfigure>
+<subfigure id="eip-id8608486">
+<media id="uid18_media" alt="This figure contains two graphs. The first is titled SRRC (α=0.5) truncated to ±2T The horizontal axis is labeled as symbol axis, and ranges from 0 to 100. The graph is a seres of nonuniform waves with peaks in several spots labeled by blue dots. The second graph has the same title, but the horizontal axis is labeled relative symbol index, and it shows a large number of multi-colored curves all reaching from different spots from either side of the figure but meeting at four intersection points along the vertical axis, at vertical values of -1.5, -0.5, 0.5, and 1.5.">
+            <image mime-type="image/png" src="../../media/fig72.png" id="uid18_onlineimage" width="370"><!-- NOTE: attribute width changes image size online (pixels). original width is 370. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig72.eps" id="uid18_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </subfigure></figure>
+      </section>
+      <section id="uid19">
+        <title>Constellation Diagrams</title>
+        <para id="id262483">The constellation diagram is a plot of
+<m:math overflow="scroll"><m:mrow><m:mo form="prefix">Im</m:mo><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>}</m:mo></m:mrow></m:math> vs. <m:math overflow="scroll"><m:mrow><m:mo form="prefix">Re</m:mo><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>}</m:mo></m:mrow></m:math> for many integers <emphasis effect="italics">n</emphasis>.
+When the comm system is working well, the points cluster around the
+symbol alphabet values:</para>
+        <figure id="uid20"><media id="uid20_media" alt="This figure consists of two graphs. The first has sixteen splat-marks that follow a general grid, occurring from -1 to 1 horizontally, -1 to 1 vertically, and everything evenly-spaced in between. The second is similar except that it only contains four splats, all occurring at a vertical value of 0, and evenly spaced across the graph from -1.5 to 1.5.">
+            <image mime-type="image/png" src="../../media/fig73.png" id="uid20_onlineimage" width="748"><!-- NOTE: attribute width changes image size online (pixels). original width is 748. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig73.eps" id="uid20_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id262558">Recall that <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>∈</m:mo><m:mi mathvariant="double-struck">C</m:mi></m:mrow></m:math> due to the complex-baseband channel model,
+regardless of whether <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>∈</m:mo><m:mi mathvariant="double-struck">R</m:mi></m:mrow></m:math> or <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>∈</m:mo><m:mi mathvariant="double-struck">C</m:mi></m:mrow></m:math>.</para>
+        <para id="id262631">Sometimes it is instructive to superimpose a plot of
+<m:math overflow="scroll"><m:mrow><m:mo form="prefix">Im</m:mo><m:mo>{</m:mo><m:msub><m:mi>y</m:mi><m:mo>↑</m:mo></m:msub><m:mrow><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow><m:mo>}</m:mo></m:mrow></m:math> vs. <m:math overflow="scroll"><m:mrow><m:mo form="prefix">Re</m:mo><m:mo>{</m:mo><m:msub><m:mi>y</m:mi><m:mo>↑</m:mo></m:msub><m:mrow><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow><m:mo>}</m:mo></m:mrow></m:math>,
+which approximates the trajectory of <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> in the complex
+plane:</para>
+        <figure id="uid21"><media id="uid21_media" alt="This is a chaotic graph of hundreds of random-looking yellow lines that connect to a sixteen-dot grid across the graph from -1 to 1 vertically and horizontally.">
+            <image mime-type="image/png" src="../../media/fig74.png" id="uid21_onlineimage" width="398"><!-- NOTE: attribute width changes image size online (pixels). original width is 398. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig74.eps" id="uid21_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id262726">MATLAB for digital mod/demod with constellation diagram:</para>
+        
+        <figure id="uid22"><subfigure id="eip-id7877386">
+<code id="eip-id1164597723619" display="block">
+% design SRRC
+P = 8; % oversampling factor
+alpha = 0.5; % SRRC rolloff param
+D = 2; % truncation to [-DT,DT]
+g = srrc(D,alpha,P); % SRRC pulse
+Ng = length(g);
+% generate symbols
+N = 100; % # symbols
+M = 4; % (sqrt) alphabet size
+sig2a = 1; % symbol variance
+a = qam(N,M,sig2a); % symbol sequence
+% pulse-amplitude modulate
+a_up = zeros(1,N*P);
+a_up(1:P:end) = a; % upsampled symbols
+m = conv(a_up,g); % PAM
+% matched-filter demodulate
+y_up = conv(m,g); % use SRRC again
+% remove causal filtering delay
+k = [1:P*N]; % desired time indices
+dly = (Ng-1)/2+(Ng-1)/2;% delay due to pulses
+y_up = y_up(k+dly); % remove delay
+y = y_up(1:P:end); % downsample
+% plot received signal
+figure(1)
+plot3([0:P*N-1]/P,real(y_up),imag(y_up),...
+‘r’,[0:N-1],real(y),imag(y),’.’);
+xlabel(‘symbol index’);
+ylabel(‘I’); zlabel(‘Q’);
+view(20,30); % to see full trajectory
+%also try view(0,90), view(0,0), view(90,0)
+% plot constellation diagram
+figure(2)
+plot(real(y_up),imag(y_up),’y’,real(y),imag(y),’.’);
+xlabel(‘I’); ylabel(‘Q’);
+title([‘SRRC (\alpha=‘,num2str(alpha),...
+‘) truncated to \pm’,num2str(D),’T’])
+axis(‘equal’);
+</code>
+</subfigure>
+<subfigure id="eip-id7168328">
+<media id="uid22_media" alt="This figure contains two graphs. The second is a chaotic graph of hundreds of random-looking yellow lines that connect to a sixteen-dot grid across the graph from -1 to 1 vertically and horizontally. The first appears to be a three-dimensional  version of the same thing.">
+            <image mime-type="image/png" src="../../media/fig75.png" id="uid22_onlineimage" width="374"><!-- NOTE: attribute width changes image size online (pixels). original width is 374. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig75.eps" id="uid22_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </subfigure></figure>
+      </section>
+      <section id="uid23">
+        <title>Popular Symbol Alphabets</title>
+        
+        <para id="eip-227">QAM : “quadrature amplitude modulation”
+<newline/>
+PAM : “pulse amplitude modulation”
+<newline/>
+PSK : "phase shift keying"</para><figure id="uid24"><media id="uid24_media" alt="This figure contains three graphs. The first is labeled 16-QAM, and shows on a graph of Re against Im a grid of sixteen evenly-spaced dots, centered at the origin, and the lateral distances between the dots is measured as variable delta. The second is labeled 8-PAM, and plots eight evenly-spaced dots along the horizontal axis on a graph of Re against Im. The width between the dots is measured as variable delta. The third graph is titled 8-PSK, and shows eight dots arranged in a circle around the origin, with distance between them measured as variable delta.">
+            <image mime-type="image/png" src="../../media/fig76.png" id="uid24_onlineimage" width="846"><!-- NOTE: attribute width changes image size online (pixels). original width is 846. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig76.eps" id="uid24_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id263179">Note that: "QPSK" = 4-QAM = 4-PSK and "BPSK" = 2-PAM = 2-PSK </para>
+        
+        <para id="id263223">When the alphabet entries are spaced by <emphasis effect="italics">Δ</emphasis> and
+picked with equal probability, the symbol variance
+<m:math overflow="scroll"><m:mrow><m:msubsup><m:mi>σ</m:mi><m:mi>a</m:mi><m:mn>2</m:mn></m:msubsup><m:mo>=</m:mo><m:msup><m:mrow><m:mo form="prefix">E</m:mo><m:mo>{</m:mo><m:mo>|</m:mo><m:mi>a</m:mi><m:mrow><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup><m:mrow><m:mo>}</m:mo></m:mrow></m:mrow></m:math> obeys:</para>
+        <table id="id263288" summary="This table shows the alphabet entries relative to the descriptive variables in the first row.">
+<tgroup cols="4"><tbody>
+              <row>
+                <entry>alphabet</entry>
+                <entry><emphasis effect="italics">M<sup>2</sup></emphasis>-QAM</entry>
+                <entry><emphasis effect="italics">M</emphasis>-PAM</entry>
+                <entry><emphasis effect="italics">M</emphasis>-PSK</entry>
+              </row>
+              <row>
+                <entry>
+                  <emphasis effect="italics">σ<sub>a</sub><sup>2</sup></emphasis>
+                </entry>
+                <entry>
+                  <m:math overflow="scroll">
+                    <m:mrow>
+                      <m:mfrac>
+                        <m:msup>
+                          <m:mi>Δ</m:mi>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mn>6</m:mn>
+                      </m:mfrac>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:msup>
+                          <m:mi>M</m:mi>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mrow>
+                  </m:math>
+                </entry>
+                <entry>
+                  <m:math overflow="scroll">
+                    <m:mrow>
+                      <m:mfrac>
+                        <m:msup>
+                          <m:mi>Δ</m:mi>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mn>12</m:mn>
+                      </m:mfrac>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:msup>
+                          <m:mi>M</m:mi>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mrow>
+                  </m:math>
+                </entry>
+                <entry>
+                  <m:math overflow="scroll">
+                    <m:mfrac>
+                      <m:msup>
+                        <m:mi>Δ</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                      <m:mrow>
+                        <m:mn>4</m:mn>
+                        <m:msup>
+                          <m:mo form="prefix">sin</m:mo>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>π</m:mi>
+                          <m:mo>/</m:mo>
+                          <m:mi>M</m:mi>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mfrac>
+                  </m:math>
+                </entry>
+              </row>
+            </tbody>
+          
+</tgroup>
+</table>
+        <!--empty paragraphs get left behind.-->
+      </section>
+      <section id="uid25">
+        <title>Decision Regions</title>
+        <para id="id263506">A reasonable way to infer the transmitted symbol <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> from the received
+sample <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> is to decide that <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> was the alphabet element
+<emphasis effect="italics">nearest</emphasis> to <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>.</para>
+        <para id="id263581">Nearest-element decision making is equivalent to using <emphasis effect="italics">decision
+regions</emphasis> whose boundaries are equidistant from the two nearest alphabet
+elements:</para>
+        <figure id="uid26"><media id="uid26_media" alt="This figure contains four graphs. The first is labeled 16-QAM, and shows on a graph of Re against Im a grid of sixteen evenly-spaced dots, centered at the origin. In between the grid of dots are dashed lines that make their own grid on the graph. The second plots Re against Im on a graph labeled 4-PAM, with four evenly-spaced dots along the horizontal axis, and two vertical dashed lines in between dots 1 and 2, and 3 and 4, separating the dots a column-like grid. The third graph is labeled 8-PSK and shows eight dots in the shape of a circle centered at the origin. In between each dot is a line that extends from the origin out to the quadrants of the graph, dividing the dots up into individual sections. The fourth graph is labeled with three question marks, and shows a grid of nine dots centered at the origin, with the top-right dot missing, and a series of dashed lines in between the dots both horizontally and vertically dividing them. In the absence of the top-right dot, there is a diagonal dashed line extending from the grid of dashed lines further into the first quadrant.">
+            <image mime-type="image/png" src="../../media/fig77.png" id="uid26_onlineimage" width="680"><!-- NOTE: attribute width changes image size online (pixels). original width is 680. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig77.eps" id="uid26_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id263601">When <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi></m:mrow></m:math>, the <emphasis effect="italics">symbol error rate</emphasis> (SER) equals the
+probability that <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> lies outside the decision region
+corresponding to alphabet member <emphasis effect="italics">a</emphasis>.
+Writing <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>+</m:mo><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>,
+we represent the cumulative effect of noise and ISI by the error <m:math overflow="scroll"><m:mrow><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>.
+Usually we model <m:math overflow="scroll"><m:mrow><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> as a Gaussian random variable with mean 0
+and variance <emphasis effect="italics">σ<sub>e</sub><sup>2</sup></emphasis>.</para>
+      </section>
+      <section id="uid27">
+        <title>Symbol Error Rate (SER) for <emphasis effect="italics">M</emphasis>-PAM</title>
+        <para id="id263764">Let's first consider an <emphasis effect="italics">M</emphasis>-PAM alphabet, where <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>∈</m:mo><m:mi mathvariant="double-struck">R</m:mi></m:mrow></m:math>.
+Since the decision regions show that <m:math overflow="scroll"><m:mrow><m:mo form="prefix">Im</m:mo><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>}</m:mo></m:mrow></m:math> is not useful,
+we'll consider only the real parts of <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> and <m:math overflow="scroll"><m:mrow><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>.</para>
+        <para id="id263858">When <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi></m:mrow></m:math>, we have <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mo>+</m:mo><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>, implying that
+<m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> is Gaussian with mean <emphasis effect="italics">a</emphasis> and variance <emphasis effect="italics">σ<sub>e</sub><sup>2</sup></emphasis>,
+abbreviated as “<m:math overflow="scroll"><m:mrow><m:mi mathvariant="script">N</m:mi><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>,</m:mo><m:msubsup><m:mi>σ</m:mi><m:mi>e</m:mi><m:mn>2</m:mn></m:msubsup><m:mo>)</m:mo></m:mrow></m:math>”.
+This is illustrated below for the case of 4-PAM:</para>
+        <figure id="uid28">
+          <media id="uid28_media" alt="">
+            <image mime-type="image/png" src="../../media/fig78.png" id="uid28_onlineimage" width="490"><!-- NOTE: attribute width changes image size online (pixels). original width is 490. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig78.eps" id="uid28_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id263998">Formally, we say that <m:math overflow="scroll"><m:mrow><m:msub><m:mi>p</m:mi><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:msub><m:mrow><m:mo>(</m:mo><m:mi>y</m:mi><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>, the probability density
+function (pdf) of <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> conditioned on <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi></m:mrow></m:math>, obeys</para>
+        <equation id="id264085">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>p</m:mi>
+                <m:mrow>
+                  <m:mi>y</m:mi>
+                  <m:mo>[</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>]</m:mo>
+                  <m:mo>|</m:mo>
+                  <m:mi>a</m:mi>
+                  <m:mo>[</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>]</m:mo>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>y</m:mi>
+                <m:mo>|</m:mo>
+                <m:mi>a</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munder>
+                <m:munder accentunder="true">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:msqrt>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msubsup>
+                            <m:mi>σ</m:mi>
+                            <m:mi>e</m:mi>
+                            <m:mn>2</m:mn>
+                          </m:msubsup>
+                        </m:mrow>
+                      </m:msqrt>
+                    </m:mfrac>
+                    <m:mo form="prefix">exp</m:mo>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mo>-</m:mo>
+                      <m:mfrac>
+                        <m:msup>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>y</m:mi>
+                            <m:mo>-</m:mo>
+                            <m:mi>a</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:msubsup>
+                            <m:mi>σ</m:mi>
+                            <m:mi>e</m:mi>
+                            <m:mn>2</m:mn>
+                          </m:msubsup>
+                        </m:mrow>
+                      </m:mfrac>
+                    </m:mfenced>
+                  </m:mrow>
+                  <m:mo>︸</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi mathvariant="script">N</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>a</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:msubsup>
+                    <m:mi>σ</m:mi>
+                    <m:mi>e</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:munder>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id264240"><emphasis effect="italics">Basically, <m:math overflow="scroll"><m:mrow><m:msub><m:mi>p</m:mi><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:msub><m:mrow><m:mo>(</m:mo><m:mi>y</m:mi><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> tells us how likely it is that
+<m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>y</m:mi></m:mrow></m:math> given that <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi></m:mrow></m:math></emphasis>.</para>
+        <para id="id264336">Consider first the case where <emphasis effect="italics">a</emphasis> is an “interior” (not an “edge”) element
+of the symbol alphabet.
+Given that <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi></m:mrow></m:math>, we make an error when <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mrow><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow><m:mo>&lt;</m:mo><m:mi>a</m:mi><m:mo>-</m:mo><m:mfrac><m:mi>Δ</m:mi><m:mn>2</m:mn></m:mfrac></m:mrow></m:math><emphasis effect="italics">or</emphasis> when <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mrow><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow><m:mo>&gt;</m:mo><m:mi>a</m:mi><m:mo>+</m:mo><m:mfrac><m:mi>Δ</m:mi><m:mn>2</m:mn></m:mfrac></m:mrow></m:math>.
+To find the probability of the latter error event, i.e.,</para>
+        <equation id="id264437">
+          <m:math overflow="scroll" mode="display">
+            <m:mstyle scriptlevel="0" displaystyle="false">
+              <m:mrow>
+                <m:mo form="prefix">Pr</m:mo>
+                <m:mo>{</m:mo>
+                <m:mi>y</m:mi>
+                <m:mrow>
+                  <m:mo>[</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>]</m:mo>
+                </m:mrow>
+                <m:mo>&gt;</m:mo>
+                <m:mi>a</m:mi>
+                <m:mo>+</m:mo>
+                <m:mfrac>
+                  <m:mi>Δ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:mfrac>
+                <m:mspace width="3.33333pt"/>
+                <m:mfenced separators="" open="|" close="}">
+                  <m:mspace width="3.33333pt"/>
+                  <m:mi>a</m:mi>
+                  <m:mo>[</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>]</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mi>a</m:mi>
+                </m:mfenced>
+                <m:mo>,</m:mo>
+              </m:mrow>
+            </m:mstyle>
+          </m:math>
+        </equation>
+        <para id="id264518">we integrate <m:math overflow="scroll"><m:mrow><m:msub><m:mi>p</m:mi><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:msub><m:mrow><m:mo>(</m:mo><m:mi>y</m:mi><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> over <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>∈</m:mo><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>+</m:mo><m:mfrac><m:mi>Δ</m:mi><m:mn>2</m:mn></m:mfrac><m:mo>,</m:mo><m:mi>∞</m:mi><m:mo>)</m:mo></m:mrow></m:math>:</para>
+        <equation id="id264600">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mrow>
+                  <m:mi>a</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mfrac>
+                    <m:mi>Δ</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:mfrac>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:msubsup>
+              <m:munder>
+                <m:munder accentunder="true">
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>p</m:mi>
+                      <m:mrow>
+                        <m:mi>y</m:mi>
+                        <m:mo>[</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>]</m:mo>
+                        <m:mo>|</m:mo>
+                        <m:mi>a</m:mi>
+                        <m:mo>[</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>]</m:mo>
+                      </m:mrow>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>y</m:mi>
+                      <m:mo>|</m:mo>
+                      <m:mi>a</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                  <m:mo>︸</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi mathvariant="script">N</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>a</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:msubsup>
+                    <m:mi>σ</m:mi>
+                    <m:mi>e</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:munder>
+              <m:mi>d</m:mi>
+              <m:mi>y</m:mi>
+              <m:mo>=</m:mo>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mrow>
+                  <m:mi>a</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mfrac>
+                    <m:mi>Δ</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:mfrac>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:msubsup>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                    <m:msubsup>
+                      <m:mi>σ</m:mi>
+                      <m:mi>e</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mfrac>
+              <m:mo form="prefix">exp</m:mo>
+              <m:mfenced separators="" open="(" close=")">
+                <m:mo>-</m:mo>
+                <m:mfrac>
+                  <m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>y</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>a</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:msubsup>
+                      <m:mi>σ</m:mi>
+                      <m:mi>e</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                  </m:mrow>
+                </m:mfrac>
+              </m:mfenced>
+              <m:mi>d</m:mi>
+              <m:mi>y</m:mi>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id264806">The integral represents the shaded area below:</para>
+        <figure id="uid29"><media id="uid29_media" alt="This figure is the same bell curve as in the previous figure, except that the area to the right of the rightmost vertical dashed line is shaded yellow, and the bell curve itself is labeled p_y[n]a[n](y|a).">
+            <image mime-type="image/png" src="../../media/fig79.png" id="uid29_onlineimage" width="514"><!-- NOTE: attribute width changes image size online (pixels). original width is 514. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig79.eps" id="uid29_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id264823">This integral is often solved via</para>
+        <equation id="id264827">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mi>x</m:mi>
+                <m:mi>∞</m:mi>
+              </m:msubsup>
+              <m:munder>
+                <m:munder accentunder="true">
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mn>1</m:mn>
+                      <m:msqrt>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:mi>π</m:mi>
+                          <m:msup>
+                            <m:mi>σ</m:mi>
+                            <m:mn>2</m:mn>
+                          </m:msup>
+                        </m:mrow>
+                      </m:msqrt>
+                    </m:mfrac>
+                    <m:mo form="prefix">exp</m:mo>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mo>-</m:mo>
+                      <m:mfrac>
+                        <m:msup>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>y</m:mi>
+                            <m:mo>-</m:mo>
+                            <m:mi>μ</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:msup>
+                            <m:mi>σ</m:mi>
+                            <m:mn>2</m:mn>
+                          </m:msup>
+                        </m:mrow>
+                      </m:mfrac>
+                    </m:mfenced>
+                  </m:mrow>
+                  <m:mo>︸</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi mathvariant="script">N</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>μ</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:msup>
+                    <m:mi>σ</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:munder>
+              <m:mi>d</m:mi>
+              <m:mi>y</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>Q</m:mi>
+              <m:mfenced separators="" open="(" close=")">
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>x</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>μ</m:mi>
+                  </m:mrow>
+                  <m:mi>σ</m:mi>
+                </m:mfrac>
+              </m:mfenced>
+              <m:mo>,</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id264974">using the “Q function”:</para>
+        <figure id="uid30"><media id="uid30_media" alt="This figure plots a curve on a graph of x against Q(x) the curve begins at (-3, 1) and decreases at an increasing rate until (0, 0.5), where the curve continues decreasing, but at a decreasing rate, where it meets the bottom-right corner of the graph at (3, 0).">
+            <image mime-type="image/png" src="../../media/fig80.png" id="uid30_onlineimage" width="418"><!-- NOTE: attribute width changes image size online (pixels). original width is 418. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig80.eps" id="uid30_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+        <para id="id264991">While the Q function is not represented in MATLAB, it can
+be calculated using the “complementary error function” <m:math overflow="scroll"><m:mo form="prefix">erfc</m:mo></m:math>:</para>
+        <equation id="id265008">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:mi>Q</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>x</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mn>2</m:mn>
+              </m:mfrac>
+              <m:mo form="prefix">erfc</m:mo>
+              <m:mfenced separators="" open="(" close=")">
+                <m:mfrac>
+                  <m:mi>x</m:mi>
+                  <m:msqrt>
+                    <m:mn>2</m:mn>
+                  </m:msqrt>
+                </m:mfrac>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id265054">In any case, the latter error event occurs with probability</para>
+        <equation id="id265060">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:mo form="prefix">Pr</m:mo>
+                      <m:mo>{</m:mo>
+                      <m:mi>y</m:mi>
+                      <m:mrow>
+                        <m:mo>[</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>]</m:mo>
+                      </m:mrow>
+                      <m:mo>&gt;</m:mo>
+                      <m:mi>a</m:mi>
+                      <m:mo>+</m:mo>
+                      <m:mfrac>
+                        <m:mi>Δ</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:mfrac>
+                      <m:mspace width="3.33333pt"/>
+                      <m:mfenced separators="" open="|" close="}">
+                        <m:mspace width="3.33333pt"/>
+                        <m:mi>a</m:mi>
+                        <m:mo>[</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>]</m:mo>
+                        <m:mo>=</m:mo>
+                        <m:mi>a</m:mi>
+                      </m:mfenced>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>Q</m:mi>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mfrac>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>a</m:mi>
+                          <m:mo>+</m:mo>
+                          <m:mfrac>
+                            <m:mi>Δ</m:mi>
+                            <m:mn>2</m:mn>
+                          </m:mfrac>
+                          <m:mo>)</m:mo>
+                          <m:mo>-</m:mo>
+                          <m:mi>a</m:mi>
+                        </m:mrow>
+                        <m:msub>
+                          <m:mi>σ</m:mi>
+                          <m:mi>e</m:mi>
+                        </m:msub>
+                      </m:mfrac>
+                    </m:mfenced>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>Q</m:mi>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mfrac>
+                        <m:mi>Δ</m:mi>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:msub>
+                            <m:mi>σ</m:mi>
+                            <m:mi>e</m:mi>
+                          </m:msub>
+                        </m:mrow>
+                      </m:mfrac>
+                    </m:mfenced>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id265230">By symmetry, the former error event probability is also</para>
+        <equation id="id265236">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mstyle scriptlevel="0" displaystyle="false">
+                    <m:mrow>
+                      <m:mo form="prefix">Pr</m:mo>
+                      <m:mo>{</m:mo>
+                      <m:mi>y</m:mi>
+                      <m:mrow>
+                        <m:mo>[</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>]</m:mo>
+                      </m:mrow>
+                      <m:mo>&lt;</m:mo>
+                      <m:mi>a</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mfrac>
+                        <m:mi>Δ</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:mfrac>
+                      <m:mspace width="3.33333pt"/>
+                      <m:mfenced separators="" open="|" close="}">
+                        <m:mspace width="3.33333pt"/>
+                        <m:mi>a</m:mi>
+                        <m:mo>[</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>]</m:mo>
+                        <m:mo>=</m:mo>
+                        <m:mi>a</m:mi>
+                      </m:mfenced>
+                    </m:mrow>
+                  </m:mstyle>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>Q</m:mi>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mfrac>
+                        <m:mi>Δ</m:mi>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:msub>
+                            <m:mi>σ</m:mi>
+                            <m:mi>e</m:mi>
+                          </m:msub>
+                        </m:mrow>
+                      </m:mfrac>
+                    </m:mfenced>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id265356">Since these two events are disjoint, the probability of making a decision
+error on an interior symbol equals their sum:</para>
+        <equation id="id265363">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:mi>Q</m:mi>
+              <m:mfenced separators="" open="(" close=")">
+                <m:mfrac>
+                  <m:mi>Δ</m:mi>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:msub>
+                      <m:mi>σ</m:mi>
+                      <m:mi>e</m:mi>
+                    </m:msub>
+                  </m:mrow>
+                </m:mfrac>
+              </m:mfenced>
+              <m:mo>+</m:mo>
+              <m:mi>Q</m:mi>
+              <m:mfenced separators="" open="(" close=")">
+                <m:mfrac>
+                  <m:mi>Δ</m:mi>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:msub>
+                      <m:mi>σ</m:mi>
+                      <m:mi>e</m:mi>
+                    </m:msub>
+                  </m:mrow>
+                </m:mfrac>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>Q</m:mi>
+              <m:mfenced separators="" open="(" close=")">
+                <m:mfrac>
+                  <m:mi>Δ</m:mi>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:msub>
+                      <m:mi>σ</m:mi>
+                      <m:mi>e</m:mi>
+                    </m:msub>
+                  </m:mrow>
+                </m:mfrac>
+              </m:mfenced>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id265455">For edge symbols, we experience half the decision error probability,
+since there is only one decision boundary to cross.</para>
+        <para id="id265462">Finally, we average over the conditional error probabilities:</para>
+        <equation id="id265466">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:mrow>
+                    <m:mo form="prefix">Pr</m:mo>
+                    <m:mo>{</m:mo>
+                    <m:mtext>error</m:mtext>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:munder>
+                      <m:mo>∑</m:mo>
+                      <m:mrow>
+                        <m:mi>a</m:mi>
+                        <m:mspace width="0.166667em"/>
+                        <m:mo>∈</m:mo>
+                        <m:mspace width="0.166667em"/>
+                        <m:mtext>alphabet</m:mtext>
+                      </m:mrow>
+                    </m:munder>
+                    <m:mo form="prefix">Pr</m:mo>
+                    <m:mrow>
+                      <m:mo>{</m:mo>
+                      <m:mtext>error</m:mtext>
+                      <m:mo>|</m:mo>
+                      <m:mi>a</m:mi>
+                      <m:mrow>
+                        <m:mo>[</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>]</m:mo>
+                      </m:mrow>
+                      <m:mo>=</m:mo>
+                      <m:mi>a</m:mi>
+                      <m:mo>}</m:mo>
+                    </m:mrow>
+                    <m:munder>
+                      <m:munder accentunder="true">
+                        <m:mrow>
+                          <m:mo form="prefix">Pr</m:mo>
+                          <m:mo>{</m:mo>
+                          <m:mi>a</m:mi>
+                          <m:mo>[</m:mo>
+                          <m:mi>n</m:mi>
+                          <m:mo>]</m:mo>
+                          <m:mo>=</m:mo>
+                          <m:mi>a</m:mi>
+                          <m:mo>}</m:mo>
+                        </m:mrow>
+                        <m:mo>︸</m:mo>
+                      </m:munder>
+                      <m:mrow>
+                        <m:mo>=</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>/</m:mo>
+                        <m:mi>M</m:mi>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>for</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>all</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mi>a</m:mi>
+                      </m:mrow>
+                    </m:munder>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mi>Q</m:mi>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mfrac>
+                        <m:mi>Δ</m:mi>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:msub>
+                            <m:mi>σ</m:mi>
+                            <m:mi>e</m:mi>
+                          </m:msub>
+                        </m:mrow>
+                      </m:mfrac>
+                    </m:mfenced>
+                    <m:mo>·</m:mo>
+                    <m:mfrac>
+                      <m:mn>2</m:mn>
+                      <m:mi>M</m:mi>
+                    </m:mfrac>
+                    <m:mo>+</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mi>Q</m:mi>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mfrac>
+                        <m:mi>Δ</m:mi>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:msub>
+                            <m:mi>σ</m:mi>
+                            <m:mi>e</m:mi>
+                          </m:msub>
+                        </m:mrow>
+                      </m:mfrac>
+                    </m:mfenced>
+                    <m:mo>·</m:mo>
+                    <m:mfrac>
+                      <m:mrow>
+                        <m:mi>M</m:mi>
+                        <m:mspace width="-0.166667em"/>
+                        <m:mo>-</m:mo>
+                        <m:mspace width="-0.166667em"/>
+                        <m:mn>2</m:mn>
+                      </m:mrow>
+                      <m:mi>M</m:mi>
+                    </m:mfrac>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd/>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mfenced open="(" close=")">
+                      <m:mfrac>
+                        <m:mrow>
+                          <m:mi>M</m:mi>
+                          <m:mspace width="-0.166667em"/>
+                          <m:mo>-</m:mo>
+                          <m:mspace width="-0.166667em"/>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                        <m:mi>M</m:mi>
+                      </m:mfrac>
+                    </m:mfenced>
+                    <m:mi>Q</m:mi>
+                    <m:mfenced separators="" open="(" close=")">
+                      <m:mfrac>
+                        <m:mi>Δ</m:mi>
+                        <m:mrow>
+                          <m:mn>2</m:mn>
+                          <m:msub>
+                            <m:mi>σ</m:mi>
+                            <m:mi>e</m:mi>
+                          </m:msub>
+                        </m:mrow>
+                      </m:mfrac>
+                    </m:mfenced>
+                    <m:mo>,</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id265766">Using <m:math overflow="scroll"><m:mrow><m:msubsup><m:mi>σ</m:mi><m:mi>a</m:mi><m:mn>2</m:mn></m:msubsup><m:mo>=</m:mo><m:mfrac><m:msup><m:mi>Δ</m:mi><m:mn>2</m:mn></m:msup><m:mn>12</m:mn></m:mfrac><m:mrow><m:mo>(</m:mo><m:msup><m:mi>M</m:mi><m:mn>2</m:mn></m:msup><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:mrow></m:math>, we can finally write</para>
+        <equation id="id265819">
+          <m:math overflow="scroll" mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mtext>SER</m:mtext>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mtext>-PAM</m:mtext>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mn>2</m:mn>
+              <m:mfenced open="(" close=")">
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>M</m:mi>
+                    <m:mspace width="-0.166667em"/>
+                    <m:mo>-</m:mo>
+                    <m:mspace width="-0.166667em"/>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                  <m:mi>M</m:mi>
+                </m:mfrac>
+              </m:mfenced>
+              <m:mi>Q</m:mi>
+              <m:mfenced open="(" close=")">
+                <m:msqrt>
+                  <m:mrow>
+                    <m:mfrac>
+                      <m:mn>3</m:mn>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:msup>
+                          <m:mi>M</m:mi>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mfrac>
+                    <m:mfrac>
+                      <m:msubsup>
+                        <m:mi>σ</m:mi>
+                        <m:mi>a</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msubsup>
+                      <m:msubsup>
+                        <m:mi>σ</m:mi>
+                        <m:mi>e</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msubsup>
+                    </m:mfrac>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mfenced>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+      </section>
+      <section id="uid31">
+        <title>Symbol Error Rate (SER) for <emphasis effect="italics">M<sup>2</sup></emphasis>-QAM</title>
+        <para id="id265949">With QAM, we have complex-valued <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>, <m:math overflow="scroll"><m:mrow><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>, <m:math overflow="scroll"><m:mrow><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math>.
+We'll assume that <m:math overflow="scroll"><m:mrow><m:mo form="prefix">Re</m:mo><m:mo>{</m:mo><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>}</m:mo></m:mrow></m:math> and <m:math overflow="scroll"><m:mrow><m:mo form="prefix">Im</m:mo><m:mo>{</m:mo><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>}</m:mo></m:mrow></m:math> are uncorrelated
+and equal variance.
+To calculate SER, we can re-use the PAM approach with a few modifications:</para>
+        <list id="id266052" display="block" list-type="enumerated">
+          <item id="uid32">integration is done on the complex plane,
+</item>
+          <item id="uid33"><emphasis effect="italics">σ<sub>e</sub><sup>2</sup></emphasis>-variance <m:math overflow="scroll"><m:mrow><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math><m:math overflow="scroll"><m:mo>⇒</m:mo></m:math><m:math overflow="scroll"><m:mfrac><m:msubsup><m:mi>σ</m:mi><m:mi>e</m:mi><m:mn>2</m:mn></m:msubsup><m:mn>2</m:mn></m:mfrac></m:math>-variance
+<m:math overflow="scroll"><m:mrow><m:mo form="prefix">Re</m:mo><m:mo>{</m:mo><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>}</m:mo></m:mrow></m:math> &amp; <m:math overflow="scroll"><m:mrow><m:mo form="prefix">Im</m:mo><m:mo>{</m:mo><m:mi>e</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>}</m:mo></m:mrow></m:math>,
+</item>
+          <item id="uid34"><emphasis effect="italics">M<sup>2</sup></emphasis>-QAM has 4 corner points, <m:math overflow="scroll"><m:mrow><m:mn>4</m:mn><m:mo>(</m:mo><m:mi>M</m:mi><m:mo>-</m:mo><m:mn>2</m:mn><m:mo>)</m:mo></m:mrow></m:math> edge points, and
+<m:math overflow="scroll"><m:mrow><m:msup><m:mi>M</m:mi><m:mn>2</m:mn></m:msup><m:mo>-</m:mo><m:mn>4</m:mn><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>4</m:mn></m:mrow></m:math> interior points,
+</item>
+          <item id="uid35">calculate <m:math overflow="scroll"><m:mrow><m:mo form="prefix">Pr</m:mo><m:mo>{</m:mo><m:mtext>error</m:mtext><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mo>}</m:mo></m:mrow></m:math> via
+<m:math overflow="scroll"><m:mrow><m:mn>1</m:mn><m:mo>-</m:mo><m:mo form="prefix">Pr</m:mo><m:mo>{</m:mo><m:mtext>correct</m:mtext><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mo>}</m:mo></m:mrow></m:math>, since the
+regions of integration are simpler:
+<figure id="uid36"><media id="uid36_media" alt="This figure contains two graphs. The first plots Re against Im, and is titled Pr[error|a[n] = a]. It displays an array of sixteen evenly-spaced dots and a grid of dashed lines around the dots. The square containing the dot in the second row and the third column of the grid is labeled a, and is the only portion of the graph not shaded yellow. Conversely, the second graph has the same grid, same array, but this second row, third column dot is the only shaded box of the graph. The second graph is titled Pr[correct|a[n] = a]."><image mime-type="image/png" src="../../media/fig81.png" id="uid36_onlineimage" width="706"><!-- NOTE: attribute width changes image size online (pixels). original width is 706. --></image><image for="pdf" mime-type="application/postscript" src="../../media/fig81.eps" id="uid36_printimage" print-width="3.2in"><!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)--></image></media></figure></item>
+        </list>
+        <para id="id266362">After a bit of algebra, we find
+
+</para>
+        <equation id="id266369">
+          <m:math overflow="scroll" mode="display">
+            <m:mtable displaystyle="true">
+              <m:mtr>
+                <m:mtd columnalign="right">
+                  <m:msub>
+                    <m:mtext>SER</m:mtext>
+                    <m:mrow>
+                      <m:msup>
+                        <m:mi>M</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                      <m:mtext>-QAM</m:mtext>
+                    </m:mrow>
+                  </m:msub>
+                </m:mtd>
+                <m:mtd>
+                  <m:mo>=</m:mo>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>-</m:mo>
+                    <m:msup>
+                      <m:mfenced separators="" open="[" close="]">
+                        <m:mn>1</m:mn>
+                        <m:mo>-</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mfenced open="(" close=")">
+                          <m:mfrac>
+                            <m:mrow>
+                              <m:mi>M</m:mi>
+                              <m:mo>-</m:mo>
+                              <m:mn>1</m:mn>
+                            </m:mrow>
+                            <m:mi>M</m:mi>
+                          </m:mfrac>
+                        </m:mfenced>
+                        <m:mi>Q</m:mi>
+                        <m:mfenced open="(" close=")">
+                          <m:msqrt>
+                            <m:mrow>
+                              <m:mfrac>
+                                <m:mn>3</m:mn>
+                                <m:mrow>
+                                  <m:mo>(</m:mo>
+                                  <m:msup>
+                                    <m:mi>M</m:mi>
+                                    <m:mn>2</m:mn>
+                                  </m:msup>
+                                  <m:mo>-</m:mo>
+                                  <m:mn>1</m:mn>
+                                  <m:mo>)</m:mo>
+                                </m:mrow>
+                              </m:mfrac>
+                              <m:mfrac>
+                                <m:msubsup>
+                                  <m:mi>σ</m:mi>
+                                  <m:mi>a</m:mi>
+                                  <m:mn>2</m:mn>
+                                </m:msubsup>
+                                <m:msubsup>
+                                  <m:mi>σ</m:mi>
+                                  <m:mi>e</m:mi>
+                                  <m:mn>2</m:mn>
+                                </m:msubsup>
+                              </m:mfrac>
+                            </m:mrow>
+                          </m:msqrt>
+                        </m:mfenced>
+                      </m:mfenced>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mo>.</m:mo>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        
+      </section>
+      <section id="uid37">
+        <title>Bit Error Rate (BER) and Gray Coding</title>
+        <para id="id266524">With an <emphasis effect="italics">M</emphasis>-ary alphabet, there are <m:math overflow="scroll"><m:mrow><m:msub><m:mo form="prefix">log</m:mo><m:mn>2</m:mn></m:msub><m:mi>M</m:mi></m:mrow></m:math> bits per symbol,
+so 1 symbol error could cause up to <m:math overflow="scroll"><m:mrow><m:msub><m:mo form="prefix">log</m:mo><m:mn>2</m:mn></m:msub><m:mi>M</m:mi></m:mrow></m:math> bit errors.</para>
+        <para id="id266577"><emphasis effect="italics">Gray coding</emphasis> is a clever way of mapping bits to symbols so
+that neighboring symbols differ by only a single bit.
+Since the vast majority of errors occur when <m:math overflow="scroll"><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>n</m:mi><m:mo>]</m:mo></m:mrow></m:math> falls into a
+neighboring decision region, Gray coding yields BER <m:math overflow="scroll"><m:mo>≈</m:mo></m:math> SER.</para>
+        <figure id="uid38"><media id="uid38_media" alt="This figure contains two graphs. The first is titled 4-PAM, and on a graph plotting Re against Im, there are four evenly-spaced dots on the horizontal axis, labeled from left to right 00, 01, 11, and 10. There are dashed vertical lines in between the dots. The second graph is titled 16-QAM, and shows a grid of 16 evenly-spaced dots centered at the origin, with dashed lines creating a grid around the dots. The dots are labeled across in the first row 0000, 0100, 1100, 1000. In the second row, they are labeled 0001, 0101, 1101, and 1001. In the third row they are labeled 0011, 0111, 1111, and 1011. In the fourth and final row they are labeled 0010, 0110, 1110, and 1010.">
+            <image mime-type="image/png" src="../../media/fig82.png" id="uid38_onlineimage" width="752"><!-- NOTE: attribute width changes image size online (pixels). original width is 752. --></image>
+            <image for="pdf" mime-type="application/postscript" src="../../media/fig82.eps" id="uid38_printimage" print-width="3.2in">
+              <!--NOTE: attribute width changes image size in printed PDF (if specified in .tex file)-->
+            </image>
+          </media>
+        </figure>
+      </section>
+  </content>
+</document>
